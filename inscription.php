@@ -3,12 +3,13 @@
 <head>
 <meta http-equiv="Content-Type"
 content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="http://localhost/Projet/style.css" type="text/css" />
 
 <title>Inscritpion</title>
 </head>
 
-<body>
+<body id="body_bleu">
+
 <div class="carre_inscr">
 <p>Bienvenue sur Unisearch! </br> Avez-vous déjà un compte? Si oui, <a href="http://localhost/Projet/connexion.php">cliquez ici</a></p>
 
@@ -34,6 +35,7 @@ content="text/html; charset=UTF-8" />
 </div>
 
 </body>
+
 <footer>
 Copyright © 2023 UniDiscover
 </footer>

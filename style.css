@@ -4,8 +4,10 @@
     padding: 5px 15px;
     border-radius: 50px; /* Valeur qui rend le bouton oval */
     background-color: #3C3B6E; /* Couleur de fond */
+	color:white;
     text-align: center;
     font-size: 16px;
+
 }
 #oval-button-inscr{
 	margin-left:140px;
@@ -18,12 +20,15 @@
 	color: white;
 	border: 1px solid #3C3B6E;
 }
-body{
+#body_bleu{
 	background-color:#3C3B6E;
+}
+body{
+	background-color:white;
 }
 .carre_inscr{
 	width:400px;
-	height:300px;
+	height:400px;
 	background-color:#E5E5E5;
 	text-indent:justify;
 	margin-left:35%;
@@ -40,6 +45,16 @@ body{
 	margin-top:10%;
 	padding-left:25px;
 	padding-top:60px;
+}
+.carre_questionnaire{
+	width:400px;
+	height:450px;
+	background-color:#E5E5E5;
+	text-indent:justify;
+	margin-left:35%;
+	margin-top:10%;
+	padding-left:25px;
+	padding-top:5px;
 }
 footer{
 	background-color: #B22234;

@@ -1,11 +1,11 @@
 <!DOCTYPE html >
 <html>
 <head>
-<link rel="stylesheet" href="style.css" type="text/css" />
+<link rel="stylesheet" href="http://localhost/Projet/style.css" type="text/css" />
 
 <title>Connexion</title>
 </head>
-<body>
+<body id="body_bleu">
 
 <div class="carre_connexion">
 

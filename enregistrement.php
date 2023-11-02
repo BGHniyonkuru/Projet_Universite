@@ -32,7 +32,7 @@
 			}
 			elseif($nom != "" && $prenom != "" && $email != "" && $mdp != "" ) {
 				enregistrer($nom, $prenom, $email, $mdp);
-				header("Location: accueil.php");
+				header("Location: questionnaire.php");
 				exit;
 			}
 			else{
