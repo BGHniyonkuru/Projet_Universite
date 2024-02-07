@@ -24,6 +24,7 @@ session_start();
 			<a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
 		</div>
 	
+<<<<<<< HEAD
 		
 		<div>
 			<p id ="titre"> Top 3 2023 best universities</p>
@@ -63,4 +64,25 @@ session_start();
 	</div>
 </body>
 
+=======
+	<body>
+		<!-- bandeau en haut de l'écran -->
+		<div class="container">
+			<a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo" ></a>
+
+			<ul>
+			  <li><a class= "bandeau" href="comparer.php">Comparer</a></li>
+			  <li><a class= "bandeau" href="localiser.php">Localiser</a></li>
+			  <li><a class= "bandeau" href="predire.php" >Prédire</a></li>
+			  <li><a class= "bandeau" href="contact.php" >Contact</a></li>
+			  <li><a class= "bandeau" href="search.php" >Rechercher</a></li>
+			</ul>
+			<a href= "compte.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
+			<a href= "favori.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
+		</div>
+	</body>
+<footer>
+Copyright © 2023 UniDiscover
+</footer>
+>>>>>>> 01344d7e8602f68c0eeaaa40305b5b227574c4a9
 </html>
