@@ -1,79 +1,74 @@
-from dash import Dash, html, dcc, Output, Input, callback
-import plotly.express as px
+import streamlit as st
 import pymysql
-import pandas as pd
-
-app = Dash(
-    __name__,
-    meta_tags=[
-        {"name": "viewport", "content": "width=device-width, initial-scale=1.0"}
-    ],
-    )
-
-app.title = "US universities Comparisons"
-
-external_stylesheets = [
-    'assets/reset.css',
-    'assets/menu.css'
-]
-
-# Connect to the MySQL database
 conn = pymysql.connect(
     host='localhost',
     user='root',
     password='',
     database='projet_universite'
 )
-# Define the SQL query to select specific columns from the "universite" table
 
 
-query = """
-SELECT u.id_universite,u.id_ville AS id_ville_universite, u.name AS university_name, u.domaine_etude, 
-    u.`Acceptance rate` AS acceptance_rate, u.`Price(Average Cost After Financial Aid)` AS price,
-     c.annee, c.rank_order
-    FROM universite AS u
-    JOIN etre AS e ON u.id_universite = e.id_universite
-    JOIN classement AS c ON e.id_classement = c.id_classement
-"""
+def fetch_university_names(starting_chars):
+    cursor = conn.cursor()
+    query = f"""
+        SELECT name
+        FROM universite
+        WHERE name LIKE '%{starting_chars}%'
+        ORDER BY name
+        LIMIT 15
+        """
+    cursor.execute(query)
+    university_names = [row[0] for row in cursor.fetchall()]
+    cursor.close()
+    return university_names
 
-# Execute SQL queries
-cursor = conn.cursor()
-cursor.execute(query)
-rows = cursor.fetchall()
+def display_matching_universities(university_name, col):
+    matching_names = fetch_university_names(university_name)
 
-columns = [i[0] for i in cursor.description]
-df = pd.DataFrame(rows, columns=columns)
+    if matching_names:
+        selected_university = st.selectbox("Select University", matching_names)
+        return selected_university
+    else:
+        col.write("No matching university names found for {university_name}.")
+        return None
 
-# Close the connection when you're done
+st.set_page_config(page_title="Comparison", page_icon=":tada:", layout="wide")
+
+with open("bandeau.html", "r", encoding="utf-8") as file:
+    bandeau_content = file.read()
+
+st.components.v1.html(bandeau_content)
+
+# ----Header section----
+with st.container():
+    st.subheader("Wanna get a hint about the best university for you?")
+    st.title("Compare your universities")
+    col1, col2, col3 = st.columns([1,1,1])
+    universsity_names = fetch_university_names("")
+    university1_name = col1.selectbox("University 1", [""] + university_names, index=0)
+    university2_name = col2.selectbox("University 2", [""] + university_names, index=0)
+
+    col3.write("")
+    compare_button_clicked = col3.button("Compare your universities")
+
+    if compare_button_clicked:
+        st.components.v1.html("<a href='compare_universities.py'>Redirecting to comparison page...</a>")
+
+    if university1_name:
+        selected_university1 = display_matching_universities(university1_name, col1)
+        if selected_university1:
+            col1.text_input("university1", selected_university1)
+
+
+    if university2_name:
+        selected_university2 = display_matching_universities(university2_name, col2)
+        if selected_university2:
+            col2.text_input("University2", selected_university2)
+
+
 conn.close()
 
-app.layout = html.Div([
-    html.Iframe(
-            srcDoc=open('menu_bar.html', 'r').read(),
-            style={'width': '100%', 'height': '100px'}
-        ),
-    dcc.Dropdown(
-        id="slct_year",
-        options=[
-            {'label': str(year), 'value': year} for year in df['annee'].unique()],
-            multi=False,
-            value=df['annee'].max(),
-            style={'width': "40%"}
-    ),
-    dcc.Graph(id="comparison-chart"),
-])
+# ---Load Assets
+lottie_coding = ""
 
 
-@app.callback(
-    Output("comparison-chart", "figure"),
-    [Input("university-selector", "value")]
-)
-def update_chart(selected_universities):
-    filtered_df = df_universite[df_universite["id_universite"].isin(selected_universities)]
-
-    figure = px.bar(filtered_df, x="name", y="acceptance_rate", title="Comparison of Acceptance Rates")
-    return figure
-
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
