@@ -13,22 +13,22 @@
 			<a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo" ></a>
 
 			<ul>
-			  <li><a class= "bandeau" href="comparer.php">Comparer</a></li>
-			  <li><a class= "bandeau" href="localiser.php">Localiser</a></li>
-			  <li><a class= "bandeau" href="predire.php" >Prédire</a></li>
+			  <li><a class= "bandeau" href="comparer.php">Compare</a></li>
+			  <li><a class= "bandeau" href="localiser.php">Map to locate</a></li>
+			  <li><a class= "bandeau" href="predire.php" >Prédict</a></li>
 			  <li><a class= "bandeau" href="contact.php" >Contact</a></li>
-			  <li><a class= "bandeau" href="search.php" >Rechercher</a></li>
+			  <li><a class= "bandeau" href="search.php" >Search</a></li>
 			</ul>
-			<a href= "compte.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
-			<a href= "favori.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
+			<a href= "favori.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
+			<a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
 		</div>
     <h1>Rechercher</h1>
     
     <!-- Formulaire de recherche -->
     <form id="searchForm" onsubmit="submitForm(event)">
-        <label for="searchInput">Entrez le nom de la ville ou de l'université :</label>
-        <input type="text" id="searchInput" name="searchInput" placeholder="Tapez ici">
-        <button type="submit">Rechercher</button>
+        <label for="searchInput">Enter a city or university :</label>
+        <input type="text" id="searchInput" name="searchInput" placeholder="Type here">
+        <button type="submit">Search</button>
     </form>
 
     <!-- Conteneur pour afficher les résultats -->

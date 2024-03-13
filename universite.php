@@ -10,11 +10,11 @@
 			<a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo" ></a>
 
 			<ul>
-			  <li><a class= "bandeau" href="comparer.php">Comparer</a></li>
-			  <li><a class= "bandeau" href="localiser.php">Localiser</a></li>
-			  <li><a class= "bandeau" href="predire.php" >Prédire</a></li>
+			  <li><a class= "bandeau" href="comparer.php">Compare</a></li>
+			  <li><a class= "bandeau" href="localiser.php">Map to locate</a></li>
+			  <li><a class= "bandeau" href="predire.php" >Prédict</a></li>
 			  <li><a class= "bandeau" href="contact.php" >Contact</a></li>
-			  <li><a class= "bandeau" href="search.php" >Rechercher</a></li>
+			  <li><a class= "bandeau" href="search.php" >Search</a></li>
 			</ul>
 			<a href= "compte.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
 			<a href= "favori.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
@@ -32,7 +32,7 @@
 
 		// Vérifier la connexion
 		if ($conn->connect_error) {
-			die("La connexion a échoué : " . $conn->connect_error);
+			die("Connection failed : " . $conn->connect_error);
 		}
 
 		// Récupérer l'identifiant de l'université depuis l'URL
@@ -57,7 +57,7 @@
 					echo "<img src='" . $row['image'] . "' alt='Image de l\'université' style='width: 10%; float: left; margin-left: 5%;margin-top:40px;'>";
 				} else {
 					// Si le chemin de l'image n'est pas défini, affichez un message ou une image par défaut
-					echo "Aucune image disponible.";
+					echo "No image available.";
 				}
 				 // Affichez la description dans une div avec un fond gris clair
 				echo "<div style='background-color: #D9D9D9; padding: 10px;margin-left: 10%;text-align: left; width: 70%;position:center; margin-left: 20%; overflow: hidden;margin-top:40px;color:black;'>";
@@ -66,11 +66,11 @@
 				
 			} else {
 				// Aucun résultat trouvé
-				echo "Aucune image trouvée pour cette université.";
+				echo "No image found for this university.";
 			}
 		} else {
 			// Erreur dans la requête
-			echo "Erreur dans la requête : " . $conn->error;
+			echo "Request Error : " . $conn->error;
 		}
 		// Requête SQL pour récupérer les données de classement de l'université par année
 		$sql_classement = "SELECT annee, rank_order
@@ -101,16 +101,16 @@
 						y: " . json_encode($classements) . ",
 						type: 'scatter',
 						mode: 'lines+markers',
-						name: 'Évolution du classement'
+						name: 'Evolution of the ranking'
 					};
 
 					var layout = {
-						title: 'Évolution du classement de l\'université - " . $universite_name . "',
+						title: 'Évolution of the ranking of  - " . $universite_name . "',
 						xaxis: {
-							title: 'Année'
+							title: 'Year'
 						},
 						yaxis: {
-							title: 'Classement'
+							title: 'Ranking'
 						}
 					};
 
@@ -118,7 +118,7 @@
 				  </script>";
 		} else {
 			// Afficher un message d'erreur si la requête a échoué
-			echo "Erreur dans la requête de classement : " . $conn->error;
+			echo "Ranking Request Error : " . $conn->error;
 		}
 		// Fermer la connexion à la base de données
 		$conn->close();
