@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type"
 content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="http://localhost/Projet/style.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
 
 <title>Inscritpion</title>
 </head>
@@ -11,7 +11,7 @@ content="text/html; charset=UTF-8" />
 <body id="body_bleu">
 
 <div class="carre_inscr">
-<p>Bienvenue sur Unisearch! </br> Avez-vous déjà un compte? Si oui, <a href="http://localhost/Projet/connexion.php">cliquez ici</a></p>
+<p>Bienvenue sur Unisearch! </br> Avez-vous déjà un compte? Si oui, <a href="connexion.php">cliquez ici</a></p>
 
 
 <form action="enregistrement.php" method="post" autocomplete="on">

@@ -1,7 +1,7 @@
 <!DOCTYPE html >
 <html>
 <head>
-<link rel="stylesheet" href="http://localhost/Projet/style.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
 
 <title>Connexion</title>
 </head>
@@ -24,7 +24,7 @@ session_start();
 		
 		<button id="oval-button-inscr" type="submit" >S'inscrire</button>
 </form>
-<p></br> </br> Vous n'avez pas de compte? <a href="http://localhost/Projet/inscription.php">Cliquez ici</a></p>
+<p></br> </br> Vous n'avez pas de compte? <a href="inscription.php">Cliquez ici</a></p>
 </div>
 
 </body>

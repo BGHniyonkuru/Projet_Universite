@@ -1,8 +1,9 @@
 import tkinter as tk
 
+
 def fetch_university_names(starting_chars):
-    # Simuler la fonction fetch_university_names
     return [f"University {i}" for i in range(1, 16)]
+
 
 class CustomTkinterApp:
     def __init__(self, root):
@@ -28,10 +29,12 @@ class CustomTkinterApp:
         university2_name = self.university2_var.get()
         print(f"Comparing {university1_name} and {university2_name}")
 
+
 def run_custom_tkinter_app():
     root = tk.Tk()
     app = CustomTkinterApp(root)
     root.mainloop()
+
 
 if __name__ == "__main__":
     run_custom_tkinter_app()
