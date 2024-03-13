@@ -9,7 +9,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Vérifier la connexion
 if ($conn->connect_error) {
-    die("La connexion a échoué : " . $conn->connect_error);
+    die("Connection failed : " . $conn->connect_error);
 }
 
 // Récupérer la valeur de recherche depuis la requête GET
@@ -31,10 +31,10 @@ if ($result) {
 		echo "<p><a href='universite.php?id=" . $row['id_universite'] . "'>" . $row['universite_name'] . "</a> - Ville : " . $row['ville_name'] . "</p>";
         }
     } else {
-        echo "Aucun résultat trouvé.";
+        echo "No match found.";
     }
 } else {
-    echo "Erreur dans la requête : " . $conn->error;
+    echo "Request Error : " . $conn->error;
 }
 
 // Fermer la connexion à la base de données

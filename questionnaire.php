@@ -5,7 +5,7 @@
 content="text/html; charset=UTF-8" />
 <link rel="stylesheet" href="http://localhost/Projet/style.css" type="text/css" />
 
-<title>Questionnaire</title>
+<title>Quiz</title>
 </head>
 
 <body id="body_bleu">
@@ -15,31 +15,27 @@ content="text/html; charset=UTF-8" />
 
 
 <form action="enr_questionnaire.php" method="post" autocomplete="on">
-		Homme :
-		<input type="radio" name="genre" value="H"><br />
-		Femme :
-		<input type="radio" name="genre" value="F"></br></br>
 		
-		<label for "diplome">Dernier diplôme obtenu :</label>
-		<input type="text" id="diplome" name="diplome" required"/></br></br>
+		<label for "diplome">Last diploma obtained :</label>
+		<input type="text" id="diplome" name="diplome" required/></br></br>
 		
 		<label for "prenom">Série :</label>
-		<input type="text" id="serie" name="serie" required"/></br></br>
+		<input type="text" id="serie" name="serie" required/></br></br>
 
 		<label for "email">Mention :</label>
-		<input type="text" id="mention" name="mention" required"/></br></br>
+		<input type="text" id="mention" name="mention" required/></br></br>
 		
-		<label for "budget">Budget académique prévu :</label>
-		<input type="txt" id="budget" name="budget" required"/></br></br>
+		<label for "budget">Planned academic budget :</label>
+		<input type="txt" id="budget" name="budget" required/></br></br>
 		
-		<label for "lieux">Etat de préférence :</label>
-		<input type="txt" id="etat" name="etat" required"/></br></br>
+		<label for "lieux">State of preference :</label>
+		<input type="txt" id="etat" name="etat" required/></br></br>
 		
 		<div id="domainLists">
     <!-- Initial dropdown list -->
-    <label for="domainSelect">Choisissez un domaine :</label>
+    <label for="domainSelect">Choose a field :</label>
     <select class="domainSelect" onchange="updateDomainInput()">
-      <option value="" disabled selected>Sélectionnez un domaine</option>
+      <option value="" disabled selected>Choose a field</option>
       <option value="Domaine1">accounting</option>
       <option value="Domaine2">finance</option>
       <option value="Domaine3">agriculture & forestry </option>
@@ -79,11 +75,11 @@ content="text/html; charset=UTF-8" />
       <option value="Domaine37">veterinary science</option>
     </select>
 	
-  </div>
-  <a href="#" onclick="addNewDomain()">+ Ajouter un autre domaine</a>
   
-		<button id="oval-button-inscr" type="submit" >Valider</button></br></br>
-		<a href="http://localhost/Projet/accueil.php">Ignorer le questonnaire</a>
+  <a href="#" onclick="addNewDomain()">+ Add an other field</a>
+  
+		<button id="oval-button-inscr" type="submit" >Submit</button></br></br>
+		<a href="http://localhost/Projet/accueil.php">Ignore the quiz</a>
  </form>
   
 </div>
@@ -108,7 +104,7 @@ content="text/html; charset=UTF-8" />
     defaultOption.value = '';
     defaultOption.disabled = true;
     defaultOption.selected = true;
-    defaultOption.textContent = 'Sélectionnez un domaine';
+    defaultOption.textContent = 'Select a field';
 
     newDomainSelect.appendChild(defaultOption);
     

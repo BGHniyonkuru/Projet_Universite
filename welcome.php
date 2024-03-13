@@ -8,7 +8,7 @@ content="text/html; charset=UTF-8" />
 <title>Welcome</title>
 </head>
 	<body >
-			<a href="http://localhost/Projet/inscription.php" class="oval-button">Inscription</a>
-			<a href="http://localhost/Projet/connexion.php" class="oval-button">Connexion</a>
+			<a href="http://localhost/Projet/inscription.php" class="oval-button">Sign up</a>
+			<a href="http://localhost/Projet/connexion.php" class="oval-button">Sign in</a>
 	</body>
 </html>

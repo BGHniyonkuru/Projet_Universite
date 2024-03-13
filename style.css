@@ -91,33 +91,7 @@ li:hover{
 	background-color:#666666;
 	padding: 5px 10px;	
 }
-.bandeau{text-decoration: none;
-color:white;
-}
 
-#logo{
-	margin-left:130px;
-	margin-top:10px;
-	height:100px;
-	width:100px;
-}
-
-#logo2{
-	margin-left:100px;
-	margin-top:5px;
-	height:50px;
-	width:50px;
-}
-
-#logo3{
-	margin-left:10px;
-	margin-top:5px;
-	height:50px;
-	width:50px;
-}
-#searchResults{
-	margin-left:5px;
-}
 
 footer{
 	background-color: #B22234;

@@ -35,25 +35,30 @@ session_start();
     </style>
 	</head>
 <body id="body_accueil">
-	<div class="container">	
-	
-	<!-- bandeau en haut de l'écran -->
-	
-		<div class="bandeau">
-		<object data="bandeau.html" width="100%" height="100%">
-		</object>
+	<div class="container">
+			<a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo" ></a>
+
+			<ul>
+			  <li><a class= "bandeau" href="comparer.php">Compare</a></li>
+			  <li><a class= "bandeau" href="localiser.php">Map to locate</a></li>
+			  <li><a class= "bandeau" href="predire.php" >Prédict</a></li>
+			  <li><a class= "bandeau" href="contact.php" >Contact</a></li>
+			  <li><a class= "bandeau" href="search.php" >Search</a></li>
+			</ul>
+			<a href= "favoris.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
+			<a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
 		</div>
 	
 		
 		<div  id="monCompte" style="border: 1px solid blue; padding: 10px;">
-			<p style="text-align: center;"> INFORMATIONS PERSONNELLES :</p>
+			<p style="text-align: center;"> PERSONAL INFORMATION :</p>
 			
 			<ul style="height: 100px; width: 30%; text-align: left; list-style-type: none;">
-				<li style="margin: 10px;">Nom </li>
-				<li style="margin: 10px;">Prénom </li>
-				<li style="margin: 10px;">Sexe </li>
-				<li style="margin: 10px;">Dernier Diplôme </li>
-				<li style="margin: 10px;">Domaine recherché </li>
+				<li style="margin: 10px;">First Name </li>
+				<li style="margin: 10px;">Last Name </li>
+				
+				<li style="margin: 10px;">Last Diploma </li>
+				<li style="margin: 10px;">Wanted Fields </li>
 			</ul>
 			
 			<ul id="infos" style="margin-top: -123px; margin-left: 150px; width: 60%; text-align: left; list-style-type: none;">

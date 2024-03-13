@@ -1,32 +1,50 @@
 <!DOCTYPE html >
 <html>
 	<head>
-		<title>Connecter</title>
+	<style>
+		html {
+			background-color: #3C3B6E; /* Fond bleu */
+		}
+		#connecter{
+			background-color: #E5E5E5;
+		}
+		.error-message {
+            color: red;
+        }
+		
+
+</style>
+		<title>Connected</title>
 	</head>
 	<body>
-<?php
-session_start();
+		<div id= 'connecter'>
+		<?php
+		session_start();
 
-		   $email=$_POST['email'];
+			$email=$_POST['email'];
 			$mdp=$_POST['mdp'];
 			require("C:\wamp64\www\Projet\bd.php");
 			$bdd = getBD();
-			$rep = $bdd->query("SELECT * FROM clients WHERE mail = '$email' AND mdp = '$mdp'");
+			$rep = $bdd->query("SELECT * FROM clients WHERE email = '$email' AND mdp = '$mdp'");
 			if ($rep->rowCount() > 0) {
 				$row = $rep->fetch();
 				$_SESSION['client']= array(
 				'id' => $row['id_client'],
 				'nom' => $row['nom'],
 				'prenom' => $row['prenom'],
-				'email' => $row['mail'],
-				'mdp' => $row['mdp'],)
-				?><meta http-equiv="refresh" content="0;url=http://localhost/Commandr%C3%A9/accueil.php"/><?php
+				'email' => $row['email'],
+				'mdp' => $row['mdp'])
+				?><meta http-equiv="refresh" content="0;url=http://localhost/Projet/accueil.php"/><?php
 			} 
 			else {
-			echo 'erreur';
-			}
+				echo '<span class="error-message">Error: Incorrect password or email!!</span>';?>
+				<p></br> <a href="http://localhost/Projet/connexion.php">Click here to return to login form</a></p>
+			
+			<?php }
 
-?>
+		?>
 
-</body>
+		</div>
+
+	</body>
 </html>
