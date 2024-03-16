@@ -38,6 +38,52 @@ session_start();
 				margin-left:5px;
 			}
 	</style>
+	<script>
+        // JavaScript pour afficher la fenêtre modale
+        function afficherResultats() {
+            // Récupérer les résultats de la session PHP
+            <?php
+            session_start();
+            $resultats = $_SESSION['resultats_requete'] ?? [];
+            ?>
+			console.log('Résultats de la requête :', <?php echo json_encode($resultats); ?>);
+
+            // Créer une div pour afficher les résultats
+            var modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '50%';
+            modal.style.left = '50%';
+            modal.style.transform = 'translate(-50%, -50%)';
+            modal.style.backgroundColor = '#FFF';
+            modal.style.padding = '20px';
+            modal.style.border = '1px solid #000';
+            modal.style.zIndex = '9999';
+            modal.innerHTML = '<h2>Résultats de la recherche :</h2>';
+
+            // Ajouter chaque résultat dans la div
+            <?php foreach ($resultats as $resultat) { ?>
+                var universiteId = '<?php echo $resultat['id_universite']; ?>';
+				var universite = '<?php echo $resultat['name']; ?>';
+                var lien = document.createElement('a');
+				lien.href = 'http://localhost/Projet/universite.php?id=' + encodeURIComponent(universiteId);
+                lien.textContent = universite;
+                lien.style.display = 'block';
+                lien.style.marginBottom = '10px';
+                modal.appendChild(lien);
+            <?php } ?>
+
+            // Ajouter un bouton de fermeture à la fenêtre modale
+            var closeButton = document.createElement('button');
+            closeButton.textContent = 'Fermer';
+            closeButton.onclick = function() {
+                document.body.removeChild(modal);
+            };
+            modal.appendChild(closeButton);
+
+            // Ajouter la div à la page
+            document.body.appendChild(modal);
+        }
+    </script>
 	</head>
 <body id="body_accueil">
 	<div class="container">
@@ -55,7 +101,8 @@ session_start();
 			<a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
 		</div>
 	
-
+		<!-- Bouton pour afficher les résultats -->
+		<button onclick="afficherResultats()">Afficher les résultats</button>
 		
 		<div>
 			<p id ="titre"> Top 3 2023 best universities</p>

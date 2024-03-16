@@ -11,7 +11,7 @@ content="text/html; charset=UTF-8" />
 <body id="body_bleu">
 
 <div class="carre_questionnaire">
-<p>Voici un petit questionnaire pour vous suggérer ce qui vous correspond</a></p>
+<p>Here is a short questionnaire to suggest what suits you</a></p>
 
 
 <form action="enr_questionnaire.php" method="post" autocomplete="on">
@@ -28,101 +28,111 @@ content="text/html; charset=UTF-8" />
 		<label for "budget">Planned academic budget :</label>
 		<input type="txt" id="budget" name="budget" required/></br></br>
 		
-		<label for "lieux">State of preference :</label>
-		<input type="txt" id="etat" name="etat" required/></br></br>
 		
-		<div id="domainLists">
-    <!-- Initial dropdown list -->
-    <label for="domainSelect">Choose a field :</label>
-    <select class="domainSelect" onchange="updateDomainInput()">
+        <label for="etatSelect">State of preference :</label></br></br>
+        <select id="etatSelect" name="etatSelect" >
+            <option value="" disabled selected>Choose a field</option>
+            <option value="Alabama">Alabama</option>
+            <option value="Alaska">Alaska</option>
+			<option value="Arizona">Arizona</option>
+            <option value="Arkansas">Arkansas</option>
+			<option value="California">California</option>
+            <option value="Colorado">Colorado</option>
+			<option value="Connecticut">Connecticut</option>
+            <option value="Delaware">Delaware</option>
+			<option value="Columbia">Columbia</option>
+            <option value="Florida">Florida</option>
+			<option value="Georgia">Georgia</option>
+            <option value="Hawaii">Hawaii</option>
+			<option value="Idaho">Idaho</option>
+            <option value="Illinois">Illinois</option>
+			<option value="Indiana">Indiana</option>
+            <option value="Iowa">Iowa</option>
+			<option value="Kansas">Kansas</option>
+            <option value="Kentucky">Kentucky</option>
+			<option value="Louisiana">Louisiana</option>
+            <option value="Maine">Maine</option>
+			<option value="Maryland">Maryland</option>
+            <option value="Massachusetts">Massachusetts</option>
+			<option value="Michigan">Michigan</option>
+            <option value="Minnesota">Minnesota</option>
+			<option value="Mississippi">Mississippi</option>
+            <option value="Missouri">Missouri</option>
+			<option value="Montana">Montana</option>
+            <option value="Nebraska">Nebraska</option>
+			<option value="Nevada">Nevada</option>
+            <option value="New Hampshire">New Hampshire</option>
+			<option value="New Jersey">New Jersey</option>
+            <option value="New Mexico">New Mexico</option>
+			<option value="New York">New York</option>
+			<option value="North Carolina">North Carolina</option>
+            <option value="North Dakota">North Dakota</option>
+			<option value="Ohio">Ohio</option>
+            <option value="Oklahoma">Oklahoma</option>
+			<option value="Oregon">Oregon</option>
+            <option value="Pennsylvania">Pennsylvania</option>
+			<option value="Rhode Island">Rhode Island</option>
+            <option value="South Carolina">South Carolina</option>
+			<option value="South Dakota">South Dakota</option>
+            <option value="Tennessee">Tennessee</option>
+			<option value="Texas">Texas</option>
+            <option value="Utah">Utah</option>
+			<option value="Vermont">Vermont</option>
+            <option value="Virginia">Virginia</option>
+			<option value="Washington">Washington</option>
+            <option value="West Virginia">West Virginia</option>
+			<option value="Wisconsin">Wisconsin</option>
+            <option value="Wyoming">Wyoming</option>
+        </select></br></br>
+		
+    <label for="domainSelect"> Field of study of preference :</label>
+    <select id="domainSelect" name="domainSelect">
       <option value="" disabled selected>Choose a field</option>
-      <option value="Domaine1">accounting</option>
-      <option value="Domaine2">finance</option>
-      <option value="Domaine3">agriculture & forestry </option>
-      <option value="Domaine4">archaeology</option>
-      <option value="Domaine5">architecture</option>
-	  <option value="Domaine6">art</option>
-      <option value="Domaine7">biological sciences</option>
-      <option value="Domaine8">business & management </option>
-      <option value="Domaine9">chemical engineering</option>
-      <option value="Domaine10">chemistry</option>
-	  <option value="Domaine11">civil engineering</option>
-      <option value="Domaine12">communication & media</option>
-      <option value="Domaine13">computer science </option>
-      <option value="Domaine14">earth & marine sciences</option>
-      <option value="Domaine15">economics & econometrics</option>
-      <option value="Domaine16">education</option>
-      <option value="Domaine17">electrical & electronic engineering</option>
-      <option value="Domaine18">sport science </option>
-      <option value="Domaine19">environmental</option>
-      <option value="Domaine20">general engineering</option>
-	  <option value="Domaine21">geography</option>
-      <option value="Domaine22">geology</option>
-      <option value="Domaine23">history </option>
-      <option value="Domaine24">languages</option>
-      <option value="Domaine25">law</option>
-	  <option value="Domaine26">literature & linguistics</option>
-      <option value="Domaine27">mathematics & statistics</option>
-      <option value="Domaine28">mechanical & aerospace engineering</option>
-      <option value="Domaine29">medicine & dentistry</option>
-      <option value="Domaine30">other health</option>
-	  <option value="Domaine31">performing arts & design</option>
-      <option value="Domaine32">philosophy & theology </option>
-      <option value="Domaine33">physics & astronomy</option>
-      <option value="Domaine34">politics & international studies</option>
-	  <option value="Domaine35">psychology</option>
-	  <option value="Domaine36">sociology</option>
-      <option value="Domaine37">veterinary science</option>
+      <option value="accounting">accounting</option>
+      <option value="finance">finance</option>
+      <option value="agriculture & forestry">agriculture & forestry </option>
+      <option value="archaeology">archaeology</option>
+      <option value="architecture">architecture</option>
+	  <option value="art">art</option>
+      <option value="biological sciences">biological sciences</option>
+      <option value="business & management">business & management </option>
+      <option value="chemical engineering">chemical engineering</option>
+      <option value="chemistry">chemistry</option>
+	  <option value="civil engineering">civil engineering</option>
+      <option value="communication & media">communication & media</option>
+      <option value="computer science">computer science </option>
+      <option value="earth & marine sciences">earth & marine sciences</option>
+      <option value="economics & econometrics">economics & econometrics</option>
+      <option value="education">education</option>
+      <option value="electrical & electronic engineerin">electrical & electronic engineering</option>
+      <option value="sport science">sport science </option>
+      <option value="environmental">environmental</option>
+      <option value="general engineering">general engineering</option>
+	  <option value="geography">geography</option>
+      <option value="geology">geology</option>
+      <option value="history">history </option>
+      <option value="languages">languages</option>
+      <option value="law">law</option>
+	  <option value="literature & linguistics">literature & linguistics</option>
+      <option value="mathematics & statistics">mathematics & statistics</option>
+      <option value="mechanical & aerospace engineering">mechanical & aerospace engineering</option>
+      <option value="medicine & dentistry">medicine & dentistry</option>
+      <option value="other health">other health</option>
+	  <option value="performing arts & design">performing arts & design</option>
+      <option value="philosophy & theology">philosophy & theology </option>
+      <option value="physics & astronomy">physics & astronomy</option>
+      <option value="politics & international studies">politics & international studies</option>
+	  <option value="psychology">psychology</option>
+	  <option value="sociology">sociology</option>
+      <option value="veterinary science">veterinary science</option>
     </select>
 	
-  
-  <a href="#" onclick="addNewDomain()">+ Add an other field</a>
-  
-		<button id="oval-button-inscr" type="submit" >Submit</button></br></br>
-		<a href="http://localhost/Projet/accueil.php">Ignore the quiz</a>
+
+		<button id="oval-button-inscr" type="submit" >Validate</button></br></br>
+		<a href="http://localhost/Projet/accueil.php">Ignore the questonnaire</a>
  </form>
   
 </div>
-
-<script>
-  function updateDomainInput() {
-    // Met à jour la valeur de la case d'entrée avec la valeur sélectionnée dans le menu déroulant
-    const domainSelect = document.querySelector('.domainSelect');
-    const domainInput = document.getElementById('domainInput');
-
-    domainInput.value = domainSelect.value;
-  }
-
-  function addNewDomain() {
-    // Crée une nouvelle liste déroulante et l'ajoute au formulaire
-    const domainLists = document.getElementById('domainLists');
-    const newDomainSelect = document.createElement('select');
-    newDomainSelect.className = 'domainSelect';
-    newDomainSelect.onchange = updateDomainInput;
-
-    const defaultOption = document.createElement('option');
-    defaultOption.value = '';
-    defaultOption.disabled = true;
-    defaultOption.selected = true;
-    defaultOption.textContent = 'Select a field';
-
-    newDomainSelect.appendChild(defaultOption);
-    
-    const domaines = ['accounting', 'finance', 'agriculture & forestry', 'archaeology', 'architecture','art','biological sciences','business & management','chemical engineering','chemistry','civil engineering',
-	'communication & media','computer science','earth & marine sciences','economics & econometrics','education','electrical & electronic engineering','sport science','environmental',
-	'general engineering','geography','geology','history','languages','law','literature & linguistics','mathematics & statistics','mechanical & aerospace engineering','medicine & dentistry',
-	'other health','performing arts & design','philosophy & theology','physics & astronomy','politics & international studies','psychology','sociology','veterinary science'];
-
-    domaines.forEach(domaine => {
-      const option = document.createElement('option');
-      option.value = domaine;
-      option.textContent = domaine;
-      newDomainSelect.appendChild(option);
-    });
-
-    domainLists.appendChild(newDomainSelect);
-  }
-</script>
 
 </body>
 
