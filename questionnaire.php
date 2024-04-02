@@ -19,17 +19,18 @@ content="text/html; charset=UTF-8" />
 		<label for "diplome">Last diploma obtained :</label>
 		<input type="text" id="diplome" name="diplome" required/></br></br>
 		
-		<label for "prenom">Série :</label>
-		<input type="text" id="serie" name="serie" required/></br></br>
-
-		<label for "email">Mention :</label>
-		<input type="text" id="mention" name="mention" required/></br></br>
+		Type of university :</br></br>
+		Private :
+		<INPUT type="radio" name="type_univ" value="private"><br />
+		Public :
+		<INPUT type="radio" name="type_univ" value="public"></br></br>
 		
 		<label for "budget">Planned academic budget :</label>
 		<input type="txt" id="budget" name="budget" required/></br></br>
 		
 		
-        <label for="etatSelect">State of preference :</label></br></br>
+		
+        <label for="etatSelect">State of preference :</label></br>
         <select id="etatSelect" name="etatSelect" >
             <option value="" disabled selected>Choose a field</option>
             <option value="Alabama">Alabama</option>

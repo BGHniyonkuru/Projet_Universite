@@ -7,7 +7,7 @@ $_SESSION['resultats_requete'] = array();
 // Vérifie si le formulaire a été soumis
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupère les valeurs du formulaire
-    $serie = $_POST["serie"];
+	$type_univ = $_POST["type_univ"];
     $budget = $_POST["budget"];
     $etat = $_POST["etatSelect"];
     $domaine_etude = $_POST["domainSelect"]; // Si vous avez un champ avec l'id domainInput
@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("La connexion a échoué : " . $conn->connect_error);
     }
 
-	$sql="SELECT distinct universite.name FROM universite,ville WHERE ville.id_ville=universite.id_ville AND universite.price<= $budget AND ville.name_etat LIKE '%$etat%'  AND universite.domaine_etude LIKE '%$domaine_etude%';";
+	$sql="SELECT distinct universite.name FROM universite,ville WHERE ville.id_ville=universite.id_ville AND universite.price<= $budget AND ville.name_etat LIKE '%$etat%'  AND universite.domaine_etude LIKE '%$domaine_etude%'  AND universite.description LIKE'%$type_univ%';";
 		
 	$result = $conn->query($sql);
 

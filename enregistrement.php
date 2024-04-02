@@ -36,13 +36,12 @@
 			$requete->execute();
 			$ligne = $requete->fetch();
 			
-			if($ligne || $mdp != $mdp1){
-				echo 'error';
-			} elseif($nom != "" && $prenom != "" && $email != "" && $mdp != "" ) {
+			if( $mdp != $mdp1){
+				echo json_encode(array("status" => "error"));
+			}if($nom != "" && $prenom != "" && $email != "" && $mdp != "" ) {
 				enregistrer($nom, $prenom, $email, $mdp);
-				echo 'success';
-			} else {
-				echo 'error';
+				header("Location: questionnaire.php");
+				echo json_encode(array("status" => "success"));
 			}
 			
 		}?>
