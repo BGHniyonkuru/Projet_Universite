@@ -11,10 +11,10 @@
 <body id="body_bleu">
 
     <div class="carre_inscr">
-        <p>Welcome to <i><b>Unisearch</b>!</i></p>
+        <p>Welcome to <i><b>UniDiscover</b>!</i></p>
         <p>Already registered?, <a href="http://localhost/Projet/connexion.php">click here</a></p>
 
-        <form id="inscription-form" method="post" autocomplete="on">
+        <form id="inscription-form" action="enregistrement.php" method="post" autocomplete="on">
             
             <label for="prenom">First Name :</label>
             <input type="text" id="prenom" name="prenom" required><br><br>
