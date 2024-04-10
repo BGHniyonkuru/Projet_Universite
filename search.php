@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,8 +44,8 @@
 
 			<ul>
 			  <li><a class= "bandeau" href="comparer.php">Compare</a></li>
-			  <li><a class= "bandeau" href="localiser.php">Map to locate</a></li>
-			  <li><a class= "bandeau" href="predire.php" >Prédict</a></li>
+			  <li><a class= "bandeau" href="localiser.php">Map</a></li>
+			  <li><a class= "bandeau" href="predire.php" >Predict</a></li>
 			  <li><a class= "bandeau" href="contact.php" >Contact</a></li>
 			  <li><a class= "bandeau" href="search.php" >Search</a></li>
 			</ul>

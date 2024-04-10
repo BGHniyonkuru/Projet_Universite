@@ -1,4 +1,7 @@
-<!DOCTYPE html >
+<?php
+session_start();
+?>
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type"
@@ -32,7 +35,7 @@ content="text/html; charset=UTF-8" />
 		
         <label for="etatSelect">State of preference :</label></br>
         <select id="etatSelect" name="etatSelect" >
-            <option value="" disabled selected>Choose a field</option>
+            <option value="" disabled selected>Choose a state</option>
             <option value="Alabama">Alabama</option>
             <option value="Alaska">Alaska</option>
 			<option value="Arizona">Arizona</option>

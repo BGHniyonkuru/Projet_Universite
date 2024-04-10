@@ -71,13 +71,7 @@ body{
 #description{
 	color: white;
 }
-.container {
-    display: flex;
-    align-items: center; /* Centre verticalement les éléments */
-	height:160px;
-	background-color:#3C3B6E;
-	
-    }
+
 ul {
 	position: relative;
     margin-top:30px;
