@@ -1,7 +1,5 @@
 import streamlit as st
 import pymysql
-import subprocess
-
 conn = pymysql.connect(
     host='localhost',
     user='root',
@@ -24,7 +22,6 @@ def fetch_university_names(starting_chars):
     cursor.close()
     return university_names
 
-
 def display_matching_universities(university_name, col):
     matching_names = fetch_university_names(university_name)
 
@@ -35,10 +32,9 @@ def display_matching_universities(university_name, col):
         col.write("No matching university names found for {university_name}.")
         return None
 
-
 st.set_page_config(page_title="Comparison", page_icon=":tada:", layout="wide")
 
-with open("menu_bar.html", "r", encoding="utf-8") as file:
+with open("bandeau.html", "r", encoding="utf-8") as file:
     bandeau_content = file.read()
 
 st.components.v1.html(bandeau_content)
@@ -47,8 +43,8 @@ st.components.v1.html(bandeau_content)
 with st.container():
     st.subheader("Wanna get a hint about the best university for you?")
     st.title("Compare your universities")
-    col1, col2, col3 = st.columns([1, 1, 1])
-    university_names = fetch_university_names("")
+    col1, col2, col3 = st.columns([1,1,1])
+    universsity_names = fetch_university_names("")
     university1_name = col1.selectbox("University 1", [""] + university_names, index=0)
     university2_name = col2.selectbox("University 2", [""] + university_names, index=0)
 
@@ -56,22 +52,23 @@ with st.container():
     compare_button_clicked = col3.button("Compare your universities")
 
     if compare_button_clicked:
-        subprocess.run(["streamlit", "run", "comparison_universities.py"])
+        st.components.v1.html("<a href='compare_universities.py'>Redirecting to comparison page...</a>")
 
     if university1_name:
         selected_university1 = display_matching_universities(university1_name, col1)
         if selected_university1:
             col1.text_input("university1", selected_university1)
 
+
     if university2_name:
         selected_university2 = display_matching_universities(university2_name, col2)
         if selected_university2:
             col2.text_input("University2", selected_university2)
 
-conn.close()
 
-if st.session_state.get('compare_button'):
-    st.components.v1.html("<a href='comparison-universities'>Redirecting to comparison page...</a>")
+conn.close()
 
 # ---Load Assets
 lottie_coding = ""
+
+

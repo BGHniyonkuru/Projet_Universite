@@ -1,3 +1,6 @@
+<?php 
+	session_start();
+?>
 <!DOCTYPE html >
 <html>
 	<head>
@@ -19,21 +22,21 @@
 	<body>
 		<div id= 'connecter'>
 		<?php
-		session_start();
+		
 
 			$email=$_POST['email'];
 			$mdp=$_POST['mdp'];
 			require("C:\wamp64\www\Projet\bd.php");
 			$bdd = getBD();
 			$rep = $bdd->query("SELECT * FROM clients WHERE email = '$email' AND mdp = '$mdp'");
-			if ($rep->rowCount() > 0) {
+			if ($rep) {
 				$row = $rep->fetch();
 				$_SESSION['client']= array(
 				'id' => $row['id_client'],
 				'nom' => $row['nom'],
 				'prenom' => $row['prenom'],
 				'email' => $row['email'],
-				'mdp' => $row['mdp'])
+				'mdp' => $row['mdp']);
 				?><meta http-equiv="refresh" content="0;url=http://localhost/Projet/accueil.php"/><?php
 			} 
 			else {

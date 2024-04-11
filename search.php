@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +8,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="http://localhost/Projet/style.css" type="text/css" />
     <title>Page de Recherche</title>
+    <style>
+        .bandeau {
+            text-decoration: none;
+            color: white;
+        }
+
+        #logo {
+            margin-left: 130px;
+            margin-top: 10px;
+            height: 100px;
+            width: 100px;
+        }
+
+        #logo2 {
+            margin-left: 100px;
+            margin-top: 5px;
+            height: 50px;
+            width: 50px;
+        }
+
+        #logo3 {
+            margin-left: 10px;
+            margin-top: 5px;
+            height: 50px;
+            width: 50px;
+        }
+    </style>
 </head>
 
 <body>
@@ -14,8 +44,8 @@
 
 			<ul>
 			  <li><a class= "bandeau" href="comparer.php">Compare</a></li>
-			  <li><a class= "bandeau" href="localiser.php">Map to locate</a></li>
-			  <li><a class= "bandeau" href="predire.php" >Prédict</a></li>
+			  <li><a class= "bandeau" href="localiser.php">Map</a></li>
+			  <li><a class= "bandeau" href="predire.php" >Predict</a></li>
 			  <li><a class= "bandeau" href="contact.php" >Contact</a></li>
 			  <li><a class= "bandeau" href="search.php" >Search</a></li>
 			</ul>
