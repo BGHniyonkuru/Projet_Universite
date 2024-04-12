@@ -36,11 +36,14 @@
 			$requete->execute();
 			$ligne = $requete->fetch();
 			
-			if($ligne || $mdp != $mdp1){
+			if ($ligne) {
 				echo 'error';
-			} elseif($nom != "" && $prenom != "" && $email != "" && $mdp != "" ) {
+			} elseif ($mdp != $mdp1) {
+				echo 'error';
+			} elseif ($nom != "" && $prenom != "" && $email != "" && $mdp != "") {
 				enregistrer($nom, $prenom, $email, $mdp);
-				echo 'success';
+				header("Location: questionnaire.php");
+				exit(); // Assurez-vous de terminer le script après la redirection
 			} else {
 				echo 'error';
 			}

@@ -1,3 +1,6 @@
+<?php
+session_start(); 
+?>
 <!DOCTYPE html >
 <html>
 <head>
@@ -9,11 +12,7 @@
 
 <div class="carre_connexion">
 
-<?php
 
-session_start(); 
-
-?>
 
 <form action="connecter.php" method="post" autocomplete="on">
     <label for="email">Email address :</label>

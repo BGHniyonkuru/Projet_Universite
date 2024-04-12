@@ -17,7 +17,7 @@ session_start();
         <p>Welcome to <i><b>UniDiscover</b>!</i></p>
         <p>Already registered?, <a href="http://localhost/Projet/connexion.php">click here</a></p>
 
-        <form  id="inscription-form" method="post" autocomplete="on">
+        <form  action= 'questionnaire.php' id="inscription-form" method="post" autocomplete="on">
             <p>
 				First Name :
 				<input type="text" id="prenom" name="prenom" value=""/>
@@ -39,7 +39,7 @@ session_start();
 				<input type="password" id="mdp1" name="mdp1" value=""/>
 			</p>
 			<p>
-				<input type="submit" id="oval-button-inscr" value="Send" onclick="submitForm()">
+				<input type="submit" id="oval-button-inscr" value="Sign Up" onclick="submitForm()">
 			</p>
         </form>
     </div>

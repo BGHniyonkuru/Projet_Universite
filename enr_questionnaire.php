@@ -41,10 +41,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$universites = array();
 
 	// Traiter les résultats
-	while ($row = $result->fetch_assoc()) {
-		// Ajouter le nom de l'université au tableau
-		$universites[] = array('id_universite' => $row['id_universite'], 'name' => $row['name']);
+	if ($result->num_rows > 0) {
+		while ($row = $result->fetch_assoc()) {
+			// Ajouter le nom de l'université au tableau
+			$universites[] = array('id_universite' => $row['id_universite'], 'name' => $row['name']);
+		}
+	} else {
+		// Aucun résultat trouvé, vous pouvez afficher un message à l'utilisateur ou effectuer une action appropriée
 	}
+
+	// Rediriger vers la page d'accueil
+	header("Location: page_d'accueil.php");
+	exit();
+
+
 
 	// Stocker les noms des universités dans la session
 	$_SESSION['resultats_requete'] = $universites;

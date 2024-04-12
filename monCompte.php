@@ -134,7 +134,7 @@ $client_info = $sql->fetch(PDO::FETCH_ASSOC);
         <ul>
         <li><a class= "bandeau" href="comparer.php">Compare</a></li>
         <li><a class= "bandeau" href="localiser.php">Map</a></li>
-        <li><a class= "bandeau" href="predire.php" >Prédict</a></li>
+        <li><a class= "bandeau" href="predire.php" >Predict</a></li>
         <li><a class= "bandeau" href="contact.php" >Contact</a></li>
         <li><a class= "bandeau" href="search.php" >Search</a></li>
         </ul>
@@ -152,12 +152,12 @@ $client_info = $sql->fetch(PDO::FETCH_ASSOC);
 
             <div class="info-container">
                 <div class="label">First Name</div>
-                <div class="value"><?php echo $client_info['prenom']; ?></div>
+                <div class="value"><?php echo $_SESSION['client']['nom']; ?></div>
             </div>
 
             <div class="info-container">
                 <div class="label">Last Name</div>
-                <div class="value"><?php echo $client_info['nom']; ?></div>
+                <div class="value"><?php echo $_SESSION['client']['prenom']; ?></div>
             </div>
 
             <div class="info-container">
