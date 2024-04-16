@@ -1,55 +1,52 @@
-<!DOCTYPE html >
-<html>
-	<head>
-		<title>Nouveau Client</title>
-	</head>
-	<body>
-		<?php	
-		
-		require("bd.php");
-		function enregistrer($nom, $prenom, $email, $mdp) {
-			
-			$bdd = getBD();
-			$requete = $bdd->prepare("INSERT INTO clients (nom, prenom, email, mdp) VALUES (:nom, :prenom, :email, :mdp)");
-			$requete->execute(
-				array(
-					"nom" => $nom,
-					"prenom" => $prenom,
-					"email" => $email,
-					"mdp" => $mdp,
-				)
-			);
-		}
+<?php
+session_start();
 
-		if ($_SERVER["REQUEST_METHOD"] == "POST") {
-			$nom = $_POST["nom"];
-			$prenom = $_POST["prenom"];
-			$email = $_POST["email"];
-			$mdp = $_POST["mdp"];
-			$mdp1 = $_POST["mdp1"];
+require("bd.php");
 
-			//vérifier s'il ya un mail identique existant
-			$bdd= getBD();
-			$sql = "SELECT * FROM clients WHERE email= :email";
-			$requete = $bdd->prepare($sql);
-			$requete->bindParam(":email", $email);
-			$requete->execute();
-			$ligne = $requete->fetch();
-			
-			if ($ligne) {
-				echo 'error';
-			} elseif ($mdp != $mdp1) {
-				echo 'error';
-			} elseif ($nom != "" && $prenom != "" && $email != "" && $mdp != "") {
-				enregistrer($nom, $prenom, $email, $mdp);
-				header("Location: questionnaire.php");
-				exit(); // Assurez-vous de terminer le script après la redirection
-			} else {
-				echo 'error';
-			}
-			
-		}?>
+function enregistrer($nom, $prenom, $email, $mdp)
+{
+    $bdd = getBD();
+    $requete = $bdd->prepare("INSERT INTO clients (nom, prenom, email, mdp) VALUES (:nom, :prenom, :email, :mdp)");
+    $requete->execute(
+        array(
+            "nom" => $nom,
+            "prenom" => $prenom,
+            "email" => $email,
+            "mdp" => $mdp,
+        )
+    );
+}
 
-	</body>
+$response = array(); // Initialisation du tableau de réponse
 
-</html>
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nom = $_POST["nom"];
+    $prenom = $_POST["prenom"];
+    $email = $_POST["email"];
+    $mdp = $_POST["mdp"];
+    $mdp1 = $_POST["mdp1"];
+
+    // Vérification s'il y a un mail identique existant
+    $bdd = getBD();
+    $sql = "SELECT * FROM clients WHERE email= :email";
+    $requete1 = $bdd->prepare($sql);
+    $requete1->bindParam(":email", $email);
+    $requete1->execute();
+    $ligne = $requete1->fetch();
+
+    if ($ligne) {
+        $response["status"] = "error";
+        $response["message"] = "Email already exists";
+    } elseif ($mdp != $mdp1) {
+        $response["status"] = "error";
+        $response["message"] = "Passwords do not match";
+    } elseif ($nom != "" && $prenom != "" && $email != "" && $mdp != "") {
+        enregistrer($nom, $prenom, $email, $mdp);
+        $response["status"] = "success";
+        $response["redirect"] = "questionnaire.php"; // Indiquez le chemin de redirection
+    }
+}
+
+// Renvoyer la réponse JSON
+echo json_encode($response);
+?>
