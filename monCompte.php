@@ -6,12 +6,14 @@ require("bd.php");
 $bdd = getBD();
 
 // Récupérez les informations du client depuis la base de données
-$requete = "SELECT nom, prenom FROM client WHERE id_client = :id_client";
-$sql = $bdd->prepare($requete);
-$sql->bindParam(':id_client', $_SESSION['id_client']);
-/*$sql->execute();*/
-$client_info = $sql->fetch(PDO::FETCH_ASSOC);
-
+$client_info = [];
+if(isset($_SESSION['client'])) {
+    $requete = "SELECT nom, prenom FROM clients WHERE id_client = :id_client";
+    $sql = $bdd->prepare($requete);
+    $sql->bindParam(':id_client', $_SESSION['client']['id']);
+    $sql->execute();
+    $client_info = $sql->fetch(PDO::FETCH_ASSOC);
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -48,13 +50,46 @@ $client_info = $sql->fetch(PDO::FETCH_ASSOC);
 			margin-top:5px;
 			height:50px;
 			width:50px;
-		}
+        }
 
         html, body {
+            background-color: #D7DCE3;
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
+        }
+
+        .container {
+            background-color: #3C3B6E;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-left: 0px;
+            margin-right: 0px;
+        }
+
+        .container ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container ul li {
+            display: inline;
+            margin-left: 20px;
+        }
+
+        .container ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container ul li a:hover {
+            color: #ccc;
         }
 
 
@@ -68,7 +103,7 @@ $client_info = $sql->fetch(PDO::FETCH_ASSOC);
             margin-top: 20px;
             min-height: 300px;
             
-            background-color: #D9D9D9;
+            background-color: #D7DCE3;
         }
 
         .info-container {
@@ -101,7 +136,7 @@ $client_info = $sql->fetch(PDO::FETCH_ASSOC);
             max-width: 100%; /* Assurez-vous que l'image ne dépasse pas la largeur de la fenêtre */
         }
 
-        #logout-button {
+        #logout button {
             border-radius: 50%; /* Pour une forme ovale */
             margin: 0 auto;
             background-color: #3C3B6E; /* Couleur de fond bleu royal */
@@ -114,10 +149,24 @@ $client_info = $sql->fetch(PDO::FETCH_ASSOC);
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 150px;
+            height: 50px;
+
         }
 
         h1, .label {
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Définissez l'ombre avec les valeurs appropriées */
+        }
+
+        .section {
+            
+            background-color: #EFF0F3;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            max-width: 800px;
+            text-align: center;
         }
         
 		
@@ -145,6 +194,9 @@ $client_info = $sql->fetch(PDO::FETCH_ASSOC);
     <img id="logo-between" src="http://localhost/Projet/images/monCompte.png" alt="logo-between">
     
     <!-- Contenu principal -->
+<div class ="section">
+<?php if(isset($_SESSION['client'])): ?>
+    <!-- Si une session est active, affichez les informations de l'utilisateur -->
     <div class="infos">
         <div id="monCompte">
 
@@ -152,12 +204,12 @@ $client_info = $sql->fetch(PDO::FETCH_ASSOC);
 
             <div class="info-container">
                 <div class="label">First Name</div>
-                <div class="value"><?php echo $_SESSION['client']['nom']; ?></div>
+                <div class="value"><?php echo $client_info['nom']; ?></div>
             </div>
 
             <div class="info-container">
                 <div class="label">Last Name</div>
-                <div class="value"><?php echo $_SESSION['client']['prenom']; ?></div>
+                <div class="value"><?php echo $client_info['prenom']; ?></div>
             </div>
 
             <div class="info-container">
@@ -172,13 +224,25 @@ $client_info = $sql->fetch(PDO::FETCH_ASSOC);
 
         </div>
         
-        
     </div>
+    <div id= "logout" >
+        <form id="logout-form" action="logout.php" method="post">
 
-    <!-- Bouton de déconnexion -->
-    <form id="logout-form" action="logout.php" method="post">
-        <button type="submit">Log out</button>
-    </form>
+            <button type="submit" class ='oval-button'>Log out</button>
+
+        </form>
+    </div>
+    
+    <?php else: ?>
+    <!-- Si aucune session n'est active, affichez un message "Please log in" -->
+    <div class="infos">
+        <p style="text-align: center;">Please log in to view your personal information ! !</p>
+    </div>
+    <?php endif; ?>
+</div>
+
+<!-- Bouton de déconnexion -->
+
 
     <!-- Footer -->
     <footer id="footer">
