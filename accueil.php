@@ -253,7 +253,7 @@ session_start();
         <li><a class= "bandeau" href="localisation.php">Map</a></li>
         <li><a class= "bandeau" href="predire.php" >Predict</a></li>
         <li><a class= "bandeau" href="contact.php" >Contact</a></li>
-        <li><a class= "bandeau" href="search.php" >Search</a></li>
+        <li><a class= "bandeau" href="search_university.html" >Search</a></li>
     </ul>
     <a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
     <a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
