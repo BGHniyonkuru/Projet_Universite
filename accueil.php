@@ -253,7 +253,7 @@ session_start();
         <li><a class= "bandeau" href="localisation.php">Map</a></li>
         <li><a class= "bandeau" href="predire.php" >Predict</a></li>
         <li><a class= "bandeau" href="contact.php" >Contact</a></li>
-        <li><a class= "bandeau" href="search_university.html" >Search</a></li>
+        <li><a class= "bandeau" href="search.php" >Search</a></li>
     </ul>
     <a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
     <a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
@@ -384,7 +384,7 @@ s
     
     <!-- Section pour afficher les villes avec le plus d'universités sous forme de tableau -->
     <div class="section">
-            <h1 class="section-title">Top 3 Cities with the Most Universities</h1>
+            <h1 class="section-title">Top 10 Cities with the most top-ranked universities</h1>
             <div class="table-container">
                 <table border="1" cellpadding="5" cellspacing="0" align="center" class = 'tableau'>
                     <tr>
@@ -398,7 +398,7 @@ s
                                 INNER JOIN universite ON ville.id_ville = universite.id_ville 
                                 GROUP BY ville.name 
                                 ORDER BY num_universities DESC 
-                                LIMIT 9";
+                                LIMIT 10";
                     $sql = $bdd->prepare($requete);
                     $sql->execute();
 
