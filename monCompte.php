@@ -13,6 +13,12 @@ if(isset($_SESSION['client'])) {
     $sql->bindParam(':id_client', $_SESSION['client']['id']);
     $sql->execute();
     $client_info = $sql->fetch(PDO::FETCH_ASSOC);
+
+    $requete1 = "SELECT * FROM recommandations WHERE id_client = :id_client";
+    $sql = $bdd->prepare($requete1);
+    $sql->bindParam(':id_client', $_SESSION['client']['id']);
+    $sql->execute();
+    $client_recom = $sql->fetch(PDO::FETCH_ASSOC);
 }
 ?>
 <!DOCTYPE html>
@@ -214,12 +220,12 @@ if(isset($_SESSION['client'])) {
 
             <div class="info-container">
                 <div class="label">Last Diploma</div>
-                <div class="value">Bac</div>
+                <div class="value"><?php echo $client_recom['diplome']; ?></div>
             </div>
 
             <div class="info-container">
                 <div class="label">Wanted Fields</div>
-                <div class="value">data science</div>
+                <div class="value"><?php echo $client_recom['domaine']; ?></div>
             </div>
 
         </div>
