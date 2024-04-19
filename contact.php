@@ -149,28 +149,28 @@ session_start();
 <div class="section">
     <p>Group Members :</p>
 
-    <div style="display: flex; align-items: center;">
-        <img src="membre1.jpg" alt="Membre 1" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
-        <p><i><b>Elise COMMANDRE</i></b></p>
+    <div style="display: flex; align-items: center; width: 300px; height: 100px;">
+        <img src="membre1.jpg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
+        <p style = "width: 250px;"><i><b>Elise COMMANDRE</i></b></p>
     </div>
-    <div style="display: flex; align-items: center;">
-        <img src="membre2.jpg" alt="Membre 2" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
-        <p><i><b>Berline Cléria NIYONKURU</i></b></p>
-    </div>
-
-    <div style="display: flex; align-items: center;">
-        <img src="images/photo.jpg" alt="Membre 3" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
-        <p><i><b>Alvin INGABIRE</i></b></p>
+    <div style="display: flex; align-items: center; width: 300px; height: 100px;">
+        <img src="membre2.jpg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
+        <p style = "width: 250px;"><i><b>Berline Cléria NIYONKURU</i></b></p>
     </div>
 
-    <div style="display: flex; align-items: center;">
-        <img src="membre1.jpg" alt="Membre 4" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
-        <p><i><b>Grace Sidiqa PALENFO</i></b></p>
+    <div style="display: flex; align-items: center; width: 300px; height: 100px;">
+        <img src="images/alvin.jpg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
+        <p style = "width: 250px;"><i><b>Alvin INGABIRE</i></b></p>
     </div>
 
-    <div style="display: flex; align-items: center;">
-        <img src="membre1.jpg" alt="Membre 5" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
-        <p><i><b>Michele MEDOM SADEFO</i></b></p>
+    <div style="display: flex; align-items: center; width: 300px; height: 100px;">
+        <img src="membre1.jpg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
+        <p style = "width: 250px;"><i><b>Grace Sidiqa PALENFO</i></b></p>
+    </div>
+
+    <div style="display: flex; align-items: center; width: 300px; height: 100px;">
+        <img src="membre1.jpg" style="width: 100px; height: 100px; border-radius: 25%;; margin-right: 10px;">
+        <p style = "width: 250px;"><i><b>Michele MEDOM SADEFO</i></b></p>
     </div>
 </div>
 
@@ -209,12 +209,7 @@ session_start();
     Copyright © 2023 UniDiscover
 </footer>
 
-<?php
-if (isset($_SESSION['message'])) {
-    echo "<script>alert('" . $_SESSION['message'] . "');</script>";
-    unset($_SESSION['message']);
-}
-?>
+
 
 </body>
 </html>
