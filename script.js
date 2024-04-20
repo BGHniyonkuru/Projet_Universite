@@ -154,7 +154,11 @@ function displayResults(universities) {
       logoCell.appendChild(logoImage);
 
       var nameCell = document.createElement('td');
-      nameCell.innerHTML = university.universite_name;
+      var universityLink = document.createElement('a');
+      universityLink.setAttribute('href', 'http://localhost/Projet/universite.php?id=' + encodeURIComponent(university.id_universite)); // Définir l'URL avec l'ID de l'université
+      universityLink.textContent = university.universite_name; // Texte du lien
+      nameCell.appendChild(universityLink); // Ajouter le lien à la cellule
+
 
       var domaineEtudeCell = document.createElement('td');
       var domaineEtudeContent = document.createElement('div');
