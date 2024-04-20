@@ -1,13 +1,22 @@
-#body_welcome{
-	background-image: url("images/welkii.jpg");
-	background-color: red;
-}
 
+.section {
+    padding:20px;
+	background-color: #cdcfd9;
+	padding: 20px;
+	margin: 20px auto;
+	border: solid 2px red;
+	border-radius: 10px;
+	box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+	max-width: 800px;
+	min-width: 300px;
+	text-align: center;
+	width: 80%;
+}
 .oval-button {
 	margin-top:500px;
     display: inline-block;
     padding: 5px 15px;
-    border-radius: 50px; /* Valeur qui rend le bouton oval */
+    border-radius: 50%; /* Valeur qui rend le bouton oval */
     background-color: #3C3B6E; /* Couleur de fond */
 	color:white;
     text-align: center;
@@ -67,28 +76,6 @@ body{
 #nom_univ{
 	color:blue;
 	font-size: 16px;
-}
-#description{
-	color: white;
-}
-
-ul {
-	position: relative;
-    margin-top:30px;
-    transform: translateY(-50%);	
-	text-align: center;
-	background-color:#3C3B6E;
-	width:800px;
-}
-li{
-	list-style-type: none;
-	display: inline;
-	margin-right: 50px;
-	
-}
-li:hover{
-	background-color:#666666;
-	padding: 5px 10px;	
 }
 
 
