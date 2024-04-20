@@ -6,7 +6,7 @@ session_start();
 	<head>
 	<link rel="stylesheet" href="style_universite.css" type="text/css" />
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-	<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 		<title>Universite</title>
 		<style>
 			.bandeau{
@@ -36,7 +36,35 @@ session_start();
 				width:50px;
 			}
 		</style>
+		<script>
+		function ajouterAuxFavoris(universite_id) {
+					// Récupérer l'identifiant du client depuis la session (vous devez implémenter cela côté serveur)
+					var client_id = "<?php echo isset($_SESSION['client']['id']) ? $_SESSION['client']['id'] : 'null'; ?>";
+					console.log('Valeur de $_SESSION[\'id\']:', "<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : 'null'; ?>");
+					console.log('client_id:', client_id);
+					// Vérifier si l'utilisateur est connecté
+					if (!client_id) {
+						// Gérer l'erreur ici, par exemple, afficher un message à l'utilisateur
+						console.log('Erreur : L\'utilisateur n\'est pas connecté.');
+						return;
+					}
+
+					// Envoyer une requête AJAX pour ajouter l'université aux favoris
+					var xhr = new XMLHttpRequest();
+					xhr.open('POST', 'ajouter_aux_favoris.php', true);
+					xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState === 4 && xhr.status === 200) {
+							// Afficher la réponse du serveur (peut être utilisé pour des messages de confirmation)
+							console.log(xhr.responseText);
+						}
+					};
+					xhr.send('universite_id=' + universite_id + '&client_id=' + client_id);
+				}
+		</script>
+		
 	</head>	
+	
 	<!-- bandeau en haut de l'écran -->
 		<div class="container">
 			<a href= "accueil.php"><img id="logo" src="/Projet_universite/images/logo.png" alt="logo" ></a>
@@ -52,14 +80,19 @@ session_start();
 			<a href= "monCompte.php"><img id="logo3" src="/Projet_universite/images/monCompte.png" alt="logo"></a>
 		</div>
 	<body class="page-universite">
-	
+		
 		<?php
-		var_dump($_SESSION['client']);
+		
+		if(isset($_SESSION['client'])) {
+        echo "Contenu de la variable \$_SESSION['client']: ";
+        var_dump($_SESSION['client']);
+		} else {
+			echo "La variable de session \$_SESSION['client'] n'est pas définie.";
+		}
 		$servername = "localhost";
 		$username = "root";
 		$password = "";
 		$dbname = "projet_universite";
-		$clientId = isset($_SESSION['client']['id']) ? $_SESSION['client']['id'] : null;
 
 		// Créer une connexion à la base de données
 		$conn = new mysqli($servername, $username, $password, $dbname);
@@ -86,10 +119,9 @@ session_start();
 				$description=$row['description'];
 				$description2=$row['description2'];
 				$description3=$row['description3'];
-				echo "<div id='container1' style='background-color: #666666; text-align: center;'><p id='nom_univ' >" . $universite_name . "</p><a href='http://localhost/Projet_universite/search.html'><img id='loupe' src='/Projet_universite/images/loupe.png' alt='loupe' ></a></div>";
-				echo "<button type='button' id='favori' style='border: none; background: none; cursor: pointer; float: right; margin-top: 10px;'>
-						<img src='/Projet_universite/images/etoile.jpg' alt='etoile' style='height: 30px; width: 30px;'></button>";  
-
+				echo "<div id='container1' style='background-color: #666666; text-align: center;'><p id='nom_univ' >" . $universite_name . "</p><a href='http://localhost/Projet_universite/search_university.html'><img id='loupe' src='images/loupe.png' alt='loupe' ></a></div>";
+				echo "<button type='button' id='favori' onclick='ajouterAuxFavoris($universite_id)' style='border: none; background: none; cursor: pointer; float: right; margin-top: 10px;'>
+						<img id='etoile' src='images/etoile.jpg' alt='etoile' style='height: 30px; width: 30px;'></button>";	
 				if (!empty($row['image'])) {
 					// Affichez l'image en utilisant la balise <img>
 					echo "<img src='" . $row['image'] . "' alt='Image de l\'université' style='width: 10%; float: left; margin-left: 5%;margin-top:40px;'>";
@@ -130,13 +162,14 @@ session_start();
 				$annees[] = $row_classement['annee'];
 				$classements[] = $row_classement['rank_order'];
 			}
+			
 
 			// Ajouter le script Plotly pour générer le graphique
 			echo "<div style='height: 30px;'></div>
 			<canvas id='myChart'  width='50' height='15' ></canvas>
-			<div style='height: 50px;'></div>";
-			
-			echo"<script>
+			<div style='height: 50px;'></div>
+			<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+			<script>
 				var ctx = document.getElementById('myChart').getContext('2d');
 				var myChart = new Chart(ctx, {
 					type: 'line',
@@ -183,7 +216,9 @@ session_start();
 						}
 					}
 				});
-					
+				
+				
+				
 			</script>";
 
 		} else {
@@ -193,29 +228,6 @@ session_start();
 		// Fermer la connexion à la base de données
 		$conn->close();
 		?>
-		<script>
-			// Ajout de l'écouteur d'événement pour l'icône étoile
-		document.getElementById('etoile').addEventListener('click', function() {
-			ajouterAuxFavoris();
-		});
-
-		function ajouterAuxFavoris() {
-			var idUniversite = $universite_id; // Mettez ici l'ID de l'université, normalement passé dynamiquement
-			var client_id= $_SESSION["client"]["id_client"];
-			var name = $universite_name;
-			$.ajax({
-				url: 'ajouter_aux_favoris.php',  // Assurez-vous que ce fichier existe et est accessible
-				type: 'POST',
-				data: { idUniversite: idUniversite },
-				success: function(response) {
-					alert('Ajouté aux favoris! Réponse du serveur : ' + response);
-				},
-				error: function() {
-					alert('Erreur lors de l\'ajout aux favoris.');
-				}
-			});
-		}
-		</script>
 	</body>
 	<footer>
 		Copyright © 2023 UniDiscover
