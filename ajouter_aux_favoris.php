@@ -48,5 +48,9 @@ if (isset($_POST['universite_id']) && isset($_POST['client_id'])) {
     // Réponse HTTP 400 pour indiquer une mauvaise requête
     http_response_code(400);
     echo "Paramètres manquants.";
+<<<<<<< HEAD
+=======
+}*/
+>>>>>>> d83c445b64acc25ebc676c38a9b6779666cd1b78
 }
 ?>

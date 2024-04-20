@@ -15,6 +15,7 @@ function enregistrer($nom, $prenom, $email, $mdp)
             "mdp" => $mdp,
         )
     );
+    return $bdd->lastInsertId();
 }
 
 $response = array(); // Initialisation du tableau de réponse
@@ -25,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $mdp = $_POST["mdp"];
     $mdp1 = $_POST["mdp1"];
-
+    
     // Vérification s'il y a un mail identique existant
     $bdd = getBD();
     $sql = "SELECT * FROM clients WHERE email= :email";
@@ -34,14 +35,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $requete1->execute();
     $ligne = $requete1->fetch();
 
+
+
     if ($ligne) {
+
         $response["status"] = "error";
         $response["message"] = "Email already exists";
     } elseif ($mdp != $mdp1) {
         $response["status"] = "error";
         $response["message"] = "Passwords do not match";
     } elseif ($nom != "" && $prenom != "" && $email != "" && $mdp != "") {
-        enregistrer($nom, $prenom, $email, $mdp);
+        $id_client = enregistrer($nom, $prenom, $email, $mdp); // Enregistre et récupère l'ID client
+        $_SESSION['client'] = array(
+            'id' => $id_client,
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'email' => $email
+        );
         $response["status"] = "success";
         $response["redirect"] = "questionnaire.php"; // Indiquez le chemin de redirection
     }
