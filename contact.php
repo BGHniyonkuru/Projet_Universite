@@ -18,6 +18,7 @@ session_start();
         }
 
         .container {
+            height:90px;
             background-color: #3C3B6E;
             color: white;
             padding-top: 10px;
@@ -26,20 +27,26 @@ session_start();
             justify-content: center;
             align-items: center;
             width: 100%;
-            margin-left: 0px;
-            margin-right: 0px;
+            margin: 0;
             max-width: none;
         }
 
-        .container ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
+        .container > ul {
+            position: relative;
+            margin-top:30px;
+            transform: translateY(-50%);	
+            text-align: center;
+            background-color:#3C3B6E;
+            width:800px;
         }
-
-        .container ul li {
+        .container > ul > li{
+            list-style-type: none;
             display: inline;
-            margin-left: 20px;
+            margin-right: 50px;
+            
+        }
+        li:hover{
+            font-size: 20px;
         }
 
         .container ul li a {
@@ -47,9 +54,6 @@ session_start();
             text-decoration: none;
         }
 
-        .container ul li a:hover {
-            color: #ccc;
-        }
 
         #logo {
             height: 100px;
@@ -174,9 +178,9 @@ session_start();
     </div>
 </div>
 
-
+<?php if (isset($_SESSION['client'])): ?>
 <div class="section">
-    <p><?php echo isset($_SESSION['client']) ? $_SESSION['client']['prenom'] . ', ' : ''; ?>Want to leave us a little message, a suggestion or anything else? Please go on.</p>
+    <p><?php echo  $_SESSION['client']['prenom'] . ','; ?>Want to leave us a little message, a suggestion or anything else? Please go on.</p>
 
     <div id="formulaire">
         <form action="commentaires.php" method="post" autocomplete="off">
@@ -204,6 +208,7 @@ session_start();
     </div>
     <p style="font-size: 10px;">*:required fields</p>
 </div>
+<?php endif; ?>
 
 <footer id="footer">
     Copyright © 2023 UniDiscover

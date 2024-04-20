@@ -67,35 +67,40 @@ if(isset($_SESSION['client'])) {
         }
 
         .container {
+            height:90px;
             background-color: #3C3B6E;
             color: white;
-            padding: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             width: 100%;
-            margin-left: 0px;
-            margin-right: 0px;
-        }
-
-        .container ul {
-            list-style-type: none;
             margin: 0;
-            padding: 0;
+            max-width: none;
         }
 
-        .container ul li {
+        .container > ul {
+            position: relative;
+            margin-top:30px;
+            transform: translateY(-50%);	
+            text-align: center;
+            background-color:#3C3B6E;
+            width:800px;
+        }
+        .container > ul > li{
+            list-style-type: none;
             display: inline;
-            margin-left: 20px;
+            margin-right: 50px;
+            
+        }
+        li:hover{
+            font-size: 20px;
         }
 
         .container ul li a {
             color: white;
             text-decoration: none;
-        }
-
-        .container ul li a:hover {
-            color: #ccc;
         }
 
 

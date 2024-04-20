@@ -131,7 +131,7 @@ session_start();
         }
         .section{
             padding:20px;
-            background-color: #cdcfd9;
+            background-color: #F9F3EA;            
             padding: 20px;
             margin: 20px auto;
             border-radius: 10px;
@@ -140,6 +140,7 @@ session_start();
             text-align: center;
             min-width: 60%;
         }
+
 		.section-title {
             
 			padding:7px;
@@ -153,14 +154,7 @@ session_start();
             margin-right: auto;
             
         }
-        .container{
-            
-            margin: 0;
-            display: flex;
-            align-items: center; /* Centre verticalement les éléments */
-            height:110px;
-            background-color:#3C3B6E;
-        }
+
         body {
             background-image: url("images/kellym.jpg");
 			background-position: center;
@@ -173,15 +167,7 @@ session_start();
             
             min-height: 100vh;
         }
-        .section {
-            background-color: #EFF0F3;
-            padding: 20px;
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-            max-width: 800px;
-
-        }
+        
         .centered-list {
             margin-top: 50px;
             background-color: white;
@@ -218,6 +204,20 @@ session_start();
             margin-bottom: 2px ;
             
         }
+        .container {
+            height:90px;
+            background-color: #3C3B6E;
+            color: white;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            max-width: none;
+        }
+
         .container > ul {
             position: relative;
             margin-top:30px;
@@ -233,8 +233,12 @@ session_start();
             
         }
         li:hover{
-            background-color:#666666;
-            padding: 5px 10px;	
+            font-size: 20px;
+        }
+
+        .container ul li a {
+            color: white;
+            text-decoration: none;
         }
 		
     </style>
