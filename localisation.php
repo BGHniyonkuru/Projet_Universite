@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['client'])) {
+  // Redirect, throw an error, or set a default value
+  $_SESSION['client'] = "default_value"; 
+}
+?>
 <!DOCTYPE html>
 <html lang='en'>
 
@@ -50,7 +57,7 @@
 
     <div class="search-container">
         <input type="text" id="university-search" placeholder="Search for a university...">
-        <button onclick="searchUniversity()">Search</button>
+        <button type="submit">Search</button>
     </div>
 
     <div id='map'></div>
@@ -60,11 +67,29 @@
     <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiYm5peW9uazEiLCJhIjoiY2xyeGdkYW5nMTlhZDJpbXhnMnl4ejA4cCJ9.fZNXwplt_ESYRJiJjWFKFw';
     const map = new mapboxgl.Map({
-      container: 'map', // Specify the container ID
+      container: 'map', 
       style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
       center: [-98.5795, 39.8283], // Specify the starting position [lng, lat]
       zoom: 3.5 // Specify the starting zoom
     });
+
+    function addMarker(lng, lat, name, url) {
+        const el = document.createElement('div');
+        el.style.backgroundImage = 'url(https://placekitten.com/g/30/30)';  // Use a different icon
+        el.style.width = '30px';
+        el.style.height = '30px';
+        el.style.backgroundSize = '100%';
+
+        el.addEventListener('click', function() {
+            window.location.href = url;
+        });
+
+        new mapboxgl.Marker(el)
+            .setLngLat([lng, lat])
+            .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML('<h3>' + name + '</h3><p>' + lat + ', ' + lng + '</p>'))
+            .addTo(map);
+    }
 
     const popup = new mapboxgl.Popup({
       closeButton: false,
