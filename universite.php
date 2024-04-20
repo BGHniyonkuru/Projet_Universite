@@ -76,8 +76,8 @@ session_start();
 				<li><a class= "bandeau" href="contact.php" >Contact</a></li>
 				<li><a class= "bandeau" href="search_university.html" >Search</a></li>
 			</ul>
-			<a href= "favoris.php"><img id="logo2" src="/Projet_universite/images/favori.png" alt="logo"></a>
-			<a href= "monCompte.php"><img id="logo3" src="/Projet_universite/images/monCompte.png" alt="logo"></a>
+			<a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
+			<a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
 		</div>
 	<body class="page-universite">
 		
