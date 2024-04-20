@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html >
 <html>
 	<head>
@@ -139,15 +142,6 @@
         <h1> Comparisons by rank order</h1>
         <canvas id="chart" width="100" height="50"></canvas>
 
-        <h1> 25 best scores teaching among universities </h1>  
-        <canvas id="25_best_Universities_scores_teaching" width="50" height="50"></canvas>
-
-        <h1> 25 best scores international look among universities </h1>         
-        <canvas id="25_best_Universities_scores_international_outlook" width="50" height="50"></canvas>
-
-        <h1> 25 best scores among universities </h1>         
-        <canvas id="25_best_Universities_scores" width="50" height="50"></canvas>
-
         <h1>Composition</h1>
         <canvas id="scoresPieChart" width="50" height="50"></canvas>
 
@@ -265,45 +259,7 @@
                 });
                                                 
                     
-            }
-
-            async function chartPie(data, title, canvasId){
-                const totalUniversities = data.reduce((total, entry) => total + entry.criteria, 0);
-                const percentages = data.map(entry => ({
-                    label: `${entry.name} (${((entry.criteria / totalUniversities) * 100).toFixed(2)}%)`,
-                    value: entry.criteria
-                }));
-
-                const ctxPie = document.getElementById(canvasId).getContext('2d');
-                const viridisColors = chroma.scale('viridis').colors(data.length);
-
-                new Chart(ctxPie, {
-                    type: 'pie',
-                    data: {
-                        labels: percentages.map(entry => entry.label),
-                        datasets: [{
-                            label: title,
-                            data: percentages.map(entry => entry.value),
-                            backgroundColor: viridisColors,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        tooltips: {
-                            callbacks: {
-                                label: function (tooltipItem, data) {
-                                    const dataset = data.datasets[tooltipItem.datasetIndex];
-                                    const percent = Math.round((dataset.data[tooltipItem.index] / dataset._meta[Object.keys(dataset._meta)[0]].total) * 100);
-                                    return `${data.labels[tooltipItem.index]}: ${percent}%`;
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            
+            }            
             
             function generatePieChart(intervals, title, canvasId) {
                 const ctx = document.getElementById(canvasId).getContext('2d');

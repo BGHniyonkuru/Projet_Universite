@@ -10,43 +10,42 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
-        body {
-            padding-top: 0.1px;
-            background-color: #f8f9fa;  /* Light grey background */
-        }
+            .search-form {
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+            }
 
-        .container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);  /* Subtle shadow for depth */
-            padding: 20px;
-            margin-top: 20px;
-        }
-        h1, h2 {
-            color: #007bff;  /* Bootstrap primary color */
-        }
+            .search-input {
+                flex: 1;
+                margin-right: 10px;
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
 
-        .form-inline button {
-            height: 60px;
-            width: 60px;
-            padding: 5px 15px;
-            background-color: white;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-        .form-inline input,.form-inline button {
-            margin: 5px 10px;
-           
-        }
-        .form-inline {
-            flex-wrap: wrap;  /* Allows form elements to wrap onto the next line on small screens */
-        }
-        .btn-primary search-button {
-            width: auto;
-            margin-top: 10px 20px;  /* Ensuring some space above the button */
-        }
+            .search-button {
+                height: 60px;
+                width: 60px;
+                padding: 5px 15px;
+                background-color: white;
+                color: #fff;
+                border: none;
+                border-radius: 50%;
+                cursor: pointer;
+            }
+
+            @media screen and (max-width: 768px) {
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-input {
+                width: 100%; 
+                margin-right: 0;
+            }
+            }
+        </style>
     </style>
 </head>
 <body>
@@ -58,9 +57,9 @@
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <form id="universityForm" class="form-inline justify-content-center">
-                    <input type="text" name="university1" placeholder="First University" required>
-                    <input type="text" name="university2" placeholder="Second University" required>
-                    <input type="number" name="year" placeholder="Year" value="<?php echo date('Y'); ?>" required>
+                    <input class="form-control mr-2 search-input" type="text" name="university1" placeholder="First University" required>
+                    <input class="form-control mr-2 search-input" type="text" name="university2" placeholder="Second University" required>
+                    <input class="form-control mr-2 search-input" type="number" name="year" placeholder="Year" value="<?php echo date('Y'); ?>" required>
                     <button type="submit" class="btn btn-primary search-button">Compare</button>
                 </form>
             </div>
