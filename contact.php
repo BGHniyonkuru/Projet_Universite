@@ -179,9 +179,9 @@ session_start();
     </div>
 </div>
 
-<?php /*if (isset($_SESSION['client'])): */?>
+<?php if (isset($_SESSION['client'])): ?>
 <div class="section">
-    <p><?php /*echo  $_SESSION['client']['prenom'] . ','; */?>Want to leave us a little message, a suggestion or anything else? Please go on.</p>
+    <p><?php echo  $_SESSION['client']['prenom'] . ','; ?>Want to leave us a little message, a suggestion or anything else? Please go on.</p>
 
     <div id="formulaire">
         <form action="commentaires.php" method="post" autocomplete="off">
@@ -209,7 +209,7 @@ session_start();
     </div>
     <p style="font-size: 10px;">*:required fields</p>
 </div>
-<?php /*endif; */?>
+<?php endif; ?>
 
 <footer id="footer">
     Copyright © 2023 UniDiscover

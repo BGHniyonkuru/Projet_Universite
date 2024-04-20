@@ -304,7 +304,8 @@ session_start();
             $sql->execute();
 
             $universities = array();
-
+            
+            
             while ($row = $sql->fetch()) {
                 $universities[$row['rank_order']] = $row;
             }
@@ -337,31 +338,32 @@ session_start();
             $sql->execute();
 
             $recommandations = $sql->fetch();
+            if ($recommandations){
 
-            $questions = $recommandations;
-            $diplome = $questions['diplome'];
-            $type_univ = $questions['type_univ'];
-            $budget = $questions['budget'];
-            $etat = $questions['etat'];
-            $domaine_etude = $questions['domaine'];
+                $questions = $recommandations;
+                $diplome = $questions['diplome'];
+                $type_univ = $questions['type_univ'];
+                $budget = $questions['budget'];
+                $etat = $questions['etat'];
+                $domaine_etude = $questions['domaine'];
 
-            // Exécution de la requête SQL pour récupérer les universités correspondantes aux critères
-            $bdd = getBD();
-            $requete = "SELECT universite.name 
-                        FROM universite, ville 
-                        WHERE ville.id_ville = universite.id_ville 
-                        AND universite.price <= $budget 
-                        AND ville.name_etat LIKE '%$etat%'  
-                        AND universite.domaine_etude LIKE '%$domaine_etude%'  
-                        AND universite.description LIKE '%$type_univ%'";
-            $sql = $bdd->prepare($requete);
-            $sql->execute();
+                // Exécution de la requête SQL pour récupérer les universités correspondantes aux critères
+                $bdd = getBD();
+                $requete = "SELECT universite.name 
+                            FROM universite, ville 
+                            WHERE ville.id_ville = universite.id_ville 
+                            AND universite.price <= $budget 
+                            AND ville.name_etat LIKE '%$etat%'  
+                            AND universite.domaine_etude LIKE '%$domaine_etude%'  
+                            AND universite.description LIKE '%$type_univ%'";
+                $sql = $bdd->prepare($requete);
+                $sql->execute();
 
-            $universites_recommandees = array();
-
-            while ($row = $sql->fetch()) {
-                $universites_recommandees[] = $row['name'];
-            }
+                $universites_recommandees = array();
+                
+                    while ($row = $sql->fetch()) {
+                        $universites_recommandees[] = $row['name'];
+                    }
         
     ?>
 
@@ -382,6 +384,7 @@ session_start();
                 echo 'No university found based exactly on your criteria.';
                 }
             }
+        }
             ?>
             </ul>
         </div>
