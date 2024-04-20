@@ -66,11 +66,12 @@ session_start();
         }
 
         .section {
+            
             background-color: #F4F5F7;
             padding: 20px;
             margin: 20px auto;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,1);
             max-width: 800px;
         }
 
@@ -136,8 +137,8 @@ session_start();
     <a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo"></a>
 
     <ul>
-        <li><a class= "bandeau" href="comparer.php">Compare</a></li>
-        <li><a class= "bandeau" href="localiser.php">Map</a></li>
+        <li><a class= "bandeau" href="compare.php">Compare</a></li>
+        <li><a class= "bandeau" href="localisation.php">Map</a></li>
         <li><a class= "bandeau" href="predire.php">Predict</a></li>
         <li><a class= "bandeau" href="contact.php">Contact</a></li>
         <li><a class= "bandeau" href="search.php">Search</a></li>
@@ -173,14 +174,14 @@ session_start();
     </div>
 
     <div style="display: flex; align-items: center; width: 300px; height: 100px;">
-        <img src="membre1.jpg" style="width: 100px; height: 100px; border-radius: 25%;; margin-right: 10px;">
+        <img src="membre1.jpg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
         <p style = "width: 250px;"><i><b>Michele MEDOM SADEFO</i></b></p>
     </div>
 </div>
 
-<?php if (isset($_SESSION['client'])): ?>
+<?php /*if (isset($_SESSION['client'])): */?>
 <div class="section">
-    <p><?php echo  $_SESSION['client']['prenom'] . ','; ?>Want to leave us a little message, a suggestion or anything else? Please go on.</p>
+    <p><?php /*echo  $_SESSION['client']['prenom'] . ','; */?>Want to leave us a little message, a suggestion or anything else? Please go on.</p>
 
     <div id="formulaire">
         <form action="commentaires.php" method="post" autocomplete="off">
@@ -208,7 +209,7 @@ session_start();
     </div>
     <p style="font-size: 10px;">*:required fields</p>
 </div>
-<?php endif; ?>
+<?php /*endif; */?>
 
 <footer id="footer">
     Copyright © 2023 UniDiscover

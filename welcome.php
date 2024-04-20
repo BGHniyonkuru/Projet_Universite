@@ -9,7 +9,7 @@
 	body {
 		
 		position: relative;
-		background-image: url('welkii.jpg'); /* Remplacez 'image.jpg' par le chemin de votre image de fond */
+		background-image: url('images/welkii.jpg'); /* Remplacez 'image.jpg' par le chemin de votre image de fond */
 		background-size: cover;
 		background-position: center;
 		display: flex;
@@ -71,8 +71,8 @@
 	<body id='body_welcome' >
 	
 		<div class="buttons">
-			<a href="http://localhost/Projet/inscription.php" class="oval-button">Sign up</a>
-			<a href="http://localhost/Projet/connexion.php" class="oval-button">Sign in</a>
+			<a href="inscription.php" class="oval-button">Sign up</a>
+			<a href="connexion.php" class="oval-button">Sign in</a>
 		</div>
 
 		</body>

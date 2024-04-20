@@ -175,8 +175,8 @@ if(isset($_SESSION['client'])) {
             padding: 20px;
             margin: 20px auto;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-            max-width: 800px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.8);
+            max-width: 600px;
             text-align: center;
         }
         
@@ -192,8 +192,8 @@ if(isset($_SESSION['client'])) {
         <a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo"></a>
 
         <ul>
-        <li><a class= "bandeau" href="comparer.php">Compare</a></li>
-        <li><a class= "bandeau" href="localiser.php">Map</a></li>
+        <li><a class= "bandeau" href="compare.php">Compare</a></li>
+        <li><a class= "bandeau" href="localisation.php">Map</a></li>
         <li><a class= "bandeau" href="predire.php" >Predict</a></li>
         <li><a class= "bandeau" href="contact.php" >Contact</a></li>
         <li><a class= "bandeau" href="search.php" >Search</a></li>
