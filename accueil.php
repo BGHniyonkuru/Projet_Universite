@@ -5,11 +5,14 @@ session_start();
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
     <title>Accueil</title>
     <style>
+        *{
+            border: none;
+        }
         .bandeau {
             text-decoration: none;
             color: white;
@@ -104,7 +107,7 @@ session_start();
             color: white;
             text-decoration: none;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            transition: 0.3s;
         }
         .quick-links a:hover {
             background-color: #555;
@@ -135,8 +138,8 @@ session_start();
             padding: 20px;
             margin: 20px auto;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-            max-width: 800px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.8);
+            max-width: 500px;
             text-align: center;
             min-width: 60%;
         }
@@ -250,7 +253,7 @@ session_start();
     <a href= "accueil.php"><img id="logo" src="images/logo.png" alt="logo" ></a>
 
     <ul>
-        <li><a class= "bandeau" href="comparer.php">Compare</a></li>
+        <li><a class= "bandeau" href="compare.php">Compare</a></li>
         <li><a class= "bandeau" href="localisation.php">Map</a></li>
         <li><a class= "bandeau" href="predire.php" >Predict</a></li>
         <li><a class= "bandeau" href="contact.php" >Contact</a></li>

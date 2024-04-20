@@ -8,80 +8,6 @@ session_start();
     $queryVilles = "SELECT distinct(ville.name),ville.id_ville,name_etat FROM avoir, ville, crime where avoir.id_ville=ville.id_ville and ville.id_ville=crime.id_ville";
     $resultVilles = $pdo->query($queryVilles);
     $villes = $resultVilles->fetchAll(PDO::FETCH_ASSOC);
-
-    // Traitement du formulaire
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $ville1_id = $_POST["ville1"];
-        $ville2_id = $_POST["ville2"];
-
-        // Requête pour le premier graphique - moyenne des coûts de vie des deux villes
-        $queryCoutDeVie = "SELECT ville.name,(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water + DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + TaxiStart + TaxiUnKm + Gasoline + BasicFor85m2 + OneMminPrepaid + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneJeansLevis + SummerDress + PairOfNike + PairOfMenShoes + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside + AverageMonthlyNetSalary + InterestRate) AS Total_cost
-                            FROM cout_de_vie
-                            INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout
-                            INNER JOIN ville ON ville.id_ville = avoir.id_ville
-                            WHERE avoir.id_ville IN (?, ?)
-                            GROUP BY ville.name";
-        $stmt = $pdo->prepare($queryCoutDeVie);
-        $stmt->execute([$ville1_id, $ville2_id]);
-        $coutDeVieData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Requête pour le deuxième graphique - comparaison des attributs de la table "crime"
-        $queryCrimeAttributes = "SELECT crime.victims_killed,crime.victims_injured,crime.suspects_killed,crime.suspects_injured,crime.suspects_arrested FROM `crime`,ville where crime.id_ville=ville.id_ville and crime.id_ville IN (?, ?)";
-        $stmt = $pdo->prepare($queryCrimeAttributes);
-        $stmt->execute([$ville1_id, $ville2_id]);
-        $crimeAttributes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Vérifiez si des données ont été renvoyées
-        if (!empty($crimeAttributes)) {
-            // Préparation des données pour le deuxième graphique
-            if (count($crimeAttributes) >= 2) {
-                // Préparation des données pour le deuxième graphique
-                $labels2 = array_keys($crimeAttributes[0]); // Utilisez les noms de colonnes comme étiquettes
-                $values2Ville1 = array_values($crimeAttributes[0]); // Données pour la ville 1
-                $values2Ville2 = array_values($crimeAttributes[1]); // Données pour la ville 2
-            } else {
-                // Si le tableau contient moins de deux éléments, initialisez les variables avec des valeurs vides
-                $labels2 = [array_keys($crimeAttributes[0])];
-                $values2Ville1 = [array_values($crimeAttributes[0])];
-                $values2Ville2 = [array_values($crimeAttributes[0])];
-            }
-        } else {
-            // Aucune donnée n'a été renvoyée, initialisez les variables avec des valeurs vides
-            $labels2 = [];
-            $values2Ville1 = [];
-            $values2Ville2 = [];
-        }
-        $categories = [
-            'Services' => '(TaxiStart + TaxiUnKm + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneMminPrepaid) AS Sum_Services',
-            'Food' => '(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water) AS Sum_Alimentation',
-            'Accomodation' => '(BasicFor85m2 + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside) AS Sum_Logement',
-            'Others' => '(DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + Gasoline + PairOfNike + PairOfMenShoes + SummerDress + AverageMonthlyNetSalary + InterestRate) AS Sum_Autres'
-        ];
-    
-        $data = [];
-        foreach ($categories as $key => $value) {
-            $query = "SELECT ville.name, $value FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
-            $stmt = $pdo->prepare($query);
-            $stmt->execute([$ville1_id, $ville2_id]);
-            $data[$key] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-
-    }else{
-
-        $categories = [
-            'Services' => '(TaxiStart + TaxiUnKm + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneMminPrepaid) AS Sum_Services',
-            'Food' => '(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water) AS Sum_Alimentation',
-            'Accomodation' => '(BasicFor85m2 + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside) AS Sum_Logement',
-            'Others' => '(DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + Gasoline + PairOfNike + PairOfMenShoes + SummerDress + AverageMonthlyNetSalary + InterestRate) AS Sum_Autres'
-        ];
-         //Si aucun formulaire n'a été soumis, récupérer la catégorie par défaut depuis les paramètres GET
-        $category = $_GET['category'] ?? 'Services';
-        // Exécuter la requête avec la catégorie par défaut
-        $query = "SELECT ville.name, {$categories[$category]} FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute([$ville1_id, $ville2_id]);
-        $categoryData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -271,33 +197,84 @@ session_start();
         </div>
     </div> 
     
-    <div class="search-container">
-        <label for="category" class="form-label">Choose a category:</label>
-        <select class="form-select" name="category" id="category">
-            <?php foreach ($categories as $key => $value) : ?>
-                <option value="<?= $key ?>" <?= ($key === 'Services') ? 'selected' : '' ?>><?= $key ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-
     <div class="body_graph_compare">
         <!-- Graphs for categories -->
 
+        <?php
+    // Traitement du formulaire
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $ville1_id = $_POST["ville1"] ?? '';
+        $ville2_id = $_POST["ville2"] ?? '';
+        // Requête pour le premier graphique - moyenne des coûts de vie des deux villes
+        $queryCoutDeVie = "SELECT ville.name,(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water + DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + TaxiStart + TaxiUnKm + Gasoline + BasicFor85m2 + OneMminPrepaid + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneJeansLevis + SummerDress + PairOfNike + PairOfMenShoes + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside + AverageMonthlyNetSalary + InterestRate) AS Total_cost
+                            FROM cout_de_vie
+                            INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout
+                            INNER JOIN ville ON ville.id_ville = avoir.id_ville
+                            WHERE avoir.id_ville IN (?, ?)
+                            GROUP BY ville.name";
+        $stmt = $pdo->prepare($queryCoutDeVie);
+        $stmt->execute([$ville1_id, $ville2_id]);
+        $coutDeVieData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-<!-- le probleme est de là -->
+        // Requête pour le deuxième graphique - comparaison des attributs de la table "crime"
+        $queryCrimeAttributes = "SELECT crime.victims_killed,crime.victims_injured,crime.suspects_killed,crime.suspects_injured,crime.suspects_arrested FROM `crime`,ville where crime.id_ville=ville.id_ville and crime.id_ville IN (?, ?)";
+        $stmt = $pdo->prepare($queryCrimeAttributes);
+        $stmt->execute([$ville1_id, $ville2_id]);
+        $crimeAttributes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        <?php        
-         // Récupérer la catégorie sélectionnée à partir des paramètres GET ou utiliser une valeur par défaut
+        // Vérifiez si des données ont été renvoyées
+        if (!empty($crimeAttributes)) {
+            // Préparation des données pour le deuxième graphique
+            if (count($crimeAttributes) >= 2) {
+                // Préparation des données pour le deuxième graphique
+                $labels2 = array_keys($crimeAttributes[0]); // Utilisez les noms de colonnes comme étiquettes
+                $values2Ville1 = array_values($crimeAttributes[0]); // Données pour la ville 1
+                $values2Ville2 = array_values($crimeAttributes[1]); // Données pour la ville 2
+            } else {
+                // Si le tableau contient moins de deux éléments, initialisez les variables avec des valeurs vides
+                $labels2 = [array_keys($crimeAttributes[0])];
+                $values2Ville1 = [array_values($crimeAttributes[0])];
+                $values2Ville2 = [array_values($crimeAttributes[0])];
+            }
+        } else {
+            // Aucune donnée n'a été renvoyée, initialisez les variables avec des valeurs vides
+            $labels2 = [];
+            $values2Ville1 = [];
+            $values2Ville2 = [];
+        }
+        $categories = [
+            'Services' => '(TaxiStart + TaxiUnKm + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneMminPrepaid) AS Sum_Services',
+            'Food' => '(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water) AS Sum_Alimentation',
+            'Accomodation' => '(BasicFor85m2 + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside) AS Sum_Logement',
+            'Others' => '(DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + Gasoline + PairOfNike + PairOfMenShoes + SummerDress + AverageMonthlyNetSalary + InterestRate) AS Sum_Autres'
+        ];
+    
+        $data = [];
+        foreach ($categories as $key => $value) {
+            $query = "SELECT ville.name, $value FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
+            $stmt = $pdo->prepare($query);
+            $stmt->execute([$ville1_id, $ville2_id]);
+            $data[$key] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+    }else{
+
+        $categories = [
+            'Services' => '(TaxiStart + TaxiUnKm + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneMminPrepaid) AS Sum_Services',
+            'Food' => '(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water) AS Sum_Alimentation',
+            'Accomodation' => '(BasicFor85m2 + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside) AS Sum_Logement',
+            'Others' => '(DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + Gasoline + PairOfNike + PairOfMenShoes + SummerDress + AverageMonthlyNetSalary + InterestRate) AS Sum_Autres'
+        ];
+         //Si aucun formulaire n'a été soumis, récupérer la catégorie par défaut depuis les paramètres GET
         $category = $_GET['category'] ?? 'Services';
+        // Exécuter la requête avec la catégorie par défaut
+        $query = "SELECT ville.name, {$categories[$category]} FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
+        $stmt = $pdo->prepare($query);
+        $stmt->execute([$ville1_id, $ville2_id]);
+        $categoryData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+?>
 
-        // Afficher le graphique correspondant à la catégorie sélectionnée
-        if (isset($data[$category])) {
-            echo '<div class="graph-container">';
-            echo '<h2>' . htmlspecialchars($category) . '</h2>';
-            echo '<canvas id="graph' . htmlspecialchars($category) . '"></canvas>';
-            echo '</div>';
-        } ?>
-        
         <?php foreach ($data as $category => $values): ?>
             <div class="graph-container">
                 <h2><?= $category ?></h2>
@@ -305,14 +282,13 @@ session_start();
             </div>
         <?php endforeach; ?>
 
-<!-- jusqu'ici je pense ou la derniere partie du script -->
+
 
     </div>
 
     <footer>
         © 2023 UniDiscover
     </footer>
-
 
 
 <script>
@@ -330,8 +306,8 @@ session_start();
                     datasets: [{
                         label: 'Total Cost',
                         data: totalCostsData.map(x => x.Total_cost),
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)'
+                        backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)'],
+                        borderColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)']
                     }]
                 }
             });
@@ -345,8 +321,8 @@ session_start();
                     datasets: [{
                         label: 'Crime Stats',
                         data: Object.values(crimeStatsData[0]),
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)'
+                        backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)'],
+                        borderColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)']
                     }]
                 }
             });
