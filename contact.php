@@ -181,7 +181,7 @@ session_start();
 
 <?php if (isset($_SESSION['client'])): ?>
 <div class="section">
-    <p><?php echo  $_SESSION['client']['prenom'] . ','; ?>Want to leave us a little message, a suggestion or anything else? Please go on.</p>
+    <p><?php echo  $_SESSION['client']['prenom'] . ','; ?>Want to leave us a little message, a suggestion or anything else? Please go on.⌨️</p>
 
     <div id="formulaire">
         <form action="commentaires.php" method="post" autocomplete="off">

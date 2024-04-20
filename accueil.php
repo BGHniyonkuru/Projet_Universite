@@ -267,7 +267,7 @@ session_start();
         <!-- site description section -->
             <div class="site-description">
                 <?php if(isset($_SESSION['client'])){?>
-                    <p>Welcome to <i><b>UniDiscover </b></i><?php echo $_SESSION['client']['prenom'];?></p>
+                    <p>Welcome to <i><b>UniDiscover </b></i><?php echo $_SESSION['client']['prenom'];?>🤗</p>
                     
                 <?php }else{?>
                     <p>Welcome to <i><b>UniDiscover</b>!</i></p>
@@ -381,7 +381,7 @@ session_start();
                         echo '<br>';
                     }
                 }else{ 
-                echo 'No university found based exactly on your criteria.';
+                echo 'No university found based exactly on your criteria.😓';
                 }
             }
         }
