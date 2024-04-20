@@ -1,9 +1,5 @@
 <?php
 session_start();
-if (!isset($_SESSION['client'])) {
-  // Redirect, throw an error, or set a default value
-  $_SESSION['client'] = "default_value"; 
-}
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -41,23 +37,29 @@ if (!isset($_SESSION['client'])) {
     .search-container {
       position: absolute;
       top: 12.5%;
-      left: 10px;
+      left: 0px;
       z-index: 1;
-      backgroundColor: black;
+      background: black;
       color: white;
+    }
+
+    button{
+      border-radius: 50%;
     }
 
   </style>
 </head>
 <body>
     <?php
-    $menu_bar_content = file_get_contents("menu_bar.html");
-    echo $menu_bar_content;
+      $menu_bar_content = file_get_contents("menu_bar.html");
+      echo $menu_bar_content;
     ?>
 
     <div class="search-container">
-        <input type="text" id="university-search" placeholder="Search for a university...">
-        <button type="submit">Search</button>
+      <form action="localisation.php" method="get">
+          <input type="text" id="university-search" name="searchTerm" placeholder="Search for a university...">
+          <button type="button" onclick="searchUniversity()">Search</button>
+      </form>
     </div>
 
     <div id='map'></div>
@@ -66,46 +68,42 @@ if (!isset($_SESSION['client'])) {
 
     <script>
     mapboxgl.accessToken = 'pk.eyJ1IjoiYm5peW9uazEiLCJhIjoiY2xyeGdkYW5nMTlhZDJpbXhnMnl4ejA4cCJ9.fZNXwplt_ESYRJiJjWFKFw';
-    const map = new mapboxgl.Map({
+    var map = new mapboxgl.Map({
       container: 'map', 
       style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
       center: [-98.5795, 39.8283], // Specify the starting position [lng, lat]
       zoom: 3.5 // Specify the starting zoom
     });
 
-    function addMarker(lng, lat, name, url) {
-        const el = document.createElement('div');
-        el.style.backgroundImage = 'url(https://placekitten.com/g/30/30)';  // Use a different icon
-        el.style.width = '30px';
-        el.style.height = '30px';
-        el.style.backgroundSize = '100%';
-
-        el.addEventListener('click', function() {
-            window.location.href = url;
-        });
-
-        new mapboxgl.Marker(el)
-            .setLngLat([lng, lat])
-            .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-            .setHTML('<h3>' + name + '</h3><p>' + lat + ', ' + lng + '</p>'))
-            .addTo(map);
+    <?php
+    if (!empty($result) && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo "new mapboxgl.Marker().setLngLat([" . $row['longitude'] . ", " . $row['latitude'] . "])
+                  .setPopup(new mapboxgl.Popup().setHTML('<h4>" . $row['name'] . "</h4><p><a href=\"" . $row['webpage'] . "\">Visit page</a></p>'))
+                  .addTo(map);";
+        }
     }
+    ?>
 
     const popup = new mapboxgl.Popup({
       closeButton: false,
       closeOnClick: false
     });
 
+    let universitiesGeoJSON = {"type": "FeatureCollection", "features": []};
+
     fetch("geojson.php")
         .then(response => response.json())
         .then(data => {
-            const universitiesGeoJSON = {
+            universitiesGeoJSON = {
                 "type": "FeatureCollection",
                 "features": data.map(university =>{
                     return {
                         "type": "Feature",
                         "properties": {
                             "university_name": university.university_name,
+                            "university_id": university.university_id,
+
                         },
                         "geometry": {
                             "type": "Point",
@@ -138,8 +136,11 @@ if (!isset($_SESSION['client'])) {
 
                 map.on('click', 'universities-layer', (event) => {
                     if (event.features && event.features.length > 0) {
-                        const universityName = event.features[0].properties.university_name;
-                        window.location.href = `http://localhost/projet_universite/universite.php/${universityName.replace(/\s+/g, '-').toLowerCase()}`;
+                        const universityId = event.features[0].properties.university_id;
+                        window.location.href = `universite.php?id=${universityId}`;
+                    }
+                    else{
+                      console.log('No university found at this location.');
                     }
                 });
 
@@ -168,20 +169,15 @@ if (!isset($_SESSION['client'])) {
     function searchUniversity() {
       const searchTerm = document.getElementById('university-search').value.toLowerCase();
       if (searchTerm.trim() !== '') {
-        const filteredFeatures = universitiesGeoJSON.features.filter(feature => {
-          const universityName = feature.properties.university_name.toLowerCase();
-          return universityName.includes(searchTerm);
-        });
-
-        const filteredGeoJSON = {
-          "type": "FeatureCollection",
-          "features": filteredFeatures
-        };
-
-        // Mettre à jour la source de données de la carte avec les résultats filtrés
-        map.getSource('universities').setData(filteredGeoJSON);
+          const filteredFeatures = universitiesGeoJSON.features.filter(feature =>
+              feature.properties.university_name.toLowerCase().includes(searchTerm));
+          const filteredGeoJSON = {
+              "type": "FeatureCollection",
+              "features": filteredFeatures
+          };
+          map.getSource('universities').setData(filteredGeoJSON);
       }
-    }
+  }
   </script>
 
 </body>
