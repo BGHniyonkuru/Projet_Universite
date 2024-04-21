@@ -15,7 +15,7 @@
     ?>
     <div class="carre_inscr">
         <p>Welcome to <i><b>UniDiscover</b>!</i></p>
-        <p>Already registered?, <a href="http://localhost/Projet/connexion.php">click here</a></p>
+        <p>Already registered?, <a href="connexion.php">click here</a></p>
 
         <form  action= "enregistrement.php" id="inscription-form" method="post" autocomplete="on">
             <p>
