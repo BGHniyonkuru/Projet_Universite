@@ -5,7 +5,37 @@ session_start();
     $pdo = new PDO('mysql:host=localhost;dbname=projet_universite', 'root', '');
 
     // Requête pour récupérer les noms des villes
-    $queryVilles = "SELECT distinct(ville.name),ville.id_ville,name_etat FROM avoir, ville, crime where avoir.id_ville=ville.id_ville and ville.id_ville=crime.id_ville";
+    $queryVilles = "SELECT distinct(ville.name),ville.id_ville,name_etat FROM avoir, ville, crime, cout_de_vie 
+                        where avoir.id_ville=ville.id_ville and ville.id_ville=crime.id_ville and cout_de_vie.id_cout= avoir.id_cout AND Meal > 0
+                        AND McMeal > 0
+                        AND Capuccino > 0
+                        AND CokePepsi > 0
+                        AND Milk > 0
+                        AND FreshBread > 0
+                        AND Rice > 0
+                        AND Eggs > 0
+                        AND LocalCheese > 0
+                        AND BeefRound > 0
+                        AND Apples > 0
+                        AND Banana > 0
+                        AND Oranges > 0
+                        AND Tomato > 0
+                        AND Potato > 0
+                        AND Onion > 0
+                        AND Water > 0
+                        AND DomesticBeer > 0
+                        AND OneWayTicket > 0
+                        AND MonthlyPass > 0
+                        AND TaxiUnKm > 0
+                        AND Gasoline > 0
+                        AND BasicFor85m2 > 0
+                        AND Internet > 0
+                        AND Cinema > 0
+                        AND OneJeansLevis > 0
+                        AND SummerDress > 0
+                        AND PairOfNike > 0
+                        AND AppartmentOneBedroomCity > 0
+                        AND AverageMonthlyNetSalary > 0";
     $resultVilles = $pdo->query($queryVilles);
     $villes = $resultVilles->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -257,7 +287,7 @@ session_start();
             $ville1_id = $_POST["ville1"] ?? '';
             $ville2_id = $_POST["ville2"] ?? '';
             // Requête pour le premier graphique - moyenne des coûts de vie des deux villes
-            $queryCoutDeVie = "SELECT ville.name,(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water + DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + TaxiStart + TaxiUnKm + Gasoline + BasicFor85m2 + OneMminPrepaid + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneJeansLevis + SummerDress + PairOfNike + PairOfMenShoes + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside + AverageMonthlyNetSalary + InterestRate) AS Total_cost
+            $queryCoutDeVie = "SELECT ville.name,(2 * Meal + 3 * McMeal + 30 * Capuccino + 10 * CokePepsi + 4 * Milk + 30 * FreshBread + 5 * Rice + 15 * Eggs + 10 * LocalCheese + 5 * ChickenFillets + 3 * BeefRound + 5 * Apples + 5 * Banana + 5 * Oranges + 5 * Tomato + 5 * Potato + 5 * Onion + 2 * Lettuce + 10 * Water + 2 * DomesticBeer + 3 * Cigarettes20Pack + MonthlyPass + 30 * Gasoline  + Internet + FitnessClubMonthly + 4 * Cinema + OneJeansLevis + SummerDress + PairOfNike + PairOfMenShoes + AppartmentOneBedroomCity + BasicFor85m2) AS Total_cost
                                 FROM cout_de_vie
                                 INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout
                                 INNER JOIN ville ON ville.id_ville = avoir.id_ville
@@ -320,10 +350,11 @@ session_start();
             }
 
             $categories = [
-                'Services' => '(TaxiStart + TaxiUnKm + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneMminPrepaid) AS Sum_Services',
-                'Food' => '(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water) AS Sum_Alimentation',
-                'Accomodation' => '(BasicFor85m2 + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside) AS Sum_Logement',
-                'Others' => '(DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + Gasoline + PairOfNike + PairOfMenShoes + SummerDress + AverageMonthlyNetSalary + InterestRate) AS Sum_Autres'
+                'Services' => '(TaxiStart + TaxiUnKm + Internet + FitnessClubMonthly + OneWayTicket + MonthlyPass + Cinema + OneMminPrepaid) AS Sum_Services',
+                'Food' => '(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water + DomesticBeer) AS Sum_Alimentation',
+                'Accomodation' => '( AppartmentOneBedroomCity ) AS Sum_Logement',
+                'Shopping' => '(PairOfNike + PairOfMenShoes + SummerDress) AS Sum_shopping',
+                'Salary' => '(AverageMonthlyNetSalary) AS AverageMonthlySalary',
             ];
         
             $data = [];
@@ -355,7 +386,7 @@ session_start();
     
     <?php 
         // Query to get detailed cost of living data for the two cities
-        $queryCoutDeVie1 = "SELECT ville.name, ville.id_ville, Meal, McMeal, Capuccino, CokePepsi, Milk, FreshBread, Rice, Eggs, LocalCheese, BeefRound, Apples, Banana, Oranges, Tomato, Potato, Onion, Water, DomesticBeer, OneWayTicket, MonthlyPass, TaxiUnKm, Gasoline, BasicFor85m2, Internet, Cinema, OneJeansLevis, SummerDress, PairOfNike, AppartmentOneBedroomCity, AverageMonthlyNetSalary FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
+        $queryCoutDeVie1 = "SELECT ville.name, ville.id_ville, Meal, McMeal, Capuccino, CokePepsi, Milk, FreshBread, Rice, Eggs, LocalCheese, BeefRound, Apples, Banana, Oranges, Tomato, Potato, Onion, Water, DomesticBeer, OneWayTicket, MonthlyPass, TaxiUnKm, Gasoline, BasicFor85m2, Internet, Cinema, OneJeansLevis, SummerDress, Cigarettes20Pack, PairOfNike, AppartmentOneBedroomCity, AverageMonthlyNetSalary FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
         $stmt = $pdo->prepare($queryCoutDeVie1);
         $stmt->execute([$ville1_id, $ville2_id]);
         $coutDeVieData1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -377,29 +408,33 @@ session_start();
         <br><h2> Here you can view in details some living costs in different categories</h2>
         <!-- Display the comparison table -->
         <div class="body_graph_compare" style ="background-color:#fdfdfd;">
-            <div class="comparison-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Cost Item</th>
-                            <th><?= htmlspecialchars($coutDeVieData1[0]['name']); ?></th>
-                            <th><?= htmlspecialchars($coutDeVieData1[1]['name']); ?></th>
-                            <th>Difference (%)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($costDifferences as $key => $diff) : ?>
-                            <tr>
-                                <td><?= htmlspecialchars($key); ?></td>
-                                <td>$<?= htmlspecialchars($coutDeVieData1[0][$key]); ?></td>
-                                <td>$<?= htmlspecialchars($coutDeVieData1[1][$key]); ?></td>
-                                <td style="color: <?= ($diff > 0) ? 'green' : 'red'; ?>;"><?= $diff; ?>%</td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+            <?php
+                // PHP logic and database queries omitted for brevity
+
+                // Display the comparison table
+                echo '<div class="comparison-table">';
+                echo '<table>';
+                echo '<thead>';
+                echo '<tr><th>Cost Item</th><th>' . htmlspecialchars($coutDeVieData1[0]['name']) . '</th><th>' . htmlspecialchars($coutDeVieData1[1]['name']) . '</th><th>Difference (%)</th></tr>';
+                echo '</thead>';
+                echo '<tbody>';
+                foreach ($costDifferences as $key => $diff) {
+                    echo '<tr>';
+                    echo '<td>' . htmlspecialchars($key) . '</td>';
+                    echo '<td>' . htmlspecialchars($coutDeVieData1[0][$key]) . '</td>';
+                    echo '<td>' . htmlspecialchars($coutDeVieData1[1][$key]) . '</td>';
+                    echo '<td style="color:' . ($diff > 0 ? 'green' : 'red') . ';">' . htmlspecialchars($diff) . '%</td>';
+                    echo '</tr>';
+                }
+                echo '</tbody>';
+                echo '</table>';
+                echo '</div>';
+
+            ?>
         </div>
+
+        <p class ="section" style="text-align:center; margin-top:20px;">In the table above, a positive percentage indicates a lower cost in the first city compared to the second, while a negative percentage indicates a higher cost.</p>
+    
     <?php endif; ?>
     <footer style = "margin-top: 50px;">
         © 2023 UniDiscover
