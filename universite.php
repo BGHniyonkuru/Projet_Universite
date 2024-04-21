@@ -72,8 +72,7 @@ session_start();
 		function ajouterAuxFavoris(universite_id) {
 					// Récupérer l'identifiant du client depuis la session (vous devez implémenter cela côté serveur)
 					var client_id = "<?php echo isset($_SESSION['client']['id']) ? $_SESSION['client']['id'] : 'null'; ?>";
-					console.log('Valeur de $_SESSION[\'id\']:', "<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : 'null'; ?>");
-					console.log('client_id:', client_id);
+					
 					// Vérifier si l'utilisateur est connecté
 					if (!client_id) {
 						// Gérer l'erreur ici, par exemple, afficher un message à l'utilisateur

@@ -10,6 +10,7 @@ if (!isset($_SESSION['client'])) {
 }
 
 $client_id = $_SESSION['client']['id'];
+#$sql="SELECT universite.name FROM universite,favoris WHERE favoris.id_universite=universite.id_universite and favoris.id_universite=1"
 $sql = "SELECT name FROM favoris WHERE id_client = ?";
 $stmt = $conn->prepare($sql);
 $stmt->execute([$client_id]);
