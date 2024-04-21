@@ -70,9 +70,9 @@ session_start();
 			<a href= "accueil.php"><img id="logo" src="/Projet_universite/images/logo.png" alt="logo" ></a>
 
 			<ul>
-				<li><a class= "bandeau" href="comparaison.php">Compare</a></li>
+				<li><a class= "bandeau" href="compare.php">Compare</a></li>
 				<li><a class= "bandeau" href="localisation.php">Map</a></li>
-				<li><a class= "bandeau" href="predire.php" >Prédict</a></li>
+				<li><a class= "bandeau" href="predire.php" >Predict</a></li>
 				<li><a class= "bandeau" href="contact.php" >Contact</a></li>
 				<li><a class= "bandeau" href="search_university.html" >Search</a></li>
 			</ul>
@@ -83,12 +83,7 @@ session_start();
 		
 		<?php
 		
-		if(isset($_SESSION['client'])) {
-        echo "Contenu de la variable \$_SESSION['client']: ";
-        var_dump($_SESSION['client']);
-		} else {
-			echo "La variable de session \$_SESSION['client'] n'est pas définie.";
-		}
+		
 		$servername = "localhost";
 		$username = "root";
 		$password = "";

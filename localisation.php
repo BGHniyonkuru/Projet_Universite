@@ -102,7 +102,7 @@ session_start();
                         "type": "Feature",
                         "properties": {
                             "university_name": university.university_name,
-                            "university_id": university.university_id,
+                            "university_id": university.id_universite,
 
                         },
                         "geometry": {
@@ -137,7 +137,7 @@ session_start();
                 map.on('click', 'universities-layer', (event) => {
                     if (event.features && event.features.length > 0) {
                         const universityId = event.features[0].properties.university_id;
-                        window.location.href = `universite.php?id=${universityId}`;
+                        window.location.href = 'universite.php?id='+universityId;
                     }
                     else{
                       console.log('No university found at this location.');

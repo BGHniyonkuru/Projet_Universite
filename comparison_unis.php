@@ -63,9 +63,9 @@ session_start();
             <div class="row">
                 <div class="col-md-6 mx-auto">
                     <form class="search-form" action="comparison_2unis.php" method="get">
-                        <input class="form-control mr-2 search-input" name="university_name_1" placeholder="Enter the first university" value="<?php echo isset($_GET['university_name_1']) ? htmlspecialchars($_GET['university_name_1']) : ""; ?>">
-                        <input class="form-control mr-2 search-input" name="university_name_2" placeholder="Enter the second university" value="<?php echo isset($_GET['university_name_2']) ? htmlspecialchars($_GET['university_name_2']) : ""; ?>">
-                        <input class="form-control mr-2 search-input" name="year" placeholder="Enter a year" value="<?php echo isset($_GET['year']) ? htmlspecialchars($_GET['year']) : ""; ?>">
+                        <input class="form-control mr-2 search-input" type="text" name="university1" placeholder="First university" value="<?php echo isset($_GET['university_name_1']) ? htmlspecialchars($_GET['university_name_1']) : ""; ?>">
+                        <input class="form-control mr-2 search-input" type="text" name="university2" placeholder="Second university" value="<?php echo isset($_GET['university_name_2']) ? htmlspecialchars($_GET['university_name_2']) : ""; ?>">
+                        <input class="form-control mr-2 search-input" type="number" name="year" placeholder="Year" value="<?php echo isset($_GET['year']) ? htmlspecialchars($_GET['year']) : ""; ?>">
                         <button class="btn btn-primary search-button" type="submit"><img src="assets/Images/search.png" alt="Search"></button>
                     </form>
                 </div>
@@ -82,24 +82,12 @@ session_start();
             $select_columns = "";
 
             switch($criteria){
-                case "rank_order":
-                    $select_columns = "u.name, v.name_etat, c.rank_order";
-                    break;
-                case"scores_teaching":
-                    $select_columns= "u.name, v.name_etat, c.scores_teaching";
-                    break;
-                case "scores_international_outlook":
-                    $select_columns = "u.name, v.name_etat, c.scores_international_outlook";
+                case "scatter":
+                    $select_columns = "u.name as university_name, v.name_etat as state, c.scores_teaching, c.scores_international_outlook, rank_order";
                     break;
                 case"scores":
-                    $select_columns= "u.name, v.name_etat, (c.scores_teaching + c.scores_research + c.scores_citations + c.scores_industry_income + c.scores_international_outlook + c.stats_number_students + c.stats_pc_intl_students + c.stats_student_staff_ratio) / 8 AS average_score";
+                    $select_columns= "u.name as university_name, v.name_etat as state, (c.scores_teaching + c.scores_research + c.scores_citations + c.scores_industry_income + c.scores_international_outlook + c.stats_number_students + c.stats_pc_intl_students + c.stats_student_staff_ratio) / 8 AS average_score";
                     break;
-            }
-
-            if ($criteria === "scores_teaching" || $criteria === "scores_international_outlook") {
-                $limit = "LIMIT 25";
-            } else {
-                $limit = ""; // Sinon, ne pas utiliser de limite
             }
 
             $query = "SELECT $select_columns
@@ -107,34 +95,21 @@ session_start();
             JOIN etre e ON e.id_universite = u.id_universite
             JOIN ville v ON u.id_ville = v.id_ville
             JOIN classement c ON e.id_classement = c.id_classement
-            WHERE c.annee = :annee
-            ORDER BY " .($criteria === "scores" ? "average_score" : "c.$criteria")." DESC ";
+            WHERE c.annee = :annee";
 
             $result = $bdd->prepare($query);
             $result->bindValue(':annee', $annee, PDO::PARAM_STR);
             $result->execute();
 
             $data = array();
-            if ($result !== false) {
-                if ($result->rowCount() > 0){
-                    while($row = $result->fetch(PDO::FETCH_ASSOC)){
-                        if ($criteria === "scores") {
-                            // Utilisez la moyenne calculée comme valeur pour "criteria"
-                            $data[] = array("name" => $row["name"], "state" => $row["name_etat"], "criteria" => $row["average_score"]);
-                        } else {
-                            $data[] = array("name" => $row["name"], "state" => $row["name_etat"], "criteria"=> $row[$criteria]);
-                    }
-                }
-            }
-        }
-
             
-;           return $data;
+            while($row = $result->fetch(PDO::FETCH_ASSOC)){
+                $data[] = $row; // Simplified data addition
+            }
+            return $data;
         }
-
-        $university_names = fetch_data(2023, "rank_order");
-        $scores_teaching = fetch_data(2023, "scores_teaching");
-        $scores_international_outlook = fetch_data(2023, "scores_international_outlook");
+        
+        $scatterData = fetch_data(2023, "scatter");
         $scores = fetch_data(2023, "scores");
         
     ?>
@@ -190,67 +165,45 @@ session_start();
 
               
             async function chartIt(){
-                const data = <?php echo json_encode($university_names); ?>;
-                const states = [...new Set(data.map(entry => entry.state))];
-
-                const ctx = document.getElementById('chart');
-
-                const datasets = states.map((state, index) => {
-                    const universitiesInState = data.filter(entry => entry.state === state);
-                    const xValues = universitiesInState.map(entry => entry.scores_teaching); // Criteria for x-axis
-                    const yValues = universitiesInState.map(entry => entry.scores_international); // Criteria for y-axis
-                    const bubbleSizes = new Array(xValues.length).fill(10); // Default bubble size
-
-                    return {
-                        label: state,
-                        data: xValues.map((x, i) => ({ x, y: yValues[i], r: bubbleSizes[i] })),
-                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                        borderColor: 'rgba(255, 206, 86, 1)',
-                        borderWidth: 1
-                    };
-                });
-
-                const universitiesInState = data.filter(entry => entry.state === states[0]);
-                const bubbleSizes = new Array(universitiesInState.length).fill(10);
+                const data = <?php echo json_encode($scatterData); ?>;
+                const ctx = document.getElementById('chart').getContext('2d');
                         
                 new Chart(ctx, {
                     type: 'scatter',
                     data: {
-                        labels: universitiesInState.map(entry => entry.name),
-                        datasets: [{   
-                            label: "Universities' rank order along years",
-                            data: universitiesInState.map((entry, i) => ({ x: entry.scores_teaching, y: entry.scores_international_outlook, r: bubbleSizes[i] })),
-                            fill : false,
+                        datasets: [{
+                            label: 'Teaching vs International Outlook',
+                            data: data.map(item => ({
+                                x: item.scores_teaching,
+                                y: item.scores_international_outlook,
+                                r: 10,
+                                label: item.university_name + ' (' + item.state + ') : The rank :' + item.rank_order
+                            })),
                             backgroundColor: 'rgba(255, 206, 86, 0.2)', 
                             borderColor: 'rgba(255, 206, 86, 1)',
                             borderWidth: 1
                         }]
                     },
                     options: {
-                        scales:{
+                        scales: {
                             x: {
-                                type: 'linear',
-                                position: 'bottom',
                                 title: {
                                     display: true,
-                                    text: 'Scores Teaching'
+                                    text: 'Teaching Scores'
                                 }
                             },
-                            y:{   
-                                type: 'linear',
-                                position: 'left',
+                            y: {
                                 title: {
                                     display: true,
-                                    text: 'Scores International Outlook'
-                                } 
-                               }
-                            },
+                                    text: 'International Outlook Scores'
+                                }
+                            }
+                        },
                         plugins: {
                             tooltip: {
                                 callbacks: {
-                                    label: (context) => {
-                                        const universityName = data[context.dataIndex].name;
-                                        return universityName;
+                                    label: function(context) {
+                                        return context.raw.label;
                                     }
                                 }
                             }
@@ -311,18 +264,9 @@ session_start();
                 
                 chartIt();
 
-                var teaching_data = <?php echo json_encode($scores_teaching); ?>;
-                chartPie(teaching_data, "25_best_scores_teaching", "25_best_Universities_scores_teaching");
-                
-                var international_outlook_data = <?php echo json_encode($scores_international_outlook); ?>;
-                chartPie(international_outlook_data, "25_best_scores_international_outlook", "25_best_Universities_scores_international_outlook");
-
                 const scoresData = <?php echo json_encode($scores); ?>;
                 var intervals = calculateIntervals(scoresData, 5);
                 generatePieChart(intervals, 'Distribution of Universities by Score Intervals', 'scoresPieChart');
-
-
-                chartPie(scoresData, "25 best scores", "25_best_Universities_scores");
 
             });
 

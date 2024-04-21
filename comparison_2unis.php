@@ -1,5 +1,8 @@
 <?php
 session_start();
+$university1 = $_GET['university1'] ?? 'Default University 1';
+$university2 = $_GET['university2'] ?? 'Default University 2';
+$year = $_GET['year'] ?? '2023';
 ?>
 <!DOCTYPE html>
 <html lang="en">
