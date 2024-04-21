@@ -1,8 +1,5 @@
 <?php
 session_start();
-$university1 = $_GET['university1'] ?? 'Default University 1';
-$university2 = $_GET['university2'] ?? 'Default University 2';
-$year = $_GET['year'] ?? '2023';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +8,9 @@ $year = $_GET['year'] ?? '2023';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">        
     <title>Universities comparison</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -39,6 +39,22 @@ $year = $_GET['year'] ?? '2023';
                 border-radius: 50%;
                 cursor: pointer;
             }
+            .body_graph_compare {
+            max-width: 800px;
+            min-height: 200px;
+            margin: 20px auto;
+            padding: 0px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            }
+            .graph-container {
+                margin: 10px;
+            }
 
             @media screen and (max-width: 768px) {
             .search-form {
@@ -56,29 +72,41 @@ $year = $_GET['year'] ?? '2023';
 <body>
     <?php
         include "menu_bar.html";
+        if (empty($_POST['university1']) || empty($_POST['university2'])) {
+            echo "<p>Both university names must be provided.</p>";
+        } else {
+            $university1 = $_POST['university1'];
+            $university2 = $_POST['university2'];
+            $year = $_POST['year'];
+ 
+        }
     ?>
 
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <form id="universityForm" class="form-inline justify-content-center">
+                <form id="universityForm" class="form-inline justify-content-center" action="comparison_2unis.php" method="z">
                     <input class="form-control mr-2 search-input" type="text" name="university1" placeholder="First University" required>
                     <input class="form-control mr-2 search-input" type="text" name="university2" placeholder="Second University" required>
                     <input class="form-control mr-2 search-input" type="number" name="year" placeholder="Year" value="<?php echo date('Y'); ?>" required>
-                    <button type="submit" class="btn btn-primary search-button">Compare</button>
+                    <button type="submit" class="btn btn-primary search-button"><img src="assets/Images/search.png" alt="Search"></button>
                 </form>
             </div>
         </div>
-
-        <h2 class="text-center mt-5">Scores Comparison</h2>
-        <canvas id="radarChart"></canvas>
-
-        <h2 class="text-center mt-5">Rank Evolution</h2>
-        <canvas id="lineChart"></canvas>
+        
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <div class="body_graph_compare">
+            <div class="graph-container">
+                <h2 class="text-center mt-5">Scores Comparison</h2>
+                <canvas id="radarChart"></canvas>
+            </div>
+        </div>
+            <div class="body_graph_compare">
+                <div class="graph-container">
+                <h2 class="text-center mt-5">Rank Evolution</h2>
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
     <script>
         function updateCharts(university1, university2, year) {
             fetchChartData('scores.php', university1, university2, year)
@@ -181,6 +209,41 @@ $year = $_GET['year'] ?? '2023';
         document.getElementById('universityForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
+            var data = {
+                university1: '<?php echo $university1; ?>',
+                university2: '<?php echo $university2; ?>',
+                year: '<?php echo $year; ?>'
+            };
+            function fetchDataAndGenerateCharts() {
+                fetch('scores.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({university1: '<?php echo $university1; ?>', university2: '<?php echo $university2; ?>', year: '<?php echo $year; ?>'})
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Scores data:', data);  // Debugging line
+                    createRadarChart(data);
+                })
+                .catch(error => console.error('Error fetching scores:', error));
+
+                fetch('rank.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({university1: '<?php echo $university1; ?>', university2: '<?php echo $university2; ?>', year: '<?php echo $year; ?>'})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Ranks data:', data);  // Debugging line
+                    createLineChart(data);
+                })
+                .catch(error => console.error('Error fetching ranks:', error));
+            }
+            fetchDataAndGenerateCharts();
+
             const university1 = document.querySelector('[name="university1"]').value;
             const university2 = document.querySelector('[name="university2"]').value;
             const year = document.querySelector('[name="year"]').value;
@@ -193,6 +256,7 @@ $year = $_GET['year'] ?? '2023';
                 })
                 .catch(error => console.error('Error fetching data:', error));
         });
+    
     </script>
     <footer>
         Copyright © 2023 UniDiscover

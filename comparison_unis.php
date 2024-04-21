@@ -40,6 +40,22 @@ session_start();
                 border-radius: 50%;
                 cursor: pointer;
             }
+            .body_graph_compare {
+            max-width: 800px;
+            min-height: 200px;
+            margin: 20px auto;
+            padding: 0px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .graph-container {
+            margin: 10px;
+        }
 
             @media screen and (max-width: 768px) {
             .search-form {
@@ -62,7 +78,7 @@ session_start();
         <div class="container mt-3">
             <div class="row">
                 <div class="col-md-6 mx-auto">
-                    <form class="search-form" action="comparison_2unis.php" method="get">
+                    <form class="search-form" action="comparison_2unis.php" method="POST">
                         <input class="form-control mr-2 search-input" type="text" name="university1" placeholder="First university" value="<?php echo isset($_GET['university_name_1']) ? htmlspecialchars($_GET['university_name_1']) : ""; ?>">
                         <input class="form-control mr-2 search-input" type="text" name="university2" placeholder="Second university" value="<?php echo isset($_GET['university_name_2']) ? htmlspecialchars($_GET['university_name_2']) : ""; ?>">
                         <input class="form-control mr-2 search-input" type="number" name="year" placeholder="Year" value="<?php echo isset($_GET['year']) ? htmlspecialchars($_GET['year']) : ""; ?>">
@@ -111,15 +127,28 @@ session_start();
         
         $scatterData = fetch_data(2023, "scatter");
         $scores = fetch_data(2023, "scores");
+
+        // Loading the code from comparison_unis.php to review it
         
     ?>
+    
 
-        <h1> Comparisons by rank order</h1>
-        <canvas id="chart" width="100" height="50"></canvas>
+    <div class="body_graph_compare">
+        <div class="graph-container">
 
-        <h1>Composition</h1>
-        <canvas id="scoresPieChart" width="50" height="50"></canvas>
+            <h1> Comparisons by rank order</h1>
+            <canvas id="chart" width="100" height="50"></canvas>
+        </div>
+    </div>
+    
+    <div class="body_graph_compare">
+        <div class="graph-container">
+            <h1>Composition</h1>
+            <canvas id="scoresPieChart"
+             width="50" height="50"></canvas>
 
+        </div>
+    </div>
         <footer>
             Copyright © 2023 UniDiscover
         </footer> 
