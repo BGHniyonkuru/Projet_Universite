@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 01 avr. 2024 à 11:44
+-- Généré le : sam. 20 avr. 2024 à 15:54
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -2372,16 +2372,35 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `email` varchar(255) DEFAULT NULL,
   `mdp` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_client`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `clients`
 --
 
 INSERT INTO `clients` (`id_client`, `nom`, `prenom`, `email`, `mdp`) VALUES
-(11, 'Commandre', 'Elise', 'elise@mail.com', '$2y$10$vsi2EP5VOgPRKV.e/lJuKeQ8gg.SAsVI614LDbDLy2cih.AIsMvPK'),
+(23, 'Ingabire', 'Alvin', 'alvin@hotmail.com', '12345@Ai'),
+(24, 'Ingabire', 'Alvin', 'alvin@gmail.com', '123456a*'),
 (12, 'Bobo', 'Pierre', 'bobo@mail.com', '123456a*'),
-(14, 'val', 'Lili', 'val@mail.com', '123456a*');
+(14, 'val', 'Lili', 'val@mail.com', '123456a*'),
+(30, 'Ingabire', 'Alvin', 'alvingabire1@gmail.com', '123456a*'),
+(34, 'Ingabire', 'Alvin', 'alving@gmail.com', '12345@Ai');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commentaires`
+--
+
+DROP TABLE IF EXISTS `commentaires`;
+CREATE TABLE IF NOT EXISTS `commentaires` (
+  `id_com` int NOT NULL AUTO_INCREMENT,
+  `id_client` int NOT NULL,
+  `comments` longtext NOT NULL,
+  `email` varchar(500) NOT NULL,
+  PRIMARY KEY (`id_com`),
+  KEY `clients.id_client` (`id_client`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -2393,7 +2412,7 @@ DROP TABLE IF EXISTS `cout_de_vie`;
 CREATE TABLE IF NOT EXISTS `cout_de_vie` (
   `id_cout` int NOT NULL,
   `Meal` float(10,2) DEFAULT NULL,
-  `MealFor2 people` float(10,2) DEFAULT NULL,
+  `MealFor2_people` float(10,2) DEFAULT NULL,
   `McMeal` float(10,2) DEFAULT NULL,
   `Capuccino` float(10,2) DEFAULT NULL,
   `CokePepsi` float(10,2) DEFAULT NULL,
@@ -2444,7 +2463,7 @@ CREATE TABLE IF NOT EXISTS `cout_de_vie` (
 -- Déchargement des données de la table `cout_de_vie`
 --
 
-INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
+INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2_people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
 (1, 13.50, 60.00, 7.00, 4.30, 3.80, 0.80, 3.50, 2.06, 2.60, 15.00, 10.70, 13.70, 3.91, 1.70, 3.30, 2.95, 1.80, 2.00, 1.00, 1.60, 1.40, 7.25, 0.00, 50.00, 2.20, 1.10, 1.10, 139.10, 0.00, 62.50, 50.00, 15.00, 11.00, 48.70, 38.30, 77.00, 123.30, 600.00, 800.00, 1500.00, 1500.00, 0.00, 0.00, 3423.60, 5.10),
 (2, 0.00, 102.00, 10.00, 6.60, 4.00, 1.30, 4.80, 3.20, 4.90, 0.00, 0.00, 0.00, 6.51, 2.00, 3.00, 3.00, 2.00, 3.00, 2.00, 2.00, 1.40, 11.00, 0.00, 0.00, 4.00, 0.60, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 11.00, 54.50, 67.50, 80.00, 106.60, 1600.00, 1400.00, 2800.00, 2500.00, 3767.37, 2260.42, 4500.00, 4.00),
 (3, 16.00, 45.00, 7.50, 5.90, 1.60, 0.60, 2.80, 3.48, 2.40, 8.92, 8.80, 13.80, 3.52, 1.90, 2.65, 3.66, 2.00, 2.40, 1.50, 1.70, 2.10, 7.75, 0.00, 0.00, 0.00, 0.00, 0.80, 222.70, 0.00, 67.50, 27.50, 0.00, 11.70, 35.00, 50.00, 80.00, 55.00, 950.00, 800.00, 1733.30, 1225.00, 1367.02, 0.00, 4166.60, 0.00),
@@ -2609,7 +2628,7 @@ INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capu
 (162, 15.00, 70.00, 9.00, 5.40, 2.50, 1.00, 3.00, 4.26, 3.00, 12.40, 9.92, 14.00, 4.83, 1.70, 4.45, 4.02, 2.80, 2.80, 1.60, 2.20, 3.90, 6.62, 3.50, 100.00, 3.70, 1.20, 1.00, 221.80, 0.30, 65.71, 30.67, 17.50, 12.00, 45.50, 27.00, 84.88, 110.00, 1381.20, 1118.50, 2240.00, 1809.80, 2287.33, 1829.86, 4196.10, 5.10),
 (163, 19.00, 67.50, 7.75, 4.10, 2.30, 1.20, 2.90, 3.15, 3.40, 11.00, 14.30, 14.90, 5.19, 1.40, 4.68, 4.54, 3.00, 2.90, 1.90, 1.70, 2.70, 9.00, 6.00, 180.00, 3.00, 1.20, 0.90, 166.40, 0.10, 67.55, 22.50, 0.00, 11.00, 23.30, 30.00, 66.67, 68.33, 1500.00, 1600.00, 0.00, 2800.00, 2152.78, 2152.78, 3500.00, 4.50),
 (164, 18.50, 52.50, 8.00, 4.80, 2.00, 0.80, 2.70, 3.85, 2.00, 5.51, 15.80, 12.10, 4.21, 1.10, 2.56, 3.21, 3.20, 2.50, 1.20, 1.80, 0.00, 7.50, 0.00, 0.00, 3.00, 1.40, 1.10, 204.90, 0.00, 113.00, 60.00, 0.00, 9.25, 44.10, 45.00, 68.75, 86.67, 0.00, 0.00, 1500.00, 1100.00, 1076.39, 0.00, 3689.00, 5.40);
-INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
+INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2_people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
 (165, 15.00, 65.00, 7.50, 3.80, 1.90, 2.30, 4.40, 6.17, 3.40, 12.40, 17.60, 17.60, 5.39, 1.50, 4.41, 4.40, 2.20, 3.00, 1.60, 2.00, 4.20, 8.00, 0.00, 0.00, 4.00, 2.40, 1.20, 134.60, 0.00, 86.33, 0.00, 30.00, 12.50, 42.50, 33.00, 70.00, 85.00, 2000.00, 1800.00, 2400.00, 2000.00, 1991.32, 2045.14, 0.00, 5.40),
 (166, 11.00, 35.00, 6.00, 4.00, 2.00, 0.00, 2.70, 2.76, 0.00, 6.25, 0.00, 11.00, 6.42, 1.90, 2.48, 4.43, 1.60, 1.80, 1.50, 1.00, 1.70, 7.50, 0.00, 0.00, 1.10, 1.50, 0.00, 111.30, 0.00, 58.33, 0.00, 0.00, 13.00, 31.60, 30.00, 80.00, 120.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 5.40),
 (167, 12.00, 57.50, 4.78, 6.50, 1.70, 0.90, 3.00, 2.43, 3.90, 11.00, 4.41, 15.40, 3.67, 1.20, 4.13, 4.07, 3.20, 1.30, 1.50, 1.10, 2.10, 7.00, 1.50, 35.00, 6.20, 1.50, 1.00, 167.60, 0.00, 68.50, 60.00, 20.00, 12.00, 44.60, 22.50, 83.33, 75.00, 1100.00, 1000.00, 1425.00, 1425.00, 2152.78, 2690.98, 3566.60, 5.30),
@@ -2774,7 +2793,7 @@ INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capu
 (326, 30.00, 85.00, 10.00, 3.60, 0.00, 0.00, 3.00, 2.20, 2.60, 13.20, 17.60, 13.20, 3.31, 1.30, 4.41, 2.20, 3.30, 3.30, 2.00, 1.10, 2.80, 11.00, 1.50, 90.00, 2.50, 1.80, 1.10, 163.50, 0.10, 67.50, 127.00, 0.00, 8.00, 40.00, 22.50, 60.00, 95.00, 1800.00, 2125.00, 2633.30, 3000.00, 0.00, 0.00, 0.00, 4.90),
 (327, 12.00, 46.00, 7.25, 3.00, 2.20, 0.00, 3.50, 3.86, 2.70, 13.60, 12.10, 20.90, 4.62, 1.40, 4.41, 4.34, 2.50, 2.10, 1.90, 0.90, 2.10, 5.13, 0.70, 0.00, 0.00, 0.00, 1.20, 185.00, 0.00, 85.00, 25.00, 0.00, 7.25, 60.00, 0.00, 80.00, 90.00, 700.00, 587.50, 1000.00, 1000.00, 1614.59, 968.75, 4850.00, 5.70),
 (328, 20.00, 80.00, 8.00, 4.80, 2.00, 0.60, 2.70, 4.41, 3.10, 14.30, 6.17, 8.82, 8.08, 2.60, 4.29, 4.76, 3.10, 3.20, 2.00, 1.50, 3.10, 8.00, 1.50, 35.00, 1.00, 1.30, 1.20, 300.00, 0.10, 80.50, 32.50, 15.00, 13.60, 33.50, 35.60, 83.33, 90.00, 1600.00, 1400.00, 2800.00, 2000.00, 2325.00, 1786.81, 4232.00, 5.40);
-INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
+INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2_people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
 (329, 30.00, 105.00, 8.00, 4.30, 2.00, 1.20, 4.30, 3.63, 4.60, 22.70, 24.20, 42.90, 5.73, 2.40, 3.23, 4.84, 2.40, 3.40, 2.50, 1.00, 1.80, 5.99, 1.20, 0.00, 2.50, 1.20, 1.20, 142.40, 0.10, 53.75, 50.00, 0.00, 12.00, 56.60, 27.20, 76.17, 96.60, 1900.00, 1475.00, 2850.00, 2300.00, 3498.27, 1614.59, 5016.60, 5.10),
 (330, 18.00, 75.00, 10.00, 4.80, 2.80, 1.30, 4.30, 3.88, 4.10, 12.30, 11.90, 14.10, 3.99, 1.90, 3.14, 3.68, 2.50, 2.60, 2.20, 1.50, 1.90, 10.00, 5.00, 50.00, 3.00, 1.50, 1.60, 247.70, 0.10, 65.62, 39.44, 16.60, 14.50, 41.10, 30.60, 75.71, 55.00, 2312.50, 2033.30, 3762.50, 3366.60, 11625.00, 5166.68, 6233.30, 5.40),
 (331, 15.00, 60.00, 9.00, 4.80, 2.50, 1.10, 2.60, 3.02, 2.80, 10.80, 11.50, 17.70, 3.88, 1.30, 2.87, 3.55, 1.60, 1.80, 1.40, 2.30, 2.50, 9.43, 1.50, 37.50, 4.00, 1.50, 1.40, 280.80, 0.20, 69.08, 34.00, 45.00, 14.00, 42.00, 33.30, 67.22, 82.50, 1333.30, 1400.00, 2700.00, 2300.00, 2443.41, 1614.59, 4489.50, 5.10),
@@ -2939,7 +2958,7 @@ INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capu
 (490, 12.50, 60.00, 8.00, 5.10, 2.30, 0.70, 3.40, 3.51, 3.00, 10.00, 9.70, 13.20, 6.28, 1.40, 4.40, 4.56, 4.60, 4.70, 1.80, 2.80, 3.30, 7.50, 1.00, 30.00, 2.50, 1.50, 1.20, 156.50, 0.20, 61.00, 16.00, 0.00, 8.50, 52.00, 40.00, 75.83, 115.00, 0.00, 900.00, 0.00, 0.00, 0.00, 0.00, 2704.00, 5.40),
 (491, 16.10, 45.00, 6.75, 3.60, 2.70, 0.70, 2.20, 3.14, 3.70, 7.47, 6.44, 10.10, 2.57, 1.30, 2.76, 3.28, 1.10, 1.70, 1.20, 1.30, 1.40, 4.39, 0.00, 0.00, 1.50, 1.40, 1.00, 166.80, 0.00, 45.00, 29.95, 0.00, 10.00, 47.70, 34.30, 86.25, 87.67, 775.00, 625.00, 1800.00, 1200.00, 2690.98, 430.56, 4200.00, 5.30),
 (492, 10.00, 45.00, 7.50, 2.20, 1.50, 1.10, 3.50, 2.75, 2.70, 19.80, 11.00, 15.30, 4.74, 1.50, 3.87, 3.14, 1.70, 1.90, 1.30, 1.20, 0.00, 7.50, 1.50, 120.00, 3.50, 1.00, 1.00, 197.50, 0.10, 73.33, 40.00, 0.00, 10.00, 56.60, 26.60, 75.00, 90.00, 950.00, 600.00, 1450.00, 750.00, 1749.14, 1372.40, 2865.00, 5.40);
-INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
+INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2_people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
 (493, 0.00, 0.00, 10.00, 5.50, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.90, 0.00, 0.00, 0.00, 0.00, 1.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 210.00, 0.00, 50.00, 0.00, 0.00, 12.00, 25.00, 0.00, 60.00, 100.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 2652.00, 0.00),
 (494, 12.00, 41.20, 7.50, 3.90, 2.20, 0.80, 2.50, 3.30, 3.00, 10.70, 9.74, 16.00, 3.47, 1.20, 2.65, 2.18, 1.50, 1.50, 1.10, 1.00, 1.50, 7.75, 1.00, 30.00, 1.60, 1.30, 1.10, 127.00, 0.10, 57.50, 46.67, 0.00, 9.00, 46.70, 32.30, 65.00, 100.00, 750.00, 500.00, 1250.00, 1000.00, 1345.49, 0.00, 4066.60, 5.40),
 (495, 17.50, 65.00, 8.50, 5.40, 2.30, 0.90, 3.20, 4.53, 3.10, 11.10, 10.50, 13.30, 4.62, 1.50, 3.32, 3.10, 2.10, 2.20, 1.40, 1.90, 2.30, 9.25, 2.50, 60.00, 3.80, 2.10, 1.40, 187.20, 0.50, 89.11, 25.97, 22.50, 13.50, 46.20, 35.90, 73.24, 103.60, 1452.50, 1380.40, 2268.40, 2010.10, 2775.55, 2680.21, 3689.70, 5.30),
@@ -3104,7 +3123,7 @@ INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capu
 (654, 11.00, 40.00, 7.00, 4.80, 1.60, 0.70, 3.50, 3.58, 2.00, 9.91, 7.72, 11.00, 3.26, 1.30, 2.89, 2.73, 1.70, 2.00, 1.90, 2.60, 4.20, 7.25, 2.50, 85.00, 5.00, 1.80, 1.20, 139.10, 0.10, 67.60, 56.33, 8.00, 10.00, 43.00, 37.30, 76.00, 88.75, 1300.00, 1416.60, 1616.60, 1650.00, 1937.50, 1829.86, 3182.60, 5.90),
 (655, 9.99, 45.00, 8.00, 4.10, 2.10, 0.90, 2.40, 3.55, 4.20, 9.29, 11.70, 15.30, 5.17, 1.60, 4.31, 4.43, 3.00, 2.00, 1.50, 2.30, 3.00, 8.00, 2.00, 50.00, 5.00, 1.20, 1.00, 220.40, 0.20, 74.29, 24.25, 16.50, 12.00, 40.30, 23.40, 104.10, 94.25, 1281.20, 925.00, 2235.00, 1212.50, 1829.86, 995.66, 3442.90, 5.20),
 (656, 25.00, 60.00, 9.00, 4.20, 2.00, 0.90, 2.90, 3.67, 4.00, 13.70, 5.14, 11.80, 4.06, 1.70, 3.39, 5.50, 2.50, 2.50, 1.70, 1.60, 3.50, 10.00, 0.00, 0.00, 2.50, 1.40, 1.30, 168.80, 0.10, 67.00, 37.25, 14.00, 12.00, 40.00, 35.00, 70.67, 124.50, 1524.10, 1391.20, 2096.20, 1959.00, 3534.15, 3229.17, 4124.70, 4.60);
-INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
+INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2_people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
 (657, 20.00, 75.00, 9.00, 4.80, 2.40, 0.80, 3.70, 5.02, 3.40, 12.80, 9.69, 13.40, 4.90, 1.80, 5.99, 3.97, 2.40, 2.80, 1.30, 1.60, 2.50, 7.24, 1.20, 54.25, 3.50, 2.20, 1.20, 235.10, 0.00, 77.46, 36.07, 51.10, 12.00, 57.80, 40.20, 88.67, 115.00, 1093.30, 970.00, 1650.00, 1516.60, 1668.41, 1065.63, 3772.00, 5.40),
 (658, 14.30, 70.00, 8.00, 3.80, 1.70, 0.70, 1.70, 3.95, 2.10, 12.00, 5.36, 14.30, 3.93, 1.30, 4.19, 2.92, 2.90, 1.80, 1.30, 1.50, 2.00, 10.50, 3.00, 73.35, 2.80, 2.00, 1.50, 222.40, 0.10, 79.60, 31.84, 0.00, 13.20, 47.20, 27.20, 63.50, 85.83, 1533.30, 1383.30, 2125.00, 1705.10, 3282.99, 5005.00, 3274.60, 5.40),
 (659, 12.00, 56.00, 8.00, 6.80, 1.60, 0.90, 2.60, 1.76, 2.60, 9.91, 9.90, 11.00, 3.63, 1.30, 2.67, 3.89, 1.60, 1.60, 1.70, 1.40, 0.00, 7.00, 2.50, 127.50, 2.20, 1.30, 1.20, 156.10, 0.00, 64.17, 17.47, 0.00, 10.30, 41.60, 44.20, 80.83, 107.00, 1783.30, 1292.60, 3366.60, 1732.30, 3196.88, 3498.27, 3716.00, 5.80),
@@ -3268,7 +3287,7 @@ INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capu
 (817, 20.00, 82.00, 9.50, 4.30, 3.20, 0.80, 2.70, 3.42, 3.20, 9.48, 12.10, 18.30, 5.14, 1.30, 3.77, 3.73, 2.70, 2.50, 1.70, 1.80, 2.80, 7.77, 4.00, 25.00, 3.50, 1.30, 1.20, 167.20, 0.00, 58.57, 50.00, 0.00, 14.00, 39.40, 28.50, 83.33, 96.25, 1726.60, 1350.00, 2800.00, 2666.60, 0.00, 0.00, 0.00, 5.40),
 (818, 16.00, 75.00, 9.00, 4.70, 2.00, 1.00, 2.70, 4.41, 4.00, 11.50, 10.70, 12.10, 5.22, 2.30, 3.08, 3.09, 3.60, 2.90, 2.00, 3.00, 2.00, 10.00, 0.00, 0.00, 3.50, 1.70, 1.50, 190.90, 0.00, 70.00, 0.00, 0.00, 13.00, 27.60, 40.00, 80.00, 129.50, 2200.00, 2100.00, 0.00, 0.00, 5371.19, 5371.19, 4451.00, 4.60),
 (819, 10.50, 45.00, 6.00, 4.50, 1.40, 0.60, 3.00, 3.31, 0.00, 10.10, 0.00, 0.00, 5.94, 1.50, 2.26, 4.29, 1.90, 1.60, 1.40, 2.30, 1.80, 6.75, 1.30, 25.00, 0.00, 0.00, 0.00, 283.30, 0.00, 60.00, 31.67, 0.00, 12.00, 40.00, 32.50, 60.00, 0.00, 1237.50, 619.50, 1903.00, 1322.50, 0.00, 0.00, 0.00, 5.40);
-INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
+INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2_people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
 (820, 12.30, 52.50, 7.00, 3.60, 2.00, 0.00, 0.00, 4.64, 0.00, 16.90, 0.00, 0.00, 8.97, 3.60, 8.63, 8.42, 5.70, 5.70, 2.20, 1.90, 2.80, 6.89, 1.80, 48.00, 2.00, 2.10, 1.00, 230.10, 0.00, 72.80, 0.00, 15.00, 13.00, 57.30, 41.60, 90.00, 165.00, 946.26, 0.00, 0.00, 0.00, 0.00, 0.00, 2743.00, 5.40),
 (821, 13.00, 60.00, 9.00, 4.70, 2.40, 1.00, 2.90, 5.02, 4.50, 11.80, 15.10, 13.20, 4.90, 1.60, 5.99, 3.97, 2.20, 2.80, 1.30, 1.60, 2.50, 7.24, 2.00, 35.00, 2.30, 1.80, 1.00, 160.60, 0.00, 66.38, 39.60, 25.00, 10.10, 48.00, 40.20, 92.22, 116.60, 1070.00, 830.00, 2166.60, 1333.30, 2524.14, 2421.88, 3519.00, 5.20),
 (822, 0.00, 80.00, 10.70, 5.10, 0.00, 0.00, 0.00, 2.09, 0.00, 23.80, 0.00, 11.00, 6.75, 2.40, 5.81, 6.27, 5.90, 4.30, 4.00, 0.00, 0.00, 15.00, 2.00, 20.00, 0.00, 0.00, 1.50, 330.20, 0.00, 190.00, 60.00, 0.00, 12.00, 62.50, 57.50, 110.00, 125.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00),
@@ -3433,7 +3452,7 @@ INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capu
 (981, 10.00, 34.00, 8.00, 3.60, 2.00, 0.70, 3.30, 3.31, 0.00, 6.61, 11.00, 13.20, 3.28, 2.00, 8.82, 5.83, 1.80, 3.10, 1.60, 1.00, 1.00, 7.65, 0.00, 0.00, 0.00, 0.00, 1.10, 200.00, 0.00, 54.00, 0.00, 0.00, 9.50, 28.50, 40.00, 85.00, 100.00, 0.00, 0.00, 0.00, 0.00, 1291.67, 0.00, 2320.00, 3.50),
 (982, 15.00, 50.00, 7.00, 3.50, 1.50, 0.90, 2.40, 5.51, 2.00, 10.70, 11.00, 16.50, 6.59, 1.90, 4.41, 6.61, 2.40, 3.90, 1.90, 2.30, 0.00, 7.86, 1.70, 0.00, 3.20, 1.90, 1.20, 185.50, 0.10, 88.83, 0.00, 0.00, 11.00, 30.00, 41.30, 80.00, 200.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 4166.60, 4.40),
 (983, 15.00, 57.50, 8.87, 4.90, 1.60, 1.20, 2.30, 1.87, 2.80, 8.82, 4.41, 11.50, 2.90, 1.30, 2.20, 2.76, 1.40, 1.70, 1.50, 1.50, 2.30, 6.00, 1.50, 45.00, 4.30, 1.80, 1.10, 225.00, 0.10, 99.17, 50.00, 0.00, 12.00, 38.00, 38.60, 106.70, 100.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 4166.60, 4.20);
-INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2 people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
+INSERT INTO `cout_de_vie` (`id_cout`, `Meal`, `MealFor2_people`, `McMeal`, `Capuccino`, `CokePepsi`, `Milk`, `FreshBread`, `Rice`, `Eggs`, `LocalCheese`, `ChickenFillets`, `BeefRound`, `Apples`, `Banana`, `Oranges`, `Tomato`, `Potato`, `Onion`, `Lettuce`, `Water`, `DomesticBeer`, `Cigarettes20Pack`, `OneWayTicket`, `MonthlyPass`, `TaxiStart`, `TaxiUnKm`, `Gasoline`, `BasicFor85m2`, `OneMminPrepaid`, `Internet`, `FitnessClubMonthly`, `TennisCourtRentOneH`, `Cinema`, `OneJeansLevis`, `SummerDress`, `PairOfNike`, `PairOfMenShoes`, `AppartmentOneBedroomCity`, `AppartmentOneBedroomOutsideCentre`, `AppartmentThreeBedroomsCity`, `AppartmentThreeBedroomsOutsideCentre`, `PriceSquareMeterBuyApartmentCity`, `PricePerSquareMeterBuyApartmentOutside`, `AverageMonthlyNetSalary`, `InterestRate`) VALUES
 (984, 0.00, 65.00, 8.00, 5.00, 2.00, 1.10, 3.70, 6.61, 0.00, 9.10, 0.00, 7.17, 3.85, 1.70, 4.39, 4.39, 2.10, 3.00, 1.90, 0.80, 0.00, 8.90, 0.00, 45.00, 7.00, 0.00, 1.00, 174.40, 0.00, 59.00, 50.00, 0.00, 14.50, 51.60, 42.50, 73.33, 85.00, 814.00, 0.00, 1200.00, 1500.00, 0.00, 0.00, 0.00, 5.40),
 (985, 0.00, 0.00, 0.00, 0.00, 0.00, 0.70, 4.30, 0.00, 4.20, 14.30, 0.00, 13.70, 0.00, 0.00, 0.00, 9.33, 0.00, 0.00, 0.00, 0.90, 1.70, 12.50, 1.50, 0.00, 0.00, 0.00, 0.80, 225.00, 0.00, 22.95, 0.00, 0.00, 6.75, 20.00, 0.00, 0.00, 0.00, 1100.00, 1200.00, 1300.00, 2200.00, 0.00, 0.00, 0.00, 6.70),
 (986, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 4.39, 0.00, 7.61, 0.00, 0.00, 3.28, 1.20, 4.39, 4.94, 2.80, 1.30, 1.40, 1.90, 2.50, 6.78, 0.00, 0.00, 0.00, 0.00, 0.00, 145.00, 0.00, 62.50, 0.00, 0.00, 14.00, 15.00, 24.00, 69.00, 0.00, 0.00, 0.00, 0.00, 0.00, 613.54, 0.00, 0.00, 0.00),
@@ -5245,6 +5264,48 @@ INSERT INTO `etre` (`id_universite`, `id_classement`) VALUES
 (198, 1321),
 (201, 1322),
 (203, 1323);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `favoris`
+--
+
+DROP TABLE IF EXISTS `favoris`;
+CREATE TABLE IF NOT EXISTS `favoris` (
+  `id_favori` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(56) NOT NULL,
+  `id_universite` int NOT NULL,
+  `id_client` int NOT NULL,
+  PRIMARY KEY (`id_favori`),
+  KEY `id_universite` (`id_universite`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `recommandations`
+--
+
+DROP TABLE IF EXISTS `recommandations`;
+CREATE TABLE IF NOT EXISTS `recommandations` (
+  `id_recom` int NOT NULL AUTO_INCREMENT,
+  `id_client` int NOT NULL,
+  `diplome` varchar(5000) NOT NULL,
+  `type_univ` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `budget` float NOT NULL,
+  `etat` varchar(5000) NOT NULL,
+  `domaine` longtext NOT NULL,
+  PRIMARY KEY (`id_recom`),
+  KEY `clients.id_client` (`id_client`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `recommandations`
+--
+
+INSERT INTO `recommandations` (`id_recom`, `id_client`, `diplome`, `type_univ`, `budget`, `etat`, `domaine`) VALUES
+(1, 34, 'BAC', 'public', 75000, 'Illinois', 'education');
 
 -- --------------------------------------------------------
 

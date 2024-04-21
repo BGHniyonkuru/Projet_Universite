@@ -1,7 +1,3 @@
-body{
-    background-color: #1e1e1e;
-}
-
 .header-main{
     width: 100%;
     height: 100px;
@@ -67,6 +63,7 @@ a{
     background-image: url("./Images/favori.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    border-radius: 50%;
 }
 
 .header-main-moncompte{
@@ -75,6 +72,14 @@ a{
     background-image: url("./Images/mon_compte.png");
     background-repeat: no-repeat;
     background-size: cover;
+    border-radius: 50%;
 }
 
-
+footer{
+	background-color: #B22234;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

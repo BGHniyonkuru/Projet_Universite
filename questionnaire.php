@@ -1,12 +1,9 @@
-<?php
-session_start();
-?>
-<!DOCTYPE html>
+<!DOCTYPE html >
 <html>
 <head>
 <meta http-equiv="Content-Type"
 content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="http://localhost/Projet/style.css" type="text/css" />
+<link rel="stylesheet" href="style.css" type="text/css" />
 
 <title>Quiz</title>
 </head>
@@ -35,7 +32,7 @@ content="text/html; charset=UTF-8" />
 		
         <label for="etatSelect">State of preference :</label></br>
         <select id="etatSelect" name="etatSelect" >
-            <option value="" disabled selected>Choose a state</option>
+            <option value="" disabled selected>Choose a field</option>
             <option value="Alabama">Alabama</option>
             <option value="Alaska">Alaska</option>
 			<option value="Arizona">Arizona</option>
@@ -133,7 +130,7 @@ content="text/html; charset=UTF-8" />
 	
 
 		<button id="oval-button-inscr" type="submit" >Validate</button></br></br>
-		<a href="http://localhost/Projet/accueil.php">Ignore the questonnaire</a>
+		<a href="accueil.php">Ignore the questonnaire</a>
  </form>
   
 </div>

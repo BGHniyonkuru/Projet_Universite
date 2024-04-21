@@ -9,32 +9,64 @@ session_start();
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 		<title>Universite</title>
 		<style>
-			.bandeau{
+			.bandeau {
             text-decoration: none;
-			color:white;
-			
-			}
+            color: white;
+        }
+        #logo {
+            margin-left: 130px;
+            margin-top: 10px;
+            height: 100px;
+            width: 100px;
+        }
+        #logo2 {
+            margin-left: 100px;
+            margin-top: 5px;
+            height: 50px;
+            width: 50px;
+        }
+        #logo3 {
+            margin-left: 10px;
+            margin-top: 5px;
+            height: 50px;
+            width: 50px;
+        }
+        .container {
+            height:90px;
+            background-color: #3C3B6E;
+            color: white;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            max-width: none;
+        }
 
-			#logo{
-				margin-left:130px;
-				margin-top:10px;
-				height:100px;
-				width:100px;
-			}
+        .container > ul {
+            position: relative;
+            margin-top:30px;
+            transform: translateY(-50%);	
+            text-align: center;
+            background-color:#3C3B6E;
+            width:800px;
+        }
+        .container > ul > li{
+            list-style-type: none;
+            display: inline;
+            margin-right: 50px;
+            
+        }
+        li:hover{
+            font-size: 20px;
+        }
 
-			#logo2{
-				margin-left:100px;
-				margin-top:5px;
-				height:50px;
-				width:50px;
-			}
-
-			#logo3{
-				margin-left:10px;
-				margin-top:5px;
-				height:50px;
-				width:50px;
-			}
+        .container ul li a {
+            color: white;
+            text-decoration: none;
+        }
 		</style>
 		<script>
 		function ajouterAuxFavoris(universite_id) {
@@ -67,28 +99,23 @@ session_start();
 	
 	<!-- bandeau en haut de l'écran -->
 		<div class="container">
-			<a href= "accueil.php"><img id="logo" src="/Projet_universite/images/logo.png" alt="logo" ></a>
+			<a href= "accueil.php"><img id="logo" src="images/logo.png" alt="logo" ></a>
 
 			<ul>
-				<li><a class= "bandeau" href="comparaison.php">Compare</a></li>
+				<li><a class= "bandeau" href="compare.php">Compare</a></li>
 				<li><a class= "bandeau" href="localisation.php">Map</a></li>
-				<li><a class= "bandeau" href="predire.php" >Prédict</a></li>
+				<li><a class= "bandeau" href="prediction.html" >Predict</a></li>
 				<li><a class= "bandeau" href="contact.php" >Contact</a></li>
 				<li><a class= "bandeau" href="search_university.html" >Search</a></li>
 			</ul>
-			<a href= "favoris.php"><img id="logo2" src="/Projet_universite/images/favori.png" alt="logo"></a>
-			<a href= "monCompte.php"><img id="logo3" src="/Projet_universite/images/monCompte.png" alt="logo"></a>
+			<a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
+			<a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
 		</div>
 	<body class="page-universite">
 		
 		<?php
 		
-		if(isset($_SESSION['client'])) {
-        echo "Contenu de la variable \$_SESSION['client']: ";
-        var_dump($_SESSION['client']);
-		} else {
-			echo "La variable de session \$_SESSION['client'] n'est pas définie.";
-		}
+		
 		$servername = "localhost";
 		$username = "root";
 		$password = "";
@@ -119,7 +146,7 @@ session_start();
 				$description=$row['description'];
 				$description2=$row['description2'];
 				$description3=$row['description3'];
-				echo "<div id='container1' style='background-color: #666666; text-align: center;'><p id='nom_univ' >" . $universite_name . "</p><a href='http://localhost/Projet_universite/search_university.html'><img id='loupe' src='images/loupe.png' alt='loupe' ></a></div>";
+				echo "<div id='container1' style='background-color: #666666; text-align: center;'><p id='nom_univ' >" . $universite_name . "</p><a href='search_university.html'><img id='loupe' src='images/loupe.png' alt='loupe' ></a></div>";
 				echo "<button type='button' id='favori' onclick='ajouterAuxFavoris($universite_id)' style='border: none; background: none; cursor: pointer; float: right; margin-top: 10px;'>
 						<img id='etoile' src='images/etoile.jpg' alt='etoile' style='height: 30px; width: 30px;'></button>";	
 				if (!empty($row['image'])) {

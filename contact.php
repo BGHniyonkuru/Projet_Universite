@@ -8,16 +8,44 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <title>Contact</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            margin: 0px;
+            padding: 0px;
+            #font-family: Arial, sans-serif;
             background-color: #D7DCE3;
         }
 
-        .container {
+        .bandeau{
+            text-decoration: none;
+			color:white;
+			
+			}
+
+			#logo{
+				margin-left:130px;
+				margin-top:10px;
+				height:100px;
+				width:100px;
+			}
+
+			#logo2{
+				margin-left:100px;
+				margin-top:5px;
+				height:50px;
+				width:50px;
+			}
+
+			#logo3{
+				margin-left:10px;
+				margin-top:5px;
+				height:50px;
+				width:50px;
+			}
+			.container {
+            height:120px;
             background-color: #3C3B6E;
             color: white;
             padding-top: 10px;
@@ -26,20 +54,26 @@ session_start();
             justify-content: center;
             align-items: center;
             width: 100%;
-            margin-left: 0px;
-            margin-right: 0px;
+            margin: 0;
             max-width: none;
         }
 
-        .container ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
+        .container > ul {
+            position: relative;
+            margin-top:30px;
+            transform: translateY(-50%);	
+            text-align: center;
+            background-color:#3C3B6E;
+            width:800px;
         }
-
-        .container ul li {
+        .container > ul > li{
+            list-style-type: none;
             display: inline;
-            margin-left: 20px;
+            margin-right: 50px;
+            
+        }
+        li:hover{
+            font-size: 20px;
         }
 
         .container ul li a {
@@ -47,26 +81,13 @@ session_start();
             text-decoration: none;
         }
 
-        .container ul li a:hover {
-            color: #ccc;
-        }
-
-        #logo {
-            height: 100px;
-            width: 100px;
-        }
-
-        #logo2, #logo3 {
-            height: 50px;
-            width: 50px;
-        }
-
         .section {
+            
             background-color: #F4F5F7;
             padding: 20px;
             margin: 20px auto;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,1);
             max-width: 800px;
         }
 
@@ -128,20 +149,21 @@ session_start();
 
 <body>
 
-<div class="container">
-    <a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo"></a>
+<!-- Bandeau en haut de l'écran -->
+    <div class="container">
 
-    <ul>
-        <li><a class= "bandeau" href="comparer.php">Compare</a></li>
-        <li><a class= "bandeau" href="localiser.php">Map</a></li>
-        <li><a class= "bandeau" href="predire.php">Predict</a></li>
-        <li><a class= "bandeau" href="contact.php">Contact</a></li>
-        <li><a class= "bandeau" href="search.php">Search</a></li>
-    </ul>
-
-    <a href= "favoris.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
-    <a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
-</div>
+		<a href= "accueil.php"><img id="logo" src="images/logo.png" alt="logo" ></a>
+	
+		<ul>
+			<li><a class= "bandeau" href="compare.php">Compare</a></li>
+			<li><a class= "bandeau" href="localisation.php">Map</a></li>
+			<li><a class= "bandeau" href="prediction.html" >Predict</a></li>
+			<li><a class= "bandeau" href="contact.php" >Contact</a></li>
+			<li><a class= "bandeau" href="search_university.html" >Search</a></li>
+		</ul>
+		<a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
+		<a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
+	</div>
 <div class="section">
     <p>Unidiscover was created by 5 students at <b>Paul Valéry Montpellier 3</b> in L3 MIASHS as part of a group project in project management.</p>
 </div>
@@ -150,7 +172,7 @@ session_start();
     <p>Group Members :</p>
 
     <div style="display: flex; align-items: center; width: 300px; height: 100px;">
-        <img src="membre1.jpg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
+        <img src="images/elise.jpeg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
         <p style = "width: 250px;"><i><b>Elise COMMANDRE</i></b></p>
     </div>
     <div style="display: flex; align-items: center; width: 300px; height: 100px;">
@@ -169,14 +191,14 @@ session_start();
     </div>
 
     <div style="display: flex; align-items: center; width: 300px; height: 100px;">
-        <img src="membre1.jpg" style="width: 100px; height: 100px; border-radius: 25%;; margin-right: 10px;">
+        <img src="membre1.jpg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
         <p style = "width: 250px;"><i><b>Michele MEDOM SADEFO</i></b></p>
     </div>
 </div>
 
-
+<?php if (isset($_SESSION['client'])): ?>
 <div class="section">
-    <p><?php echo isset($_SESSION['client']) ? $_SESSION['client']['prenom'] . ', ' : ''; ?>Want to leave us a little message, a suggestion or anything else? Please go on.</p>
+    <p><?php echo  $_SESSION['client']['prenom'] . ','; ?>Want to leave us a little message, a suggestion or anything else? Please go on.⌨️</p>
 
     <div id="formulaire">
         <form action="commentaires.php" method="post" autocomplete="off">
@@ -204,11 +226,24 @@ session_start();
     </div>
     <p style="font-size: 10px;">*:required fields</p>
 </div>
+<?php
+endif; ?>
 
 <footer id="footer">
     Copyright © 2023 UniDiscover
 </footer>
 
+<script>
+<?php if (isset($_SESSION['alert'])): ?>
+    Swal.fire({
+        title: '<?php echo ($_SESSION['alert']['type'] == "success" ? "Success!" : "Error!"); ?>',
+        text: '<?php echo $_SESSION['alert']['message']; ?>',
+        icon: '<?php echo $_SESSION['alert']['type']; ?>',
+        confirmButtonText: 'OK'
+    });
+    <?php unset($_SESSION['alert']); ?>
+<?php endif; ?>
+</script>
 
 
 </body>

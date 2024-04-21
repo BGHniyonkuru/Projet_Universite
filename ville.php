@@ -5,83 +5,39 @@ session_start();
     $pdo = new PDO('mysql:host=localhost;dbname=projet_universite', 'root', '');
 
     // Requête pour récupérer les noms des villes
-    $queryVilles = "SELECT distinct(ville.name),ville.id_ville,name_etat FROM avoir, ville, crime where avoir.id_ville=ville.id_ville and ville.id_ville=crime.id_ville";
+    $queryVilles = "SELECT distinct(ville.name),ville.id_ville,name_etat FROM avoir, ville, crime, cout_de_vie 
+                        where avoir.id_ville=ville.id_ville and ville.id_ville=crime.id_ville and cout_de_vie.id_cout= avoir.id_cout AND Meal > 0
+                        AND McMeal > 0
+                        AND Capuccino > 0
+                        AND CokePepsi > 0
+                        AND Milk > 0
+                        AND FreshBread > 0
+                        AND Rice > 0
+                        AND Eggs > 0
+                        AND LocalCheese > 0
+                        AND BeefRound > 0
+                        AND Apples > 0
+                        AND Banana > 0
+                        AND Oranges > 0
+                        AND Tomato > 0
+                        AND Potato > 0
+                        AND Onion > 0
+                        AND Water > 0
+                        AND DomesticBeer > 0
+                        AND OneWayTicket > 0
+                        AND MonthlyPass > 0
+                        AND TaxiUnKm > 0
+                        AND Gasoline > 0
+                        AND BasicFor85m2 > 0
+                        AND Internet > 0
+                        AND Cinema > 0
+                        AND OneJeansLevis > 0
+                        AND SummerDress > 0
+                        AND PairOfNike > 0
+                        AND AppartmentOneBedroomCity > 0
+                        AND AverageMonthlyNetSalary > 0";
     $resultVilles = $pdo->query($queryVilles);
     $villes = $resultVilles->fetchAll(PDO::FETCH_ASSOC);
-
-    // Traitement du formulaire
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $ville1_id = $_POST["ville1"];
-        $ville2_id = $_POST["ville2"];
-
-        // Requête pour le premier graphique - moyenne des coûts de vie des deux villes
-        $queryCoutDeVie = "SELECT ville.name,(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water + DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + TaxiStart + TaxiUnKm + Gasoline + BasicFor85m2 + OneMminPrepaid + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneJeansLevis + SummerDress + PairOfNike + PairOfMenShoes + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside + AverageMonthlyNetSalary + InterestRate) AS Total_cost
-                            FROM cout_de_vie
-                            INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout
-                            INNER JOIN ville ON ville.id_ville = avoir.id_ville
-                            WHERE avoir.id_ville IN (?, ?)
-                            GROUP BY ville.name";
-        $stmt = $pdo->prepare($queryCoutDeVie);
-        $stmt->execute([$ville1_id, $ville2_id]);
-        $coutDeVieData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Requête pour le deuxième graphique - comparaison des attributs de la table "crime"
-        $queryCrimeAttributes = "SELECT crime.victims_killed,crime.victims_injured,crime.suspects_killed,crime.suspects_injured,crime.suspects_arrested FROM `crime`,ville where crime.id_ville=ville.id_ville and crime.id_ville IN (?, ?)";
-        $stmt = $pdo->prepare($queryCrimeAttributes);
-        $stmt->execute([$ville1_id, $ville2_id]);
-        $crimeAttributes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Vérifiez si des données ont été renvoyées
-        if (!empty($crimeAttributes)) {
-            // Préparation des données pour le deuxième graphique
-            if (count($crimeAttributes) >= 2) {
-                // Préparation des données pour le deuxième graphique
-                $labels2 = array_keys($crimeAttributes[0]); // Utilisez les noms de colonnes comme étiquettes
-                $values2Ville1 = array_values($crimeAttributes[0]); // Données pour la ville 1
-                $values2Ville2 = array_values($crimeAttributes[1]); // Données pour la ville 2
-            } else {
-                // Si le tableau contient moins de deux éléments, initialisez les variables avec des valeurs vides
-                $labels2 = [array_keys($crimeAttributes[0])];
-                $values2Ville1 = [array_values($crimeAttributes[0])];
-                $values2Ville2 = [array_values($crimeAttributes[0])];
-            }
-        } else {
-            // Aucune donnée n'a été renvoyée, initialisez les variables avec des valeurs vides
-            $labels2 = [];
-            $values2Ville1 = [];
-            $values2Ville2 = [];
-        }
-        $categories = [
-            'Services' => '(TaxiStart + TaxiUnKm + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneMminPrepaid) AS Sum_Services',
-            'Food' => '(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water) AS Sum_Alimentation',
-            'Accomodation' => '(BasicFor85m2 + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside) AS Sum_Logement',
-            'Others' => '(DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + Gasoline + PairOfNike + PairOfMenShoes + SummerDress + AverageMonthlyNetSalary + InterestRate) AS Sum_Autres'
-        ];
-    
-        $data = [];
-        foreach ($categories as $key => $value) {
-            $query = "SELECT ville.name, $value FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
-            $stmt = $pdo->prepare($query);
-            $stmt->execute([$ville1_id, $ville2_id]);
-            $data[$key] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-
-    }else{
-
-        $categories = [
-            'Services' => '(TaxiStart + TaxiUnKm + Internet + FitnessClubMonthly + TennisCourtRentOneH + Cinema + OneMminPrepaid) AS Sum_Services',
-            'Food' => '(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water) AS Sum_Alimentation',
-            'Accomodation' => '(BasicFor85m2 + AppartmentOneBedroomCity + AppartmentOneBedroomOutsideCentre + AppartmentThreeBedroomsCity + AppartmentThreeBedroomsOutsideCentre + PriceSquareMeterBuyApartmentCity + PricePerSquareMeterBuyApartmentOutside) AS Sum_Logement',
-            'Others' => '(DomesticBeer + Cigarettes20Pack + OneWayTicket + MonthlyPass + Gasoline + PairOfNike + PairOfMenShoes + SummerDress + AverageMonthlyNetSalary + InterestRate) AS Sum_Autres'
-        ];
-         //Si aucun formulaire n'a été soumis, récupérer la catégorie par défaut depuis les paramètres GET
-        $category = $_GET['category'] ?? 'Services';
-        // Exécuter la requête avec la catégorie par défaut
-        $query = "SELECT ville.name, {$categories[$category]} FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
-        $stmt = $pdo->prepare($query);
-        $stmt->execute([$ville1_id, $ville2_id]);
-        $categoryData = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,56 +51,13 @@ session_start();
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            
             margin: 0;
             padding: 0;
-        }
-        .bandeau {
-            text-decoration: none;
-            color: white;
-        }
-        #logo {
-            margin-left: 130px;
-            margin-top: 10px;
-            height: 100px;
-            width: 100px;
-        }
-        #logo2 {
-            margin-left: 100px;
-            margin-top: 5px;
-            height: 50px;
-            width: 50px;
-        }
-        #logo3 {
-            margin-left: 10px;
-            margin-top: 5px;
-            height: 50px;
-            width: 50px;
-        }
-        .body_graph_compare {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-wrap: wrap;  /* Allows items to wrap as needed */
-            justify-content: center; /* Centers items horizontally */
-            align-items: center;  /* Align items vertically */
-        }
-        .graph-container {
-            margin-bottom: 20px;
-        }
-        h1 {
-            margin-top: 0;
-            font-size: 24px;
-        }
-        h2 {
-            margin-top: 20px;
-            font-size: 20px;
+            background-color: #FAF7F2;
         }
         .container {
+            height:100px;
             background-color: #3C3B6E;
             color: white;
             padding-top: 10px;
@@ -153,90 +66,195 @@ session_start();
             justify-content: center;
             align-items: center;
             width: 100%;
-            margin-left: 0px;
-            margin-right: 0px;
+            margin: 0;
             max-width: none;
         }
-        .container ul {
+
+        .container > ul {
+            position: relative;
+            margin-top:30px;
+            transform: translateY(-50%);	
+            text-align: center;
+            background-color:#3C3B6E;
+            width:800px;
+        }
+        .container > ul > li{
             list-style-type: none;
-            margin: 0;
-            padding: 0;
-        }
-        .container ul li {
             display: inline;
-            margin-left: 20px;
+            margin-right: 50px;
+            
         }
+        li:hover{
+            font-size: 20px;
+        }
+
         .container ul li a {
             color: white;
             text-decoration: none;
         }
-        .container ul li a:hover {
-            color: #ccc;
+
+        .bandeau {
+            text-decoration: none;
+            color: white;
         }
 
-        .search-box {
-            flex-grow: 1; /* Search elements take all available space */
-            margin: 5px; /* Margin around search bars */
+        #logo {
+            margin-left: 130px;
+            margin-top: 10px;
+            height: 100px;
+            width: 100px;
         }
-        .search-container {
-            #border: 2px solid red;
-            display: flex;              /* Ceci active Flexbox pour le conteneur */
-            justify-content: space-around; /* Ceci répartit l'espace uniformément autour des éléments */
-            flex-direction: row;
-            width: 100%;
-            flex-wrap: wrap;  /* Allows items to wrap as needed */
-            justify-content: center; /* Centers items horizontally */
-            align-items: center;  /* Align items vertically */
 
+        #logo2 {
+            margin-left: 100px;
+            margin-top: 5px;
+            height: 50px;
+            width: 50px;
         }
-        .form-label, {
-            flex: 1;                    /* Ceci permet aux champs de recherche de prendre tout l'espace disponible */
-            margin: 5px;                /* Ceci ajoute un peu d'espace autour des barres pour éviter qu'elles ne se touchent */
+
+        #logo3 {
+            margin-left: 10px;
+            margin-top: 5px;
+            height: 50px;
+            width: 50px;
         }
-        .btn{
-            #border: solid 2px black;
-            width: 200px;
-            border-radius: 50%; /* Pour une forme ovale */
-            background-color: #3C3B6E; /* Couleur de fond bleu royal */
-            color: white; /* Couleur du texte */
-            padding: 10px 20px; /* Espacement interne */
-            border: none; /* Pas de bordure */
-            cursor: pointer; /* Curseur pointeur au survol */
-            font-size: 16px; 
+        .body_graph_compare {
+            max-width: 800px;
+            min-height: 200px;
+            margin: 20px auto;
+            padding: 0px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
         }
-        .barre{
-            #border: solid 2px red;
+        .graph-container {
             margin: 10px;
         }
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #333;
+            padding-top: 20px;
+            font-weight: bold;
+        }
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        .search-box {
+            flex-grow: 1;
+            margin: 5px;
+        }
+        .search-container {
+            display: flex;
+            justify-content: space-around;
+            flex-direction: row;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-label, {
+            flex: 1;
+            margin: 5px;
+        }
+        .form-select{
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        button{
+            display: inline-block;
+            margin-top: 25px;
+            margin-bottom: 0px;
+            padding: 10px 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            border-radius: 50%; /* Valeur qui rend le bouton oval */
+            background-color: #3C3B6E; /* Couleur de fond */
+            color:white;
+            text-align: center;
+            font-size: 16px;
+            border:none;
+        }
+        .barre{
+            margin: 10px;
+            border-radius: 10px;
+            
+        }
         #category{
-            #border: solid 2px green;
             width: 200px;
         }
+        .section{
+            background-color: #F9F3EA;
+            min-height: 10px;
+            padding: 10px;
+        }
+        #comparisonComment{
+            text-align:center; 
+            font-style:italic;
+            
+        }
+        .comparison-table table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th, .comparison-table td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background-color: #f2f2f2;
+        }
+
+        .comparison-table td {
+            background-color: #fdfdfd;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        footer{
+            margin-top: 350px;
+            background-color: #ec1029;
+            color: white;
+            text-align: center;
+            position: static;
+            bottom: 0;
+            width: 100%;
+        }
+
     </style>
 </head>
-
 <body>
-
     <!-- Bandeau en haut de l'écran -->
     <div class="container">
-        <a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo"></a>
+
+        <a href= "accueil.php"><img id="logo" src="images/logo.png" alt="logo" ></a>
 
         <ul>
-        <li><a class= "bandeau" href="comparer.php">Compare</a></li>
-        <li><a class= "bandeau" href="localiser.php">Map</a></li>
-        <li><a class= "bandeau" href="predire.php" >Predict</a></li>
-        <li><a class= "bandeau" href="contact.php" >Contact</a></li>
-        <li><a class= "bandeau" href="search.php" >Search</a></li>
+            <li><a class= "bandeau" href="compare.php">Compare</a></li>
+            <li><a class= "bandeau" href="localisation.php">Map</a></li>
+            <li><a class= "bandeau" href="prediction.html" >Predict</a></li>
+            <li><a class= "bandeau" href="contact.php" >Contact</a></li>
+            <li><a class= "bandeau" href="search_university.html" >Search</a></li>
         </ul>
-        <a href= "favoris.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
-        <a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
+        <a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
+        <a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
     </div>
 
-    <h1>City's comparison</h1>
+    <h1>City comparison</h1>
     <div class="search-container">
         <form method="post" class="search-container">
-            <div class = 'barre'>
-                <label for="ville1" class="form-label">First city :</label>
+            <div class='barre'>
+                <label for="ville1" class="form-label">First city:</label>
                 <select class="form-select" name="ville1" id="ville1" required>
                     <option value="">Choose a city</option>
                     <?php foreach ($villes as $ville) : ?>
@@ -244,8 +262,8 @@ session_start();
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class = 'barre'>
-                <label for="ville2" class="form-label">Second city :</label>
+            <div class='barre'>
+                <label for="ville2" class="form-label">Second city:</label>
                 <select class="form-select" name="ville2" id="ville2" required>
                     <option value="">Choose a city</option>
                     <?php foreach ($villes as $ville) : ?>
@@ -253,75 +271,190 @@ session_start();
                     <?php endforeach; ?>
                 </select>
             </div>
-                
-            
-            <button type="submit" class="btn btn-primary">Compare</button>
+            <button type="submit" class=".oval-button">Compare</button>
         </form>
-
     </div>
+
+    <?php  if ($_SERVER["REQUEST_METHOD"] == "POST") { ?>
 
     <div class="body_graph_compare">
         <div class="graph-container">
             <h2>Total cost of living</h2>
             <canvas id="totalCosts"></canvas>
         </div>
+    </div>
+    <?php
+        // Traitement du formulaire
+       
+            $ville1_id = $_POST["ville1"] ?? '';
+            $ville2_id = $_POST["ville2"] ?? '';
+            // Requête pour le premier graphique - moyenne des coûts de vie des deux villes
+            $queryCoutDeVie = "SELECT ville.name,(2 * Meal + 3 * McMeal + 30 * Capuccino + 10 * CokePepsi + 4 * Milk + 30 * FreshBread + 5 * Rice + 15 * Eggs + 10 * LocalCheese + 5 * ChickenFillets + 3 * BeefRound + 5 * Apples + 5 * Banana + 5 * Oranges + 5 * Tomato + 5 * Potato + 5 * Onion + 2 * Lettuce + 10 * Water + 2 * DomesticBeer + 3 * Cigarettes20Pack + MonthlyPass + 30 * Gasoline  + Internet + FitnessClubMonthly + 4 * Cinema + OneJeansLevis + SummerDress + PairOfNike + PairOfMenShoes + AppartmentOneBedroomCity + BasicFor85m2) AS Total_cost
+                                FROM cout_de_vie
+                                INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout
+                                INNER JOIN ville ON ville.id_ville = avoir.id_ville
+                                WHERE avoir.id_ville IN (?, ?)
+                                GROUP BY ville.name";
+            $stmt = $pdo->prepare($queryCoutDeVie);
+            $stmt->execute([$ville1_id, $ville2_id]);
+            $coutDeVieData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Comparing total cost of living
+            $totalCostsComment = "";
+            if (!empty($coutDeVieData) && count($coutDeVieData) == 2) {
+                if ($coutDeVieData[0]['Total_cost'] > $coutDeVieData[1]['Total_cost']) {
+                    $totalCostsComment = $coutDeVieData[0]['name'] . " has a higher total cost of living compared to " . $coutDeVieData[1]['name'];
+                } else if ($coutDeVieData[0]['Total_cost'] < $coutDeVieData[1]['Total_cost']) {
+                    $totalCostsComment = $coutDeVieData[1]['name'] . " has a higher total cost of living compared to " . $coutDeVieData[0]['name'];
+                } else {
+                    $totalCostsComment = "Both cities have similar total costs of living.";
+                }
+            }
+    ?>
+
+    <div class="section">
+        <p id="comparisonComment"><?=$totalCostsComment;?></p>
+    </div>
+
+    <div class="body_graph_compare">
         <div class="graph-container">
             <h2>Crime infos</h2>
             <canvas id="crimeStats"></canvas>
         </div>
-    </div> 
-    
-    <div class="search-container">
-        <label for="category" class="form-label">Choose a category:</label>
-        <select class="form-select" name="category" id="category">
-            <?php foreach ($categories as $key => $value) : ?>
-                <option value="<?= $key ?>" <?= ($key === 'Services') ? 'selected' : '' ?>><?= $key ?></option>
-            <?php endforeach; ?>
-        </select>
     </div>
 
+    <?php
+            // Requête pour le deuxième graphique - comparaison des attributs de la table "crime"
+            $queryCrimeAttributes = "SELECT ville.name, sum(crime.victims_killed +crime.victims_injured + crime.suspects_killed + crime.suspects_injured + crime.suspects_arrested) as crime_indicator 
+                                    FROM `crime`,ville 
+                                    where crime.id_ville=ville.id_ville and crime.id_ville IN (?, ?) 
+                                    GROUP BY ville.name";
+            $stmt = $pdo->prepare($queryCrimeAttributes);
+            $stmt->execute([$ville1_id, $ville2_id]);
+            $crimeData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Préparation des données pour le graphique
+            $crimeStatsData = ['labels' => [], 'data' => []];
+            foreach ($crimeData as $row) {
+                $crimeStatsData['labels'][] = $row['name'];
+                $crimeStatsData['data'][] = $row['crime_indicator'];
+            }
+
+            $comparisonComment = "";
+            if (!empty($crimeStatsData['data']) && count($crimeStatsData['data']) == 2) {
+                if ($crimeStatsData['data'][0] > $crimeStatsData['data'][1]) {
+                    $comparisonComment = $crimeStatsData['labels'][0] . " has a higher crime indicator compared to " . $crimeStatsData['labels'][1];
+                } else if ($crimeStatsData['data'][0] < $crimeStatsData['data'][1]) {
+                    $comparisonComment = $crimeStatsData['labels'][1] . " has a higher crime indicator compared to " . $crimeStatsData['labels'][0];
+                } else {
+                    $comparisonComment = "Both cities have similar crime rate indicators.";
+                }
+            }
+
+            $categories = [
+                'Services' => '(TaxiStart + TaxiUnKm + Internet + FitnessClubMonthly + OneWayTicket + MonthlyPass + Cinema + OneMminPrepaid) AS Sum_Services',
+                'Food' => '(Meal + MealFor2_people + McMeal + Capuccino + CokePepsi + Milk + FreshBread + Rice + Eggs + LocalCheese + ChickenFillets + BeefRound + Apples + Banana + Oranges + Tomato + Potato + Onion + Lettuce + Water + DomesticBeer) AS Sum_Alimentation',
+                'Accomodation' => '( AppartmentOneBedroomCity ) AS Sum_Logement',
+                'Shopping' => '(PairOfNike + PairOfMenShoes + SummerDress) AS Sum_shopping',
+                'Salary' => '(AverageMonthlyNetSalary) AS AverageMonthlySalary',
+            ];
+        
+            $data = [];
+            foreach ($categories as $key => $value) {
+                $query = "SELECT ville.name, $value FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
+                $stmt = $pdo->prepare($query);
+                $stmt->execute([$ville1_id, $ville2_id]);
+                $data[$key] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+    ?>
+
+    <div class="section">
+        <p id="comparisonComment"><?=$comparisonComment;?></p>
+    </div>
+    <div>
+        <h2>For more details, here you can view the total living costs in different categories</h2>
+    </div>
     <div class="body_graph_compare">
         <!-- Graphs for categories -->
 
-
-<!-- le probleme est de là -->
-
-        <?php        
-         // Récupérer la catégorie sélectionnée à partir des paramètres GET ou utiliser une valeur par défaut
-        $category = $_GET['category'] ?? 'Services';
-
-        // Afficher le graphique correspondant à la catégorie sélectionnée
-        if (isset($data[$category])) {
-            echo '<div class="graph-container">';
-            echo '<h2>' . htmlspecialchars($category) . '</h2>';
-            echo '<canvas id="graph' . htmlspecialchars($category) . '"></canvas>';
-            echo '</div>';
-        } ?>
-        
         <?php foreach ($data as $category => $values): ?>
             <div class="graph-container">
                 <h2><?= $category ?></h2>
                 <canvas id="graph<?= htmlspecialchars($category) ?>"></canvas>
             </div>
         <?php endforeach; ?>
-
-<!-- jusqu'ici je pense ou la derniere partie du script -->
-
     </div>
+
+    
+    <?php 
+        // Query to get detailed cost of living data for the two cities
+        $queryCoutDeVie1 = "SELECT ville.name, ville.id_ville, Meal, McMeal, Capuccino, CokePepsi, Milk, FreshBread, Rice, Eggs, LocalCheese, BeefRound, Apples, Banana, Oranges, Tomato, Potato, Onion, Water, DomesticBeer, OneWayTicket, MonthlyPass, TaxiUnKm, Gasoline, BasicFor85m2, Internet, Cinema, OneJeansLevis, SummerDress, Cigarettes20Pack, PairOfNike, AppartmentOneBedroomCity, AverageMonthlyNetSalary FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
+        $stmt = $pdo->prepare($queryCoutDeVie1);
+        $stmt->execute([$ville1_id, $ville2_id]);
+        $coutDeVieData1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Calculate differences in costs
+        $costDifferences = [];
+        if (count($coutDeVieData1) == 2) {
+            foreach ($coutDeVieData1[0] as $key => $value) {
+                if ($key != 'name' && $key != 'id_ville' && isset($coutDeVieData1[1][$key])) {
+                    $diff = ($coutDeVieData1[1][$key] != 0) ? (($coutDeVieData1[1][$key]- $value) / $value) * 100 : 0;
+                    $costDifferences[$key] = round($diff, 2);
+                }
+            }
+        }
+
+
+    ?>
+    <?php if (!empty($coutDeVieData1)) : ?>
+        <br><h2> Here you can view in details some living costs in different categories</h2>
+        <!-- Display the comparison table -->
+        <div class="body_graph_compare" style ="background-color:#fdfdfd;">
+            <?php
+                // PHP logic and database queries omitted for brevity
+
+                // Display the comparison table
+                echo '<div class="comparison-table">';
+                echo '<table>';
+                echo '<thead>';
+                echo '<tr><th>Cost Item</th><th>' . htmlspecialchars($coutDeVieData1[0]['name']) . '</th><th>' . htmlspecialchars($coutDeVieData1[1]['name']) . '</th><th>Difference (%)</th></tr>';
+                echo '</thead>';
+                echo '<tbody>';
+                foreach ($costDifferences as $key => $diff) {
+                    echo '<tr>';
+                    echo '<td>' . htmlspecialchars($key) . '</td>';
+                    echo '<td>' . htmlspecialchars($coutDeVieData1[0][$key]) . '</td>';
+                    echo '<td>' . htmlspecialchars($coutDeVieData1[1][$key]) . '</td>';
+                    echo '<td style="color:' . ($diff > 0 ? 'green' : 'red') . ';">' . htmlspecialchars($diff) . '%</td>';
+                    echo '</tr>';
+                }
+                echo '</tbody>';
+                echo '</table>';
+                echo '</div>';
+
+            ?>
+        </div>
+
+        <p class ="section" style="text-align:center; margin-top:20px;">In the table above, a positive percentage indicates a lower cost in the first city compared to the second, while a negative percentage indicates a higher cost.</p>
+    
+    <?php endif; ?>
+    <footer style = "margin-top: 50px;">
+        © 2023 UniDiscover
+    </footer>
+
+    <?php }else{?>
 
     <footer>
         © 2023 UniDiscover
     </footer>
 
+    <?php }?>
 
-
-<script>
-        // Définition des données pour les graphiques
+    <script>
+        // JavaScript for handling graphs
         var totalCostsData = <?= json_encode($coutDeVieData); ?>;
-        var crimeStatsData = <?= json_encode($crimeAttributes); ?>;
         var categoryData = <?= json_encode($data); ?>;
 
-        // Création des graphiques
         if (totalCostsData.length > 0) {
             new Chart(document.getElementById('totalCosts'), {
                 type: 'bar',
@@ -330,27 +463,34 @@ session_start();
                     datasets: [{
                         label: 'Total Cost',
                         data: totalCostsData.map(x => x.Total_cost),
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)'
+                        backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)'],
+                        borderColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)']
                     }]
                 }
             });
         }
 
-        if (crimeStatsData.length > 0) {
-            new Chart(document.getElementById('crimeStats'), {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(crimeStatsData[0]),
-                    datasets: [{
-                        label: 'Crime Stats',
-                        data: Object.values(crimeStatsData[0]),
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)'
-                    }]
+        var ctx = document.getElementById('crimeStats').getContext('2d');
+        var crimeChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: <?php echo json_encode($crimeStatsData['labels']); ?>,
+                datasets: [{
+                    label: 'Crime Indicator',
+                    data: <?php echo json_encode($crimeStatsData['data']); ?>,
+                    backgroundColor: ['rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)'],
+                    borderColor: ['rgba(255, 206, 86, 0.5)', 'rgba(75, 192, 192, 0.5)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
-            });
-        }
+            }
+        });
 
         Object.keys(categoryData).forEach(cat => {
             new Chart(document.getElementById('graph' + cat), {
@@ -360,22 +500,18 @@ session_start();
                     datasets: [{
                         label: cat,
                         data: categoryData[cat].map(x => x[Object.keys(x)[1]]),
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)'
+                        backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)'],
+                        borderColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)']
                     }]
                 }
             });
         });
 
-        // JavaScript pour détecter les changements dans le menu déroulant de la catégorie
         document.getElementById('category').addEventListener('change', function() {
-            // Récupérer la valeur sélectionnée dans le menu déroulant
             var selectedCategory = this.value;
-            // Rediriger vers la même page avec la catégorie sélectionnée comme paramètre GET
             window.location.href = window.location.pathname + '?category=' + selectedCategory;
         });
-
-</script>
+    </script>
 
 </body>
 </html>

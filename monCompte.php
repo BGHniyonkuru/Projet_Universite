@@ -7,6 +7,8 @@ $bdd = getBD();
 
 // Récupérez les informations du client depuis la base de données
 $client_info = [];
+$client_recom = ['diplome' => 'No infos! ', 'domaine' => 'No infos! ']; // Initialisation avec des chaînes vides
+
 if(isset($_SESSION['client'])) {
     $requete = "SELECT nom, prenom FROM clients WHERE id_client = :id_client";
     $sql = $bdd->prepare($requete);
@@ -18,7 +20,7 @@ if(isset($_SESSION['client'])) {
     $sql = $bdd->prepare($requete1);
     $sql->bindParam(':id_client', $_SESSION['client']['id']);
     $sql->execute();
-    $client_recom = $sql->fetch(PDO::FETCH_ASSOC);
+    $client_recom = $sql->fetch(PDO::FETCH_ASSOC) ?: ['diplome' => 'No infos! ', 'domaine' => 'No infos! ']; // Utilisez l'opérateur ternaire pour gérer les cas où fetch() renvoie false
 }
 ?>
 <!DOCTYPE html>
@@ -67,35 +69,40 @@ if(isset($_SESSION['client'])) {
         }
 
         .container {
+            height:90px;
             background-color: #3C3B6E;
             color: white;
-            padding: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             width: 100%;
-            margin-left: 0px;
-            margin-right: 0px;
-        }
-
-        .container ul {
-            list-style-type: none;
             margin: 0;
-            padding: 0;
+            max-width: none;
         }
 
-        .container ul li {
+        .container > ul {
+            position: relative;
+            margin-top:30px;
+            transform: translateY(-50%);	
+            text-align: center;
+            background-color:#3C3B6E;
+            width:800px;
+        }
+        .container > ul > li{
+            list-style-type: none;
             display: inline;
-            margin-left: 20px;
+            margin-right: 50px;
+            
+        }
+        li:hover{
+            font-size: 20px;
         }
 
         .container ul li a {
             color: white;
             text-decoration: none;
-        }
-
-        .container ul li a:hover {
-            color: #ccc;
         }
 
 
@@ -170,8 +177,8 @@ if(isset($_SESSION['client'])) {
             padding: 20px;
             margin: 20px auto;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-            max-width: 800px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.8);
+            max-width: 600px;
             text-align: center;
         }
         
@@ -184,18 +191,19 @@ if(isset($_SESSION['client'])) {
     
     <!-- Bandeau en haut de l'écran -->
     <div class="container">
-        <a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo"></a>
 
-        <ul>
-        <li><a class= "bandeau" href="comparer.php">Compare</a></li>
-        <li><a class= "bandeau" href="localiser.php">Map</a></li>
-        <li><a class= "bandeau" href="predire.php" >Predict</a></li>
-        <li><a class= "bandeau" href="contact.php" >Contact</a></li>
-        <li><a class= "bandeau" href="search.php" >Search</a></li>
-        </ul>
-        <a href= "favoris.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
-        <a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
-    </div>
+		<a href= "accueil.php"><img id="logo" src="images/logo.png" alt="logo" ></a>
+	
+		<ul>
+			<li><a class= "bandeau" href="compare.php">Compare</a></li>
+			<li><a class= "bandeau" href="localisation.php">Map</a></li>
+			<li><a class= "bandeau" href="prediction.html" >Predict</a></li>
+			<li><a class= "bandeau" href="contact.php" >Contact</a></li>
+			<li><a class= "bandeau" href="search_university.html" >Search</a></li>
+		</ul>
+		<a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
+		<a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
+	</div>
 
     <img id="logo-between" src="http://localhost/Projet/images/monCompte.png" alt="logo-between">
     
@@ -244,11 +252,9 @@ if(isset($_SESSION['client'])) {
     <div class="infos">
         <p style="text-align: center;">Please log in to view your personal information ! !</p>
     </div>
-    <?php endif; ?>
+    
 </div>
-
-<!-- Bouton de déconnexion -->
-
+    <?php endif; ?>
 
     <!-- Footer -->
     <footer id="footer">

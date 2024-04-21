@@ -5,7 +5,7 @@ session_start();
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
     <title>Accueil</title>
@@ -104,7 +104,7 @@ session_start();
             color: white;
             text-decoration: none;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            transition: 0.3s;
         }
         .quick-links a:hover {
             background-color: #555;
@@ -131,15 +131,16 @@ session_start();
         }
         .section{
             padding:20px;
-            background-color: #cdcfd9;
+            background-color: #F9F3EA;            
             padding: 20px;
             margin: 20px auto;
             border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-            max-width: 800px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.8);
+            max-width: 500px;
             text-align: center;
             min-width: 60%;
         }
+
 		.section-title {
             
 			padding:7px;
@@ -153,14 +154,7 @@ session_start();
             margin-right: auto;
             
         }
-        .container{
-            
-            margin: 0;
-            display: flex;
-            align-items: center; /* Centre verticalement les éléments */
-            height:110px;
-            background-color:#3C3B6E;
-        }
+
         body {
             background-image: url("images/kellym.jpg");
 			background-position: center;
@@ -173,15 +167,7 @@ session_start();
             
             min-height: 100vh;
         }
-        .section {
-            background-color: #EFF0F3;
-            padding: 20px;
-            margin: 20px auto;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-            max-width: 800px;
-
-        }
+        
         .centered-list {
             margin-top: 50px;
             background-color: white;
@@ -218,6 +204,20 @@ session_start();
             margin-bottom: 2px ;
             
         }
+        .container {
+            height:90px;
+            background-color: #3C3B6E;
+            color: white;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            max-width: none;
+        }
+
         .container > ul {
             position: relative;
             margin-top:30px;
@@ -233,8 +233,12 @@ session_start();
             
         }
         li:hover{
-            background-color:#666666;
-            padding: 5px 10px;	
+            font-size: 20px;
+        }
+
+        .container ul li a {
+            color: white;
+            text-decoration: none;
         }
 		
     </style>
@@ -246,11 +250,11 @@ session_start();
     <a href= "accueil.php"><img id="logo" src="images/logo.png" alt="logo" ></a>
 
     <ul>
-        <li><a class= "bandeau" href="comparer.php">Compare</a></li>
+        <li><a class= "bandeau" href="compare.php">Compare</a></li>
         <li><a class= "bandeau" href="localisation.php">Map</a></li>
-        <li><a class= "bandeau" href="predire.php" >Predict</a></li>
+        <li><a class= "bandeau" href="prediction.html" >Predict</a></li>
         <li><a class= "bandeau" href="contact.php" >Contact</a></li>
-        <li><a class= "bandeau" href="search.php" >Search</a></li>
+        <li><a class= "bandeau" href="search_university.html" >Search</a></li>
     </ul>
     <a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
     <a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
@@ -260,7 +264,7 @@ session_start();
         <!-- site description section -->
             <div class="site-description">
                 <?php if(isset($_SESSION['client'])){?>
-                    <p>Welcome to <i><b>UniDiscover </b></i><?php echo $_SESSION['client']['prenom'];?></p>
+                    <p>Welcome to <i><b>UniDiscover </b></i><?php echo $_SESSION['client']['prenom'];?>🤗</p>
                     
                 <?php }else{?>
                     <p>Welcome to <i><b>UniDiscover</b>!</i></p>
@@ -297,7 +301,8 @@ session_start();
             $sql->execute();
 
             $universities = array();
-
+            
+            
             while ($row = $sql->fetch()) {
                 $universities[$row['rank_order']] = $row;
             }
@@ -330,31 +335,32 @@ session_start();
             $sql->execute();
 
             $recommandations = $sql->fetch();
+            if ($recommandations){
 
-            $questions = $recommandations;
-            $diplome = $questions['diplome'];
-            $type_univ = $questions['type_univ'];
-            $budget = $questions['budget'];
-            $etat = $questions['etat'];
-            $domaine_etude = $questions['domaine'];
+                $questions = $recommandations;
+                $diplome = $questions['diplome'];
+                $type_univ = $questions['type_univ'];
+                $budget = $questions['budget'];
+                $etat = $questions['etat'];
+                $domaine_etude = $questions['domaine'];
 
-            // Exécution de la requête SQL pour récupérer les universités correspondantes aux critères
-            $bdd = getBD();
-            $requete = "SELECT universite.name 
-                        FROM universite, ville 
-                        WHERE ville.id_ville = universite.id_ville 
-                        AND universite.price <= $budget 
-                        AND ville.name_etat LIKE '%$etat%'  
-                        AND universite.domaine_etude LIKE '%$domaine_etude%'  
-                        AND universite.description LIKE '%$type_univ%'";
-            $sql = $bdd->prepare($requete);
-            $sql->execute();
+                // Exécution de la requête SQL pour récupérer les universités correspondantes aux critères
+                $bdd = getBD();
+                $requete = "SELECT universite.name 
+                            FROM universite, ville 
+                            WHERE ville.id_ville = universite.id_ville 
+                            AND universite.price <= $budget 
+                            AND ville.name_etat LIKE '%$etat%'  
+                            AND universite.domaine_etude LIKE '%$domaine_etude%'  
+                            AND universite.description LIKE '%$type_univ%'";
+                $sql = $bdd->prepare($requete);
+                $sql->execute();
 
-            $universites_recommandees = array();
-
-            while ($row = $sql->fetch()) {
-                $universites_recommandees[] = $row['name'];
-            }
+                $universites_recommandees = array();
+                
+                    while ($row = $sql->fetch()) {
+                        $universites_recommandees[] = $row['name'];
+                    }
         
     ?>
 
@@ -372,9 +378,10 @@ session_start();
                         echo '<br>';
                     }
                 }else{ 
-                echo 'No university found based exactly on your criteria.';
+                echo 'No university found based exactly on your criteria.😓';
                 }
             }
+        }
             ?>
             </ul>
         </div>
