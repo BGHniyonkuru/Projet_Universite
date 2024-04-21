@@ -9,32 +9,64 @@ session_start();
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 		<title>Universite</title>
 		<style>
-			.bandeau{
+			.bandeau {
             text-decoration: none;
-			color:white;
-			
-			}
+            color: white;
+        }
+        #logo {
+            margin-left: 130px;
+            margin-top: 10px;
+            height: 100px;
+            width: 100px;
+        }
+        #logo2 {
+            margin-left: 100px;
+            margin-top: 5px;
+            height: 50px;
+            width: 50px;
+        }
+        #logo3 {
+            margin-left: 10px;
+            margin-top: 5px;
+            height: 50px;
+            width: 50px;
+        }
+        .container {
+            height:90px;
+            background-color: #3C3B6E;
+            color: white;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            max-width: none;
+        }
 
-			#logo{
-				margin-left:130px;
-				margin-top:10px;
-				height:100px;
-				width:100px;
-			}
+        .container > ul {
+            position: relative;
+            margin-top:30px;
+            transform: translateY(-50%);	
+            text-align: center;
+            background-color:#3C3B6E;
+            width:800px;
+        }
+        .container > ul > li{
+            list-style-type: none;
+            display: inline;
+            margin-right: 50px;
+            
+        }
+        li:hover{
+            font-size: 20px;
+        }
 
-			#logo2{
-				margin-left:100px;
-				margin-top:5px;
-				height:50px;
-				width:50px;
-			}
-
-			#logo3{
-				margin-left:10px;
-				margin-top:5px;
-				height:50px;
-				width:50px;
-			}
+        .container ul li a {
+            color: white;
+            text-decoration: none;
+        }
 		</style>
 		<script>
 		function ajouterAuxFavoris(universite_id) {
@@ -72,7 +104,7 @@ session_start();
 			<ul>
 				<li><a class= "bandeau" href="compare.php">Compare</a></li>
 				<li><a class= "bandeau" href="localisation.php">Map</a></li>
-				<li><a class= "bandeau" href="predire.php" >Predict</a></li>
+				<li><a class= "bandeau" href="prediction.html" >Predict</a></li>
 				<li><a class= "bandeau" href="contact.php" >Contact</a></li>
 				<li><a class= "bandeau" href="search_university.html" >Search</a></li>
 			</ul>
