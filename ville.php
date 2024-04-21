@@ -168,6 +168,39 @@ session_start();
             font-style:italic;
             
         }
+        .comparison-table table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th, .comparison-table td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background-color: #f2f2f2;
+        }
+
+        .comparison-table td {
+            background-color: #fdfdfd;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        footer{
+            margin-top: 350px;
+            background-color: #ec1029;
+            color: white;
+            text-align: center;
+            position: static;
+            bottom: 0;
+            width: 100%;
+        }
+
     </style>
 </head>
 <body>
@@ -319,9 +352,65 @@ session_start();
         <?php endforeach; ?>
     </div>
 
+    
+    <?php 
+        // Query to get detailed cost of living data for the two cities
+        $queryCoutDeVie1 = "SELECT ville.name, ville.id_ville, Meal, McMeal, Capuccino, CokePepsi, Milk, FreshBread, Rice, Eggs, LocalCheese, BeefRound, Apples, Banana, Oranges, Tomato, Potato, Onion, Water, DomesticBeer, OneWayTicket, MonthlyPass, TaxiUnKm, Gasoline, BasicFor85m2, Internet, Cinema, OneJeansLevis, SummerDress, PairOfNike, AppartmentOneBedroomCity, AverageMonthlyNetSalary FROM cout_de_vie INNER JOIN avoir ON cout_de_vie.id_cout = avoir.id_cout INNER JOIN ville ON ville.id_ville = avoir.id_ville WHERE avoir.id_ville IN (?, ?) GROUP BY ville.name";
+        $stmt = $pdo->prepare($queryCoutDeVie1);
+        $stmt->execute([$ville1_id, $ville2_id]);
+        $coutDeVieData1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Calculate differences in costs
+        $costDifferences = [];
+        if (count($coutDeVieData1) == 2) {
+            foreach ($coutDeVieData1[0] as $key => $value) {
+                if ($key != 'name' && $key != 'id_ville' && isset($coutDeVieData1[1][$key])) {
+                    $diff = ($coutDeVieData1[1][$key] != 0) ? (($coutDeVieData1[1][$key]- $value) / $value) * 100 : 0;
+                    $costDifferences[$key] = round($diff, 2);
+                }
+            }
+        }
+
+
+    ?>
+    <?php if (!empty($coutDeVieData1)) : ?>
+        <br><h2> Here you can view in details some living costs in different categories</h2>
+        <!-- Display the comparison table -->
+        <div class="body_graph_compare" style ="background-color:#fdfdfd;">
+            <div class="comparison-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cost Item</th>
+                            <th><?= htmlspecialchars($coutDeVieData1[0]['name']); ?></th>
+                            <th><?= htmlspecialchars($coutDeVieData1[1]['name']); ?></th>
+                            <th>Difference (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($costDifferences as $key => $diff) : ?>
+                            <tr>
+                                <td><?= htmlspecialchars($key); ?></td>
+                                <td>$<?= htmlspecialchars($coutDeVieData1[0][$key]); ?></td>
+                                <td>$<?= htmlspecialchars($coutDeVieData1[1][$key]); ?></td>
+                                <td style="color: <?= ($diff > 0) ? 'green' : 'red'; ?>;"><?= $diff; ?>%</td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    <?php endif; ?>
+    <footer style = "margin-top: 50px;">
+        © 2023 UniDiscover
+    </footer>
+
+    <?php }else{?>
+
     <footer>
         © 2023 UniDiscover
     </footer>
+
     <?php }?>
 
     <script>

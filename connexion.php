@@ -1,6 +1,3 @@
-<?php
-session_start(); 
-?>
 <!DOCTYPE html >
 <html>
 <head>
@@ -12,7 +9,11 @@ session_start();
 
 <div class="carre_connexion">
 
+<?php
 
+session_start(); 
+
+?>
 
 <form action="connecter.php" method="post" autocomplete="on">
     <label for="email">Email address :</label>
@@ -24,7 +25,7 @@ session_start();
     <button id="oval-button-inscr" type="submit">Sign in</button>
 </form>
 
-<p></br> </br> Don't have an account? <a href="http://localhost/Projet/inscription.php">Click here</a></p>
+<p></br> </br> Don't have an account? <a href="inscription.php">Click here</a></p>
 </div>
 
 <script>

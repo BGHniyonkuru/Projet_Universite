@@ -67,7 +67,7 @@ session_start();
 	
 	<!-- bandeau en haut de l'écran -->
 		<div class="container">
-			<a href= "accueil.php"><img id="logo" src="/Projet_universite/images/logo.png" alt="logo" ></a>
+			<a href= "accueil.php"><img id="logo" src="images/logo.png" alt="logo" ></a>
 
 			<ul>
 				<li><a class= "bandeau" href="compare.php">Compare</a></li>
@@ -114,7 +114,7 @@ session_start();
 				$description=$row['description'];
 				$description2=$row['description2'];
 				$description3=$row['description3'];
-				echo "<div id='container1' style='background-color: #666666; text-align: center;'><p id='nom_univ' >" . $universite_name . "</p><a href='http://localhost/Projet_universite/search_university.html'><img id='loupe' src='images/loupe.png' alt='loupe' ></a></div>";
+				echo "<div id='container1' style='background-color: #666666; text-align: center;'><p id='nom_univ' >" . $universite_name . "</p><a href='search_university.html'><img id='loupe' src='images/loupe.png' alt='loupe' ></a></div>";
 				echo "<button type='button' id='favori' onclick='ajouterAuxFavoris($universite_id)' style='border: none; background: none; cursor: pointer; float: right; margin-top: 10px;'>
 						<img id='etoile' src='images/etoile.jpg' alt='etoile' style='height: 30px; width: 30px;'></button>";	
 				if (!empty($row['image'])) {
