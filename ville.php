@@ -236,16 +236,18 @@ session_start();
 <body>
     <!-- Bandeau en haut de l'écran -->
     <div class="container">
-        <a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo"></a>
+
+        <a href= "accueil.php"><img id="logo" src="images/logo.png" alt="logo" ></a>
+
         <ul>
             <li><a class= "bandeau" href="compare.php">Compare</a></li>
             <li><a class= "bandeau" href="localisation.php">Map</a></li>
-            <li><a class= "bandeau" href="predire.php" >Predict</a></li>
+            <li><a class= "bandeau" href="prediction.html" >Predict</a></li>
             <li><a class= "bandeau" href="contact.php" >Contact</a></li>
-            <li><a class= "bandeau" href="search.php" >Search</a></li>
+            <li><a class= "bandeau" href="search_university.html" >Search</a></li>
         </ul>
-        <a href= "favoris.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
-        <a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
+        <a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
+        <a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
     </div>
 
     <h1>City comparison</h1>

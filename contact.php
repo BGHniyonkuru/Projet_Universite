@@ -12,14 +12,40 @@ session_start();
     <title>Contact</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            margin: 0px;
+            padding: 0px;
+            #font-family: Arial, sans-serif;
             background-color: #D7DCE3;
         }
 
-        .container {
-            height:90px;
+        .bandeau{
+            text-decoration: none;
+			color:white;
+			
+			}
+
+			#logo{
+				margin-left:130px;
+				margin-top:10px;
+				height:100px;
+				width:100px;
+			}
+
+			#logo2{
+				margin-left:100px;
+				margin-top:5px;
+				height:50px;
+				width:50px;
+			}
+
+			#logo3{
+				margin-left:10px;
+				margin-top:5px;
+				height:50px;
+				width:50px;
+			}
+			.container {
+            height:120px;
             background-color: #3C3B6E;
             color: white;
             padding-top: 10px;
@@ -54,33 +80,6 @@ session_start();
             color: white;
             text-decoration: none;
         }
-
-        .bandeau{
-            text-decoration: none;
-			color:white;
-			
-		}
-
-		#logo{
-			margin-left:130px;
-			margin-top:10px;
-			height:100px;
-			width:100px;
-		}
-
-		#logo2{
-			margin-left:100px;
-			margin-top:5px;
-			height:50px;
-			width:50px;
-		}
-        #logo3{
-			margin-left:10px;
-			margin-top:5px;
-			height:50px;
-			width:50px;
-        }
-
 
         .section {
             
@@ -151,19 +150,20 @@ session_start();
 <body>
 
 <!-- Bandeau en haut de l'écran -->
-<div class="container">
-        <a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo"></a>
+    <div class="container">
 
-        <ul>
-        <li><a class= "bandeau" href="compare.php">Compare</a></li>
-        <li><a class= "bandeau" href="localisation.php">Map</a></li>
-        <li><a class= "bandeau" href="predire.php" >Predict</a></li>
-        <li><a class= "bandeau" href="contact.php" >Contact</a></li>
-        <li><a class= "bandeau" href="search.php" >Search</a></li>
-    </ul>
-        <a href= "favoris.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
-        <a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
-    </div>
+		<a href= "accueil.php"><img id="logo" src="images/logo.png" alt="logo" ></a>
+	
+		<ul>
+			<li><a class= "bandeau" href="compare.php">Compare</a></li>
+			<li><a class= "bandeau" href="localisation.php">Map</a></li>
+			<li><a class= "bandeau" href="prediction.html" >Predict</a></li>
+			<li><a class= "bandeau" href="contact.php" >Contact</a></li>
+			<li><a class= "bandeau" href="search_university.html" >Search</a></li>
+		</ul>
+		<a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
+		<a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
+	</div>
 <div class="section">
     <p>Unidiscover was created by 5 students at <b>Paul Valéry Montpellier 3</b> in L3 MIASHS as part of a group project in project management.</p>
 </div>
