@@ -10,9 +10,6 @@ session_start();
 
     <title>Accueil</title>
     <style>
-        *{
-            border: none;
-        }
         .bandeau {
             text-decoration: none;
             color: white;

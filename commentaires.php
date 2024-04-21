@@ -1,5 +1,45 @@
 <?php
 session_start();
+include('bd.php');
+
+$conn = getBdd();
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Vérification si le formulaire a été soumis
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id_client= $_SESSION['client']['id'];
+    $nom = trim($_POST['name']);
+    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+    $commentaire = trim($_POST['comments']);
+
+    if (empty($nom) || !filter_var($email, FILTER_VALIDATE_EMAIL) || empty($commentaire)) {
+        $_SESSION['alert'] = ['message' => "Please fill in all fields correctly.", 'type' => "error"];
+    } else {
+        $sql = "INSERT INTO commentaires (id_client, email, comments) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        if ($stmt === false) {
+            die("MySQL prepare error: " . $conn->error);
+        }
+
+        $stmt->bind_param("sss", $id_client, $email, $commentaire);
+        if ($stmt->execute()) {
+            $_SESSION['alert'] = ['message' => "Thank you for your comments, $nom!", 'type' => "success"];
+        } else {
+            $_SESSION['alert'] = ['message' => "Error sending comments: " . $stmt->error, 'type' => "error"];
+        }
+        $stmt->close();
+    }
+    $conn->close();
+    header("Location: contact.php");  // Redirection vers la page de contact
+    exit();
+}
+?>
+
+<?php
+/*session_start();
 
 include('bd.php');
 
@@ -41,5 +81,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit();
 }
 
-$conn->close();
+$conn->close();*/
 ?>
