@@ -8,6 +8,7 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <title>Contact</title>
     <style>
         body {
@@ -54,16 +55,32 @@ session_start();
             text-decoration: none;
         }
 
+        .bandeau{
+            text-decoration: none;
+			color:white;
+			
+		}
 
-        #logo {
-            height: 100px;
-            width: 100px;
+		#logo{
+			margin-left:130px;
+			margin-top:10px;
+			height:100px;
+			width:100px;
+		}
+
+		#logo2{
+			margin-left:100px;
+			margin-top:5px;
+			height:50px;
+			width:50px;
+		}
+        #logo3{
+			margin-left:10px;
+			margin-top:5px;
+			height:50px;
+			width:50px;
         }
 
-        #logo2, #logo3 {
-            height: 50px;
-            width: 50px;
-        }
 
         .section {
             
@@ -133,20 +150,20 @@ session_start();
 
 <body>
 
+<!-- Bandeau en haut de l'écran -->
 <div class="container">
-    <a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo"></a>
+        <a href= "accueil.php"><img id="logo" src="http://localhost/Projet/images/logo.png" alt="logo"></a>
 
-    <ul>
+        <ul>
         <li><a class= "bandeau" href="compare.php">Compare</a></li>
         <li><a class= "bandeau" href="localisation.php">Map</a></li>
-        <li><a class= "bandeau" href="predire.php">Predict</a></li>
-        <li><a class= "bandeau" href="contact.php">Contact</a></li>
-        <li><a class= "bandeau" href="search.php">Search</a></li>
+        <li><a class= "bandeau" href="predire.php" >Predict</a></li>
+        <li><a class= "bandeau" href="contact.php" >Contact</a></li>
+        <li><a class= "bandeau" href="search.php" >Search</a></li>
     </ul>
-
-    <a href= "favoris.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
-    <a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
-</div>
+        <a href= "favoris.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
+        <a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
+    </div>
 <div class="section">
     <p>Unidiscover was created by 5 students at <b>Paul Valéry Montpellier 3</b> in L3 MIASHS as part of a group project in project management.</p>
 </div>
@@ -179,9 +196,9 @@ session_start();
     </div>
 </div>
 
-<?php /*if (isset($_SESSION['client'])): */?>
+<?php if (isset($_SESSION['client'])): ?>
 <div class="section">
-    <p><?php /*echo  $_SESSION['client']['prenom'] . ','; */?>Want to leave us a little message, a suggestion or anything else? Please go on.</p>
+    <p><?php echo  $_SESSION['client']['prenom'] . ','; ?>Want to leave us a little message, a suggestion or anything else? Please go on.⌨️</p>
 
     <div id="formulaire">
         <form action="commentaires.php" method="post" autocomplete="off">
@@ -209,12 +226,24 @@ session_start();
     </div>
     <p style="font-size: 10px;">*:required fields</p>
 </div>
-<?php /*endif; */?>
+<?php
+endif; ?>
 
 <footer id="footer">
     Copyright © 2023 UniDiscover
 </footer>
 
+<script>
+<?php if (isset($_SESSION['alert'])): ?>
+    Swal.fire({
+        title: '<?php echo ($_SESSION['alert']['type'] == "success" ? "Success!" : "Error!"); ?>',
+        text: '<?php echo $_SESSION['alert']['message']; ?>',
+        icon: '<?php echo $_SESSION['alert']['type']; ?>',
+        confirmButtonText: 'OK'
+    });
+    <?php unset($_SESSION['alert']); ?>
+<?php endif; ?>
+</script>
 
 
 </body>

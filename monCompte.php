@@ -7,6 +7,8 @@ $bdd = getBD();
 
 // Récupérez les informations du client depuis la base de données
 $client_info = [];
+$client_recom = ['diplome' => 'No infos! ', 'domaine' => 'No infos! ']; // Initialisation avec des chaînes vides
+
 if(isset($_SESSION['client'])) {
     $requete = "SELECT nom, prenom FROM clients WHERE id_client = :id_client";
     $sql = $bdd->prepare($requete);
@@ -18,7 +20,7 @@ if(isset($_SESSION['client'])) {
     $sql = $bdd->prepare($requete1);
     $sql->bindParam(':id_client', $_SESSION['client']['id']);
     $sql->execute();
-    $client_recom = $sql->fetch(PDO::FETCH_ASSOC);
+    $client_recom = $sql->fetch(PDO::FETCH_ASSOC) ?: ['diplome' => 'No infos! ', 'domaine' => 'No infos! ']; // Utilisez l'opérateur ternaire pour gérer les cas où fetch() renvoie false
 }
 ?>
 <!DOCTYPE html>
@@ -197,7 +199,7 @@ if(isset($_SESSION['client'])) {
         <li><a class= "bandeau" href="predire.php" >Predict</a></li>
         <li><a class= "bandeau" href="contact.php" >Contact</a></li>
         <li><a class= "bandeau" href="search.php" >Search</a></li>
-        </ul>
+    </ul>
         <a href= "favoris.php"><img id="logo2" src="http://localhost/Projet/images/favori.png" alt="logo"></a>
         <a href= "monCompte.php"><img id="logo3" src="http://localhost/Projet/images/monCompte.png" alt="logo"></a>
     </div>
