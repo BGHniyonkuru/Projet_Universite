@@ -72,20 +72,19 @@ session_start();
 <body>
     <?php
         include "menu_bar.html";
-        if (empty($_POST['university1']) || empty($_POST['university2'])) {
+        if (empty($_GET['university1']) || empty($_GET['university2'])) {
             echo "<p>Both university names must be provided.</p>";
         } else {
-            $university1 = $_POST['university1'];
-            $university2 = $_POST['university2'];
-            $year = $_POST['year'];
- 
+            $university1 = isset($_GET['university1']) ? $_GET['university1'] : 'Default1';
+            $university2 = isset($_GET['university2']) ? $_GET['university2'] : 'Default2';
+            $year = isset($_GET['year']) ? $_GET['year'] : date('Y');
         }
     ?>
 
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <form id="universityForm" class="form-inline justify-content-center" action="comparison_2unis.php" method="z">
+                <form id="universityForm" class="form-inline justify-content-center" action="comparison_2unis.php" method="get">
                     <input class="form-control mr-2 search-input" type="text" name="university1" placeholder="First University" required>
                     <input class="form-control mr-2 search-input" type="text" name="university2" placeholder="Second University" required>
                     <input class="form-control mr-2 search-input" type="number" name="year" placeholder="Year" value="<?php echo date('Y'); ?>" required>
@@ -108,7 +107,7 @@ session_start();
             </div>
         </div>
     <script>
-        function updateCharts(university1, university2, year) {
+        async function updateCharts(university1, university2, year) {
             fetchChartData('scores.php', university1, university2, year)
                 .then(data => createRadarChart(data))
                 .catch(error => console.error('Error fetching scores:', error));
@@ -122,18 +121,28 @@ session_start();
                 .catch(error => console.error('Error fetching ranks:', error));
                 }
 
-        function fetchChartData(url, university1, university2, year) {
+        async function fetchChartData(url, university1, university2, year) {
             return fetch(`${url}?university1=${encodeURIComponent(university1)}&university2=${encodeURIComponent(university2)}&year=${encodeURIComponent(year)}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
                     return response.json();
+                })
+                .catch(error => {
+                    console.error('Failed to fetch data:', error);
+                    throw error;  // Rethrow after logging
                 });
         }
+
+        var radarChart;
+        var lineChart;
         
-        function createLineChart(data) {
+        async function createLineChart(data) {
             const ctx = document.getElementById('lineChart').getContext('2d');
+            if (window.lineChart) {
+                window.lineChart.destroy(); // Destroy the existing chart before creating a new one
+            }
             const lineData = {
                 labels: data.ranks.reduce((acc, cur) => {
                     if (!acc.includes(cur.annee)) {
@@ -158,7 +167,7 @@ session_start();
                     return result;
                 }, [])
             };
-            new Chart(ctx, {
+            window.lineChart = new Chart(ctx, {
                 type: 'line',
                 data: lineData,
                 options: {
@@ -174,8 +183,11 @@ session_start();
                 }
             });
         }
-        function createRadarChart(data) {
+        async function createRadarChart(data) {
             const ctx = document.getElementById('radarChart').getContext('2d');
+            if (window.radarChart) {
+                window.radarChart.destroy(); // Destroy the existing chart before creating a new one
+            }
             const radarData = {
                 labels: ['Teaching', 'Research', 'Citations', 'Industry Income', 'International Outlook'],
                 datasets: data.scores.map(univ => ({
@@ -193,7 +205,8 @@ session_start();
                     pointBackgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
                 }))
             };
-            new Chart(ctx, {
+
+            window.radarChart =new Chart(ctx, {
                 type: 'radar',
                 data: radarData,
                 options: {
@@ -206,47 +219,17 @@ session_start();
             });
         }
 
-        document.getElementById('universityForm').addEventListener('submit', function(e) {
+        document.getElementById('universityForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            var data = {
-                university1: '<?php echo $university1; ?>',
-                university2: '<?php echo $university2; ?>',
-                year: '<?php echo $year; ?>'
-            };
-            function fetchDataAndGenerateCharts() {
-                fetch('scores.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({university1: '<?php echo $university1; ?>', university2: '<?php echo $university2; ?>', year: '<?php echo $year; ?>'})
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Scores data:', data);  // Debugging line
-                    createRadarChart(data);
-                })
-                .catch(error => console.error('Error fetching scores:', error));
+            var university1 = document.querySelector('[name="university1"]').value;
+            var university2 = document.querySelector('[name="university2"]').value;
+            var year = document.querySelector('[name="year"]').value;
 
-                fetch('rank.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({university1: '<?php echo $university1; ?>', university2: '<?php echo $university2; ?>', year: '<?php echo $year; ?>'})
-                })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Ranks data:', data);  // Debugging line
-                    createLineChart(data);
-                })
-                .catch(error => console.error('Error fetching ranks:', error));
-            }
-            fetchDataAndGenerateCharts();
+            console.log("Form data:", university1, university2, year);
+            console.clear();
+            updateCharts(university1, university2, year);
 
-            const university1 = document.querySelector('[name="university1"]').value;
-            const university2 = document.querySelector('[name="university2"]').value;
-            const year = document.querySelector('[name="year"]').value;
 
             fetch(`fetch_data.php?university1=${encodeURIComponent(university1)}&university2=${encodeURIComponent(university2)}&year=${encodeURIComponent(year)}`)
                 .then(response => response.json())
