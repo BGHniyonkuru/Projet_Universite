@@ -1,5 +1,40 @@
 <?php
-session_start();
+    session_start();
+    require_once("bd.php");
+        function fetch_data($annee){
+            $bdd = getBD();
+        
+            $query = "SELECT u.name as university_name, v.name_etat as state, c.scores_teaching, c.scores_international_outlook, rank_order
+            FROM universite u
+            JOIN etre e ON e.id_universite = u.id_universite
+            JOIN ville v ON u.id_ville = v.id_ville
+            JOIN classement c ON e.id_classement = c.id_classement
+            WHERE c.annee = :annee";
+
+            $result = $bdd->prepare($query);
+            $result->bindValue(':annee', $annee, PDO::PARAM_STR);
+            $result->execute();
+
+            $data = array();
+            
+            while($row = $result->fetch(PDO::FETCH_ASSOC)){
+                $data[] = $row; // Simplified data addition
+            }
+            return $data;
+        }
+        
+        $scatterData = fetch_data(2023);
+
+        function fetch_universities() {
+            $bdd = getBD();
+            $query = "SELECT DISTINCT name FROM universite ORDER BY name ASC";
+            $result = $bdd->query($query);
+            $universities = $result->fetchAll(PDO::FETCH_ASSOC);
+            return $universities;
+        }
+        
+        $universities = fetch_universities();
+
 ?>
 <!DOCTYPE html >
 <html>
@@ -53,9 +88,9 @@ session_start();
             justify-content: center;
             align-items: center;
         }
-        .graph-container {
-            margin: 10px;
-        }
+            .graph-container {
+                margin: 10px;
+            }
 
             @media screen and (max-width: 768px) {
             .search-form {
@@ -67,133 +102,155 @@ session_start();
                 margin-right: 0;
             }
             }
+
+    
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%; /* Full height */
+                background-color: #f0f2f5;
+            }
+
+            .bandeau {
+                text-decoration: none;
+                color: white;
+            }
+
+            #logo {
+                margin-left: 130px;
+                margin-top: 10px;
+                height: 90px;
+                width: 90px;
+            }
+
+            #logo2 {
+                margin-left: 100px;
+                margin-top: 5px;
+                height: 50px;
+                width: 50px;
+            }
+
+            #logo3 {
+                margin-left: 10px;
+                margin-top: 5px;
+                height: 50px;
+                width: 50px;
+            }
+
+            .container {
+                height:100px;
+                background-color: #3C3B6E;
+                color: white;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                margin: 0;
+                max-width: none;
+            }
+
+            .container > ul {
+                position: relative;
+                margin-top:30px;
+                transform: translateY(-50%);	
+                text-align: center;
+                background-color:#3C3B6E;
+                width:800px;
+            }
+            .container > ul > li{
+                list-style-type: none;
+                display: inline;
+                margin-right: 50px;
+                
+            }
+            li:hover{
+                font-size: 20px;
+            }
+
+            .container ul li a {
+                color: white;
+                text-decoration: none;
+            }
         </style>
     
 	</head>
 	<body>
-        <?php
-            include "menu_bar.html";
-        ?>
+        <div class="container">
 
-        <div class="container mt-3">
+        <a href= "accueil.php"><img id="logo" src="images/logo.png" alt="logo" ></a>
+
+        <ul>
+            <li><a class= "bandeau" href="compare.php">Compare</a></li>
+            <li><a class= "bandeau" href="localisation.php">Map</a></li>
+            <li><a class= "bandeau" href="prediction.html" >Predict</a></li>
+            <li><a class= "bandeau" href="contact.php" >Contact</a></li>
+            <li><a class= "bandeau" href="search_university.html" >Search</a></li>
+        </ul>
+        <a href= "favoris.php"><img id="logo2" src="images/favori.png" alt="logo"></a>
+        <a href= "monCompte.php"><img id="logo3" src="images/monCompte.png" alt="logo"></a>
+        </div>
+
+        <div class="form-container mt-3">
             <div class="row">
                 <div class="col-md-6 mx-auto">
-                    <form class="search-form" action="comparison_2unis.php" method="GET">
-                        <input class="form-control mr-2 search-input" type="text" name="university1" placeholder="First university" value="<?php echo isset($_GET['university1']) ? htmlspecialchars($_GET['university1']) : ""; ?>">
-                        <input class="form-control mr-2 search-input" type="text" name="university2" placeholder="Second university" value="<?php echo isset($_GET['university2']) ? htmlspecialchars($_GET['university2']) : ""; ?>">
+                    <form class="search-form" action="#" method="GET" onsubmit="fetchAndDisplay(); return false;">
+                        <select class="form-control mr-2 search-input" name="university1">
+                            <option value="">Select First University</option>
+                            <?php foreach($universities as $university): ?>
+                                <option value="<?php echo htmlspecialchars($university['name']); ?>" <?php echo (isset($_GET['university1']) && $_GET['university1'] == $university['name']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($university['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <select class="form-control mr-2 search-input" name="university2">
+                            <option value="">Select Second University</option>
+                            <?php foreach($universities as $university): ?>
+                                <option value="<?php echo htmlspecialchars($university['name']); ?>" <?php echo (isset($_GET['university2']) && $_GET['university2'] == $university['name']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($university['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+
                         <input class="form-control mr-2 search-input" type="number" name="year" placeholder="Year" value="<?php echo isset($_GET['year']) ? htmlspecialchars($_GET['year']) : ""; ?>">
-                        <button class="btn btn-primary search-button" type="submit"><img src="assets/Images/search.png" alt="Search"></button>
+                        <button class="btn btn-primary search-button" type="submit"><img src="images/search.png" alt="Search"></button>
                     </form>
                 </div>
             </div>
         </div>
-
-
-
-
-        <?php
-        require_once("bd.php");
-        function fetch_data($annee, $criteria){
-            $bdd = getBD();
-            $select_columns = "";
-
-            switch($criteria){
-                case "scatter":
-                    $select_columns = "u.name as university_name, v.name_etat as state, c.scores_teaching, c.scores_international_outlook, rank_order";
-                    break;
-                case"scores":
-                    $select_columns= "u.name as university_name, v.name_etat as state, (c.scores_teaching + c.scores_research + c.scores_citations + c.scores_industry_income + c.scores_international_outlook + c.stats_number_students + c.stats_pc_intl_students + c.stats_student_staff_ratio) / 8 AS average_score";
-                    break;
-            }
-
-            $query = "SELECT $select_columns
-            FROM universite u
-            JOIN etre e ON e.id_universite = u.id_universite
-            JOIN ville v ON u.id_ville = v.id_ville
-            JOIN classement c ON e.id_classement = c.id_classement
-            WHERE c.annee = :annee";
-
-            $result = $bdd->prepare($query);
-            $result->bindValue(':annee', $annee, PDO::PARAM_STR);
-            $result->execute();
-
-            $data = array();
-            
-            while($row = $result->fetch(PDO::FETCH_ASSOC)){
-                $data[] = $row; // Simplified data addition
-            }
-            return $data;
-        }
-        
-        $scatterData = fetch_data(2023, "scatter");
-        $scores = fetch_data(2023, "scores");
-
-        // Loading the code from comparison_unis.php to review it
-        
-    ?>
     
 
-    <div class="body_graph_compare">
-        <div class="graph-container">
+        <div class="body_graph_compare">
+            <div class="graph-container">
 
-            <h1> Comparisons by rank order</h1>
-            <canvas id="chart" width="100" height="50"></canvas>
+                <h1> Comparisons by rank order</h1>
+                <canvas id="chart" width="100" height="150"></canvas>
+            </div>
         </div>
-    </div>
+
+        <div class="body_graph_compare" style="display: none;" id="radarContainer">
+            <div class="graph-container">
+                <h2 class="text-center mt-5">Scores Comparison</h2>
+                <canvas id="radarChart"></canvas>
+            </div>
+        </div>
+        
+        <div class="body_graph_compare" style="display: none;" id="lineContainer">
+            <div class="graph-container">
+                <h2 class="text-center mt-5">Rank Evolution</h2>
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
     
-    <div class="body_graph_compare">
-        <div class="graph-container">
-            <h1>Composition</h1>
-            <canvas id="scoresPieChart"
-             width="50" height="50"></canvas>
-
-        </div>
-    </div>
         <footer>
             Copyright © 2023 UniDiscover
         </footer> 
         
 
-        <script> 
-
-            function calculateIntervals(data, numIntervals) {
-                const sortedData = data.sort((a, b) => a.criteria - b.criteria);
-                const intervalSize = Math.ceil(sortedData.length / numIntervals);
-                const intervals = {};
-                for (let i = 0; i < numIntervals; i++) {
-                    const startIndex = i * intervalSize;
-                    const endIndex = Math.min(startIndex + intervalSize - 1, sortedData.length - 1);
-                    const key = `Interval ${i + 1}: ${sortedData[startIndex].criteria} to ${sortedData[endIndex].criteria}`;
-                    intervals[key] = sortedData.slice(startIndex, endIndex + 1).length; // Store the count of universities in this interval
-                }
-                return intervals;
-            }
-
-            function groupDataByInterval(data, intervals) {
-                var groupedData = {};
-
-                // Initialize grouped data array
-                for (var key in intervals) {
-                    groupedData[key] = [];
-                }
-
-                // Loop through the data and assign each entry to an interval
-                data.forEach(function(entry) {
-                    var score = entry.criteria;
-                    for (var key in intervals) {
-                        var interval = intervals[key];
-                        if (score >= interval[0] && score <= interval[1]) {
-                            groupedData[key].push(entry);
-                            break;
-                        }
-                    }
-                });
-
-                return groupedData;
-            }
-
-              
-            async function chartIt(){
+        <script>
+        
+            async function chartIt(initialData){
                 const data = <?php echo json_encode($scatterData); ?>;
                 const ctx = document.getElementById('chart').getContext('2d');
                         
@@ -202,7 +259,7 @@ session_start();
                     data: {
                         datasets: [{
                             label: 'Teaching vs International Outlook',
-                            data: data.map(item => ({
+                            data: initialData.map(item => ({
                                 x: item.scores_teaching,
                                 y: item.scores_international_outlook,
                                 r: 10,
@@ -241,65 +298,144 @@ session_start();
                 });
                                                 
                     
-            }            
-            
-            function generatePieChart(intervals, title, canvasId) {
-                const ctx = document.getElementById(canvasId).getContext('2d');
-                const dataPoints = Object.values(intervals);
-                const total = dataPoints.reduce((acc, curr) => acc + curr, 0);
+            }
 
-                const data = {
-                    labels: Object.keys(intervals),
-                    datasets: [{
-                        data: dataPoints,
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#E7E9ED', '#4BC0C0'],
-                        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#E7E9ED', '#4BC0C0']
-                    }]
+            async function updateCharts(university1, university2, year) {
+                const url = `fetch_data.php?university1=${encodeURIComponent(university1)}&university2=${encodeURIComponent(university2)}&year=${encodeURIComponent(year)}`;
+                try {
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    createRadarChart(data);
+                    createLineChart(data);
+                    document.getElementById('radarContainer').style.display = 'block';
+                    document.getElementById('lineContainer').style.display = 'block';
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            }
+
+            async function fetchChartData(url, university1, university2, year) {
+                const fetchUrl = `${url}?university1=${encodeURIComponent(university1)}&university2=${encodeURIComponent(university2)}&year=${encodeURIComponent(year)}`;
+                try {
+                    const response = await fetch(fetchUrl);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Failed to fetch data:', error);
+                    return null;  // You might want to handle this case explicitly in your calling function
+                }
+            }
+
+            var radarChart;
+            var lineChart;
+              
+            
+            
+            async function createLineChart(data) {
+                const ctx = document.getElementById('lineChart').getContext('2d');
+                if (window.lineChart) {
+                    window.lineChart.destroy(); // Destroy the existing chart before creating a new one
+                }
+                const lineData = {
+                    labels: data.ranks.reduce((acc, cur) => {
+                        if (!acc.includes(cur.annee)) {
+                            acc.push(cur.annee);
+                        }
+                        return acc;
+                    }, []),
+                    datasets: data.ranks.reduce((result, rank) => {
+                        let found = result.find(r => r.label === rank.university_name);
+                        if (!found) {
+                            found = {
+                                label: rank.university_name,
+                                data: [],
+                                fill: false,
+                                backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.2)`,
+                                borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
+                                pointBackgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
+                            };
+                            result.push(found);
+                        }
+                        found.data.push(rank.rank_order);
+                        return result;
+                    }, [])
                 };
-                console.log("Data Points: ", dataPoints);
-                console.log("Total: ", total);
-                new Chart(ctx, {
-                    type: 'pie',
-                    data: data,
+                window.lineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: lineData,
                     options: {
-                        responsive: true,
-                        tooltips: {
-                            enabled: true,
-                            mode: 'single',
-                            callbacks: {
-                                label: function(tooltipItem, data) {
-                                    const label = data.labels[tooltipItem.index];
-                                    const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                                    const percentage = ((value/total) * 100).toFixed(2); // Calculate the percentage
-                                    return '${label}: ${value} (${percentage}%)';
+                        scales: {
+                            y: {
+                                reverse: false,  // because a lower rank is better
+                                title: {
+                                    display: true,
+                                    text: 'University Rank'
                                 }
                             }
-                        },
-                        title: {
-                            display: true,
-                            text: title
-                        },
-                        legend: {
-                            position: 'bottom',
                         }
                     }
                 });
-            }   
-        
+            }
+            async function createRadarChart(data) {
+                const ctx = document.getElementById('radarChart').getContext('2d');
+                if (window.radarChart) {
+                    window.radarChart.destroy(); // Destroy the existing chart before creating a new one
+                }
+                const radarData = {
+                    labels: ['Teaching', 'Research', 'Citations', 'Industry Income', 'International Outlook'],
+                    datasets: data.scores.map(univ => ({
+                        label: univ.university_name,
+                        data: [
+                            univ.scores_teaching,
+                            univ.scores_research,
+                            univ.scores_citations,
+                            univ.scores_industry_income,
+                            univ.scores_international_outlook
+                        ],
+                        fill: true,
+                        backgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 0.2)`,
+                        borderColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
+                        pointBackgroundColor: `rgba(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, 1)`,
+                    }))
+                };
 
-        
+                window.radarChart =new Chart(ctx, {
+                    type: 'radar',
+                    data: radarData,
+                    options: {
+                        elements: {
+                            line: {
+                                tension: 0.2
+                            }
+                        }
+                    }
+                });
+            }
 
-            document.addEventListener("DOMContentLoaded", function() {
-                
-                chartIt();
+            function handleFormSubmit() {
+                const university1 = document.querySelector('[name="university1"]').value;
+                const university2 = document.querySelector('[name="university2"]').value;
+                const year = document.querySelector('[name="year"]').value;
+                updateCharts(university1, university2, year);
+                return false;  // Prevent form submission
+            }
 
-                const scoresData = <?php echo json_encode($scores); ?>;
-                var intervals = calculateIntervals(scoresData, 5);
-                generatePieChart(intervals, 'Distribution of Universities by Score Intervals', 'scoresPieChart');
+                  
 
+            document.querySelector('.search-form').addEventListener('submit', function(e){
+                e.preventDefault();
+                const university1 = document.querySelector('[name="university1"]').value;
+                const university2 = document.querySelector('[name="university2"]').value;
+                const year = document.querySelector('[name="year"]').value;
+                updateCharts(university1, university2, year);
             });
+
+            chartIt(<?php echo json_encode($scatterData); ?>);
+
+        
 
     </script>
 </body>
-</html>
-    
+</html>  

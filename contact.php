@@ -176,7 +176,7 @@ session_start();
         <p style = "width: 250px;"><i><b>Elise COMMANDRE</i></b></p>
     </div>
     <div style="display: flex; align-items: center; width: 300px; height: 100px;">
-        <img src="membre2.jpg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
+        <img src="images/berline.jpg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
         <p style = "width: 250px;"><i><b>Berline Cléria NIYONKURU</i></b></p>
     </div>
 
@@ -186,7 +186,7 @@ session_start();
     </div>
 
     <div style="display: flex; align-items: center; width: 300px; height: 100px;">
-        <img src="grace.jpeg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
+        <img src="images/grace.jpeg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
         <p style = "width: 250px;"><i><b>Grace Sidiqa PALENFO</i></b></p>
     </div>
 

@@ -1,5 +1,15 @@
 <?php
 session_start();
+require "bd.php";
+function fetch_universities() {
+  $bdd = getBD();
+  $query = "SELECT DISTINCT name FROM universite ORDER BY name ASC";
+  $result = $bdd->query($query);
+  $universities = $result->fetchAll(PDO::FETCH_ASSOC);
+  return $universities;
+}
+
+$universities = fetch_universities();
 ?>
 <!DOCTYPE html>
 <html lang='en'>
@@ -174,7 +184,14 @@ session_start();
 
       <div class="search-container">
         <form action="localisation.php" method="get">
-            <input type="text" id="university-search" name="searchTerm" placeholder="Search for a university...">
+            <select id="university-search" name="searchTerm" onchange="searchUniversity()">
+                <option value="">Select a university...</option>
+                <?php foreach($universities as $university): ?>
+                    <option value="<?php echo htmlspecialchars($university['name']); ?>">
+                        <?php echo htmlspecialchars($university['name']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
             <button type="button" onclick="searchUniversity()">Search</button>
         </form>
       </div>
