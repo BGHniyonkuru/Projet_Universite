@@ -155,7 +155,7 @@ function displayResults(universities) {
 
       var nameCell = document.createElement('td');
       var universityLink = document.createElement('a');
-      universityLink.setAttribute('href', 'http://localhost/Projet/universite.php?id=' + encodeURIComponent(university.id_universite)); // Définir l'URL avec l'ID de l'université
+      universityLink.setAttribute('href', 'http://localhost/universite.php?id=' + encodeURIComponent(university.id_universite)); // Définir l'URL avec l'ID de l'université
       universityLink.textContent = university.universite_name; // Texte du lien
       nameCell.appendChild(universityLink); // Ajouter le lien à la cellule
 
