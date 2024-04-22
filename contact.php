@@ -191,7 +191,7 @@ session_start();
     </div>
 
     <div style="display: flex; align-items: center; width: 300px; height: 100px;">
-        <img src="membre1.jpg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
+        <img src="images/michele.jpeg" style="width: 100px; height: 100px; border-radius: 25%; margin-right: 10px;">
         <p style = "width: 250px;"><i><b>Michele MEDOM SADEFO</i></b></p>
     </div>
 </div>
