@@ -35,6 +35,16 @@
         
         $universities = fetch_universities();
 
+        function fetch_years() {
+            $bdd = getBD();  // Assuming getBD() returns a PDO connection
+            $query = "SELECT DISTINCT annee FROM classement ORDER BY annee DESC";  // Replace 'annee' and 'classement' with your actual column and table names
+            $result = $bdd->query($query);
+            $years = $result->fetchAll(PDO::FETCH_ASSOC);
+            return $years;
+        }
+        
+        $years = fetch_years();
+
 ?>
 <!DOCTYPE html >
 <html>
@@ -74,6 +84,13 @@
                 border: none;
                 border-radius: 50%;
                 cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .search-button img {
+                width: 80%;  /* ou une taille spécifique en px si nécessaire */
+                height: auto;  /* garde le ratio d'aspect de l'image */
             }
             .body_graph_compare {
             max-width: 800px;
@@ -173,6 +190,7 @@
                 color: white;
                 text-decoration: none;
             }
+
         </style>
     
 	</head>
@@ -213,8 +231,16 @@
                             <?php endforeach; ?>
                         </select>
 
-                        <input class="form-control mr-2 search-input" type="number" name="year" placeholder="Year" value="<?php echo isset($_GET['year']) ? htmlspecialchars($_GET['year']) : ""; ?>">
-                        <button class="btn btn-primary search-button" type="submit"><img src="images/search.png" alt="Search"></button>
+                        <select class="form-control mr-2 search-input" name="year">
+                            <option value="">Select Year</option>
+                            <?php foreach($years as $year): ?>
+                                <option value="<?php echo htmlspecialchars($year['annee']); ?>"
+                                    <?php echo (isset($_GET['year']) && $_GET['year'] == $year['annee']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($year['annee']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <button class="btn btn-primary search-button" type="submit"><img src="images/search.png" alt="Search" ></button>
                     </form>
                 </div>
             </div>
@@ -263,7 +289,10 @@
                                 x: item.scores_teaching,
                                 y: item.scores_international_outlook,
                                 r: 10,
-                                label: item.university_name + ' (' + item.state + ') : The rank :' + item.rank_order
+                                label: item.university_name + ' (' + item.state + ')|'+
+                                        'Teaching score: '+item.scores_teaching + '|' +
+                                        'International Outlook: '+item.scores_international_outlook + '|' +
+                                        'Rank :' + item.rank_order
                             })),
                             backgroundColor: 'rgba(255, 206, 86, 0.2)', 
                             borderColor: 'rgba(255, 206, 86, 1)',
@@ -287,9 +316,16 @@
                         },
                         plugins: {
                             tooltip: {
+                                enabled: true,
                                 callbacks: {
-                                    label: function(context) {
-                                        return context.raw.label;
+                                    label:function(context) {
+                                        // Splitting the label into multiple lines
+                                        if (context.raw.label && typeof context.raw.label === 'string') {
+                                            return context.raw.label.split('|').map(function(item) {
+                                                return item.trim();  // Trim each line for cleaner tooltips
+                                            });
+                                        }
+                                        return '';
                                     }
                                 }
                             }
