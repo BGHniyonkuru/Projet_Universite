@@ -78,9 +78,9 @@ session_start();
         <div class="container mt-3">
             <div class="row">
                 <div class="col-md-6 mx-auto">
-                    <form class="search-form" action="comparison_2unis.php" method="POST">
-                        <input class="form-control mr-2 search-input" type="text" name="university1" placeholder="First university" value="<?php echo isset($_GET['university_name_1']) ? htmlspecialchars($_GET['university_name_1']) : ""; ?>">
-                        <input class="form-control mr-2 search-input" type="text" name="university2" placeholder="Second university" value="<?php echo isset($_GET['university_name_2']) ? htmlspecialchars($_GET['university_name_2']) : ""; ?>">
+                    <form class="search-form" action="comparison_2unis.php" method="GET">
+                        <input class="form-control mr-2 search-input" type="text" name="university1" placeholder="First university" value="<?php echo isset($_GET['university1']) ? htmlspecialchars($_GET['university1']) : ""; ?>">
+                        <input class="form-control mr-2 search-input" type="text" name="university2" placeholder="Second university" value="<?php echo isset($_GET['university2']) ? htmlspecialchars($_GET['university2']) : ""; ?>">
                         <input class="form-control mr-2 search-input" type="number" name="year" placeholder="Year" value="<?php echo isset($_GET['year']) ? htmlspecialchars($_GET['year']) : ""; ?>">
                         <button class="btn btn-primary search-button" type="submit"><img src="assets/Images/search.png" alt="Search"></button>
                     </form>
