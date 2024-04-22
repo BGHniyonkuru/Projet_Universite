@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Classement Universitaire</title>
     <style>
-         body {
+        body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -134,26 +134,22 @@
 </div>
 </head>
 <body>
-
-    <h1>University Ranking Prediction</h1>
-    <button onclick="loadRankings()">Load Rankings</button>
+    <h1>Prédiction de Classement Universitaire</h1>
+    <button onclick="loadRankings()">Charger les Classements</button>
     <br><br>
     <table id="rankingsTable">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>University_name</th>
-                <th>Actual ranking</th>
-                <th>Predicted Ranking</th>
+                <th>Classement Réel</th>
+                <th>Classement Prévu</th>
             </tr>
         </thead>
         <tbody>
             <!-- Les données du tableau seront insérées ici par JavaScript -->
         </tbody>
     </table>
-    <footer>
-        © 2023 UniDiscover
-    </footer>
+
     <script>
         function loadRankings() {
     var xhr = new XMLHttpRequest();
@@ -164,20 +160,40 @@
             var table = document.getElementById("rankingsTable").getElementsByTagName('tbody')[0];
             table.innerHTML = "";  // Effacer les entrées précédentes
 
-            response.forEach(function(item) {
+            var predicted = response['Predicted Rankings'];
+            var actual = response['Actual Rankings'];
+            var ids = response['id_classement'];  // Assurez-vous que votre API Flask renvoie aussi les IDs
+
+            // Créer un tableau de tuples (ID, classement réel, classement prévu)
+            var rankings = [];
+            for (var i = 0; i < predicted.length; i++) {
+                // Ne prendre en compte que les valeurs de classement prévu à partir de 0
+                if (predicted[i] >= 0) {
+                    rankings.push({ id: ids[i], actualRank: actual[i], predictedRank: predicted[i] });
+                }
+            }
+
+            // Trier le tableau par classement prévu croissant
+            rankings.sort(function (a, b) {
+                return a.predictedRank - b.predictedRank;
+            });
+
+            // Limiter aux 50 premiers résultats
+            var top50 = rankings.slice(0, 50);
+
+            // Afficher les résultats dans le tableau
+            top50.forEach(function (item) {
                 var row = table.insertRow();
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
-                var cell4 = row.insertCell(3);
 
-                cell1.innerHTML = item.id;           // ID de l'université
-                cell2.innerHTML = item.name;         // Nom de l'université
-                cell3.innerHTML = item.predictedRank;  // Classement prévu
-                cell4.innerHTML = item.actualRank;    // Classement réel
+                cell1.innerHTML = item.id;
+                cell2.innerHTML = item.actualRank.toFixed(2);
+                cell3.innerHTML = item.predictedRank.toFixed(2);
             });
         } else {
-            console.error('Error!');  // Log en cas d'erreur
+            console.error('Error!');
         }
     };
     xhr.onerror = function () {
@@ -186,7 +202,7 @@
     xhr.send();
 }
 
-        </script>
-        
+
+    </script>
 </body>
 </html>

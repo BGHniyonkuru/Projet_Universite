@@ -18,13 +18,7 @@ def fetch_and_predict():
         database='projet_universite'
     )
     cursor = conn.cursor()
-    cursor.execute("""
-        SELECT c.*, u.name 
-        FROM classement c 
-        JOIN universite u ON c.id_classement = u.id_universite
-        ORDER BY c.id_classement   # Modifier ici pour trier par 'rank_order' décroissant
-        LIMIT 50
-                   """)
+    cursor.execute("SELECT * FROM classement")
     rows = cursor.fetchall()
     columns = cursor.column_names
     data = pd.DataFrame(rows, columns=columns)
@@ -44,7 +38,7 @@ def fetch_and_predict():
     # Préparation du modèle
     features = ['id_classement', 'scores_teaching', 'scores_research', 'scores_citations', 'scores_industry_income', 
                 'scores_international_outlook', 'stats_number_students', 'stats_pc_intl_students',
-                'stats_student_staff_ratio']
+                'stats_student_staff_ratio', 'annee']
     X = data[features]
     y = data['score_exp']
 
@@ -65,16 +59,7 @@ def fetch_and_predict():
     actual_rankings_list = actual_rankings.tolist()
     ids = X_test['id_classement'].tolist()
 
-    # Je vais utiliser une liste générée pour l'exemple
-    predictions = [{"id": i, "name": f"University {i}", "predictedRank": i, "actualRank": i + 1} for i in range(100)]  # 100 universités générées pour l'exemple
-
-    # Limiter les résultats aux 50 premiers
-    limited_predictions = predictions[:50]  # Ici on coupe la liste aux 50 premiers éléments
-
-    # Transformer les résultats en JSON
-    return jsonify(limited_predictions)
-
-    #return jsonify({"Predicted Rankings": predicted_rankings_list, "Actual Rankings": actual_rankings_list, "id_classement": ids})
+    return jsonify({"Predicted Rankings": predicted_rankings_list, "Actual Rankings": actual_rankings_list, "id_classement": ids})
 
 
     #return jsonify({"Predicted Rankings": predicted_rankings.tolist(), "Actual Rankings": actual_rankings.tolist(), "id_classement": ids.tolist()})
