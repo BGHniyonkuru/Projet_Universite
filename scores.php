@@ -1,4 +1,7 @@
 <?php
+header('Content-Type: application/json');
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 require_once("bd.php");
 // Récupération des scores pour une année spécifique et pour les universités spécifiées
 $annee = $_GET['annee'] ?? '';
@@ -32,11 +35,12 @@ try {
 
     $bdd = null;
 
-    // Renvoi des données au format JSON
-    header('Content-Type: application/json');
+
     echo json_encode($scores);
+    echo json_encode(["success" => true, "data" => $scores]);
 } catch (PDOException $e) {
     // Gestion des erreurs de connexion à la base de données
-    echo "Erreur de connexion à la base de données : " . $e->getMessage();
+    echo json_encode(["success" => false, "error" => $e->getMessage()]);
+
 }
 ?>

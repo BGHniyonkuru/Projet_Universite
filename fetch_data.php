@@ -32,6 +32,8 @@ $sqlRanks = "SELECT u.name AS university_name, c.annee, c.rank_order
              AND c.annee BETWEEN :start_year AND :end_year
              ORDER BY u.name, c.annee";
 
+try{
+
 $stmtScores = $bdd->prepare($sqlScores);
 $stmtScores->execute(['annee' => $year, 'university_name_1' => $university1, 'university_name_2' => $university2]);
 $scoresData = $stmtScores->fetchAll(PDO::FETCH_ASSOC);
@@ -42,8 +44,15 @@ $stmtRanks = $bdd->prepare($sqlRanks);
 $stmtRanks->execute(['university_name_1' => $university1, 'university_name_2' => $university2, 'start_year' => $startYear, 'end_year' => $endYear]);
 $rankData = $stmtRanks->fetchAll(PDO::FETCH_ASSOC);
 
-header('Content-Type: application/json');
+
 // Combine all fetched data into one JSON response
 echo json_encode(['scores' => $scoresData, 'ranks' => $rankData]);
+
+} catch (PDOException $e) {
+    http_response_code(500); // Internal Server Error
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'General error: ' . $e->getMessage()]);
+}
 
 ?>
