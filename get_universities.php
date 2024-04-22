@@ -1,8 +1,12 @@
 <?php
 // Informations de connexion à la base de données
-require("bd.php");
-$conn = getBD();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "projet_universite";
 
+// Création d'une connexion à la base de données
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Vérifier la connexion
 if ($conn->connect_error) {
